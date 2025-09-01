@@ -2,9 +2,10 @@ import { Navigation } from "@/components/navigation"
 import { ProductCarousel } from "@/components/product-carousel"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowRight, Zap, Users, Award } from "lucide-react"
+import { ArrowRight, Zap, Users, Award} from "lucide-react"
 import { ScrollRevealSection } from "@/components/scroll-reveal-section"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import Link from "next/link"
 
 export default function HomePage() {
   return (
@@ -24,6 +25,7 @@ export default function HomePage() {
               AI-powered brewing.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
+                <Link href="/products">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate"
@@ -31,6 +33,7 @@ export default function HomePage() {
                 <ArrowRight className="mr-2 h-4 w-4" />
                 Try Our Products
               </Button>
+              </Link>
               {/* <Button
                 size="lg"
                 variant="outline"
@@ -146,7 +149,6 @@ export default function HomePage() {
         </section>
       </ScrollReveal>
 
-      {/* CTA Section */}
       <ScrollReveal direction="up" delay={200}>
         <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,12 +157,14 @@ export default function HomePage() {
               <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
                 Join us at Thinker Cafe and discover what happens when innovation meets tradition.
               </p>
+              <Link href="/contact">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
               >
                 Visit Us Today
               </Button>
+              </Link>
             </div>
           </div>
         </section>
