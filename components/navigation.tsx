@@ -31,7 +31,7 @@ export function Navigation() {
   return (
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-6xl">
       <div
-        className={`bg-background/40 backdrop-blur-md border border-gray-700 rounded-2xl shadow-lg shadow-black/5 px-4 sm:px-6 transition-all duration-300 ${
+        className={`bg-background/40 backdrop-blur-md border border-gray-00 rounded-2xl shadow-lg shadow-black/5 px-4 sm:px-6 transition-all duration-300 ${
           scrolled
             ? "bg-background/30 border-border/20 shadow-black/5"
             : "bg-background/80 border-border/50 shadow-black/10"
@@ -53,10 +53,10 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground relative group"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-white relative group "
               >
                 {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5  transition-all duration-300 group-hover:w-full bg-gradient-to-r from-orange-600 to-pink-600"></span>
               </Link>
             ))}
             <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export function Navigation() {
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden p-2"
+            className="md:hidden p-2 hover:bg-gradient-to-r hover:from-orange-600 hover:to-pink-600"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -85,15 +85,16 @@ export function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2 px-2 rounded-md hover:bg-muted/50"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-white py-2 px-2 rounded-md hover:bg-muted/50"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
                 </Link>
+
               ))}
               <div className="pt-2 border-t border-border/50 flex items-center justify-between">
                 <LanguageToggle />
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
               </div>
             </div>
           </div>
