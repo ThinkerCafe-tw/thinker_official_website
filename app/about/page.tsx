@@ -53,11 +53,8 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            <div className="relative">
+            <div>
               <img src="/modern-tech-coffee-shop.png" alt="Thinker Cafe Interior" className="rounded-lg shadow-2xl" />
-              <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-4 rounded-lg shadow-lg">
-                <Coffee className="h-8 w-8" />
-              </div>
             </div>
           </div>
         </div>
