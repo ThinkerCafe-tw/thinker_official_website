@@ -256,12 +256,12 @@ export function ContactForm() {
 
         <Card className="border-0 bg-gradient-to-br from-primary/5 to-accent/5 p-4 sm:p-6">
           <CardContent className="p-0">
-            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-3">Visit Our Cafe</h3>
+            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-3">Visit Our Products</h3>
             <p className="text-muted-foreground text-xs sm:text-sm mb-4">
               Experience our innovative coffee culture in person. We're located in the heart of the tech district,
               perfect for meetings, work sessions, or simply enjoying exceptional coffee.
             </p>
-            <Button variant="outline" className="w-full bg-transparent text-sm">
+            <Button variant="outline" className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate">
               Get Directions
             </Button>
           </CardContent>

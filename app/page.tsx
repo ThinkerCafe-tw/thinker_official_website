@@ -28,7 +28,7 @@ export default function HomePage() {
                 <Link href="/products">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate"
+                className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
               >
                 <ArrowRight className="mr-2 h-4 w-4" />
                 Try Our Products
