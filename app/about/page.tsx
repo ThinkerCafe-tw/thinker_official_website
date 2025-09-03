@@ -2,6 +2,7 @@ import { Navigation } from "@/components/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Coffee, Users, Award, Target, Heart, Zap } from "lucide-react"
+import { CountUp } from "@/components/count-number";
 
 export default function AboutPage() {
   return (
@@ -185,7 +186,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
+      
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
@@ -195,19 +196,27 @@ export default function AboutPage() {
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div className="text-center">
-              <div className="font-heading text-4xl font-bold text-primary mb-2">50K+</div>
+              <div className="font-heading text-4xl font-bold text-primary mb-2">
+                 <CountUp end={50} suffix="K+" />
+              </div>
               <div className="text-sm text-muted-foreground">Cups Served</div>
             </div>
             <div className="text-center">
-              <div className="font-heading text-4xl font-bold text-accent mb-2">1,200+</div>
+              <div className="font-heading text-4xl font-bold text-accent mb-2">
+                <CountUp end={1200} suffix="+" />
+              </div>
               <div className="text-sm text-muted-foreground">Happy Customers</div>
             </div>
             <div className="text-center">
-              <div className="font-heading text-4xl font-bold text-primary mb-2">25+</div>
+              <div className="font-heading text-4xl font-bold text-primary mb-2">
+                <CountUp end={25} suffix="+" />
+              </div>
               <div className="text-sm text-muted-foreground">Coffee Origins</div>
             </div>
             <div className="text-center">
-              <div className="font-heading text-4xl font-bold text-accent mb-2">99%</div>
+              <div className="font-heading text-4xl font-bold text-accent mb-2">
+                <CountUp end={99} suffix="%" />
+              </div>
               <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
             </div>
           </div>
