@@ -24,15 +24,39 @@ export interface NotionProduct {
   featured: boolean
 }
 
-export interface NotionAboutContent {
+export interface NotionOurStory {
   id: string
-  section: string
-  title: string
-  titleZh: string
-  content: string
-  contentZh: string
+  en_title: string
+  zh_title: string
+  en_description: string
+  zh_description: string
   image?: string
-  order: number
+}
+export interface NotionOurValue {
+  id: string
+  en_title: string
+  zh_title: string
+  en_description: string
+  zh_description: string
+  en_value_title: string
+  zh_value_title: string
+  en_value_description: string
+  zh_value_description: string
+  image?: string
+}
+export interface NotionOurTeam {
+  id: string
+  en_title: string
+  zh_title: string
+  en_description: string
+  zh_description: string
+  en_name: string
+  zh_name: string
+  en_role: string
+  zh_role: string
+  en_role_description: string
+  zh_role_description: string
+  image?: string
 }
 
 export interface NotionContactSubmission {
@@ -120,7 +144,7 @@ export async function getFeaturedProducts(): Promise<NotionProduct[]> {
   }
 }
 
-export async function getOurStoryContent(): Promise<NotionAboutContent[]> {
+export async function getOurStoryContent(): Promise<NotionOurStory[]> {
   try {
     const response = await notion.databases.query({
       database_id: OURSTORY_DATABASE_ID,
@@ -139,7 +163,7 @@ export async function getOurStoryContent(): Promise<NotionAboutContent[]> {
     return []
   }
 }
-export async function getOurValueContent(): Promise<NotionAboutContent[]> {
+export async function getOurValueContent(): Promise<NotionOurValue[]> {
   try {
     const response = await notion.databases.query({
       database_id: OURVALUE_DATABASE_ID,
@@ -162,7 +186,7 @@ export async function getOurValueContent(): Promise<NotionAboutContent[]> {
     return []
   }
 }
-export async function getOurTeamContent(): Promise<NotionAboutContent[]> {
+export async function getOurTeamContent(): Promise<NotionOurTeam[]> {
   try {
     const response = await notion.databases.query({
       database_id: OURTEAM_DATABASE_ID,
