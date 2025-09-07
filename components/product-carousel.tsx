@@ -81,13 +81,13 @@ export function ProductCarousel() {
                         alt={language === "en" ? product.en_name : product.zh_name}
                         className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                       />
-                      <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs sm:text-sm font-medium animate-glow">
+                      {/* <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs sm:text-sm font-medium animate-glow">
                         Featured
-                      </div>
+                      </div> */}
                     </div>
                     <div className="p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="flex items-center">
+                        {/* <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
@@ -97,7 +97,7 @@ export function ProductCarousel() {
                             />
                           ))}
                         </div>
-                        <span className="text-xs sm:text-sm text-muted-foreground">({product.rating})</span>
+                        <span className="text-xs sm:text-sm text-muted-foreground">({product.rating})</span> */}
                       </div>
                       <h3 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">
                         {language === "en" ? product.en_name : product.zh_name}
@@ -105,12 +105,12 @@ export function ProductCarousel() {
                       <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
                         {language === "en" ? product.en_description : product.zh_description}
                       </p>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                      {/* <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                         <span className="font-heading text-lg sm:text-xl font-bold text-primary">{product.price}</span>
                         <Button className="bg-primary hover:bg-primary/90 w-full sm:w-auto text-sm hover-lift hover-glow">
                           {language === "en" ? "Add to Cart" : "加入購物車"}
                         </Button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </CardContent>

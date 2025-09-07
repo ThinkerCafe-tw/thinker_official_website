@@ -86,10 +86,10 @@ export function ProductGrid() {
                     {language === "en" ? "Featured" : "精選"}
                   </Badge>
                 )}
-                <div className="absolute top-3 right-3 flex items-center gap-1 bg-background/80 backdrop-blur px-2 py-1 rounded-full transition-all duration-200 hover:bg-background/90">
+                {/* <div className="absolute top-3 right-3 flex items-center gap-1 bg-background/80 backdrop-blur px-2 py-1 rounded-full transition-all duration-200 hover:bg-background/90">
                   <Star className="h-3 w-3 fill-primary text-primary" />
                   <span className="text-xs font-medium">{product.rating}</span>
-                </div>
+                </div> */}
               </div>
               <div className="p-4">
                 <div className="mb-2">
@@ -103,13 +103,13 @@ export function ProductGrid() {
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                   {language === "en" ? product.en_description : product.zh_description}
                 </p>
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <span className="font-heading text-lg font-bold text-primary">{product.price}</span>
                   <Button size="sm" className="bg-primary hover:bg-primary/90 hover-lift hover-glow">
                     <ShoppingCart className="h-4 w-4 mr-1" />
                     {language === "en" ? "Add" : "加入"}
                   </Button>
-                </div>
+                </div> */}
               </div>
             </CardContent>
           </Card>
