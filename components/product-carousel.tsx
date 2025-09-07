@@ -78,7 +78,7 @@ export function ProductCarousel() {
                     <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
                       <img
                         src={product.image || "/placeholder.svg"}
-                        alt={language === "en" ? product.name : product.nameZh}
+                        alt={language === "en" ? product.en_name : product.zh_name}
                         className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                       />
                       <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs sm:text-sm font-medium animate-glow">
@@ -100,10 +100,10 @@ export function ProductCarousel() {
                         <span className="text-xs sm:text-sm text-muted-foreground">({product.rating})</span>
                       </div>
                       <h3 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">
-                        {language === "en" ? product.name : product.nameZh}
+                        {language === "en" ? product.en_name : product.zh_name}
                       </h3>
                       <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
-                        {language === "en" ? product.description : product.descriptionZh}
+                        {language === "en" ? product.en_description : product.zh_description}
                       </p>
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                         <span className="font-heading text-lg sm:text-xl font-bold text-primary">{product.price}</span>

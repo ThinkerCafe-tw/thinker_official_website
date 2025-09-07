@@ -33,11 +33,11 @@ export function ProductGrid() {
   }, [])
 
   // Get unique categories from products
-  const categories = ["all", ...Array.from(new Set(products.map((product) => product.category)))]
-  const categoriesZh = ["全部", ...Array.from(new Set(products.map((product) => product.categoryZh)))]
+  const en_categories = ["all", ...Array.from(new Set(products.map((product) => product.en_category)))]
+  const zh_categories = ["全部", ...Array.from(new Set(products.map((product) => product.zh_category)))]
 
   const filteredProducts =
-    selectedCategory === "all" ? products : products.filter((product) => product.category === selectedCategory)
+    selectedCategory === "all" ? products : products.filter((product) => product.en_category === selectedCategory)
 
   if (loading) {
     return (
@@ -51,7 +51,7 @@ export function ProductGrid() {
     <div>
       {/* Category Filter */}
       <div className="flex flex-wrap gap-2 mb-8 animate-fade-in">
-        {categories.map((category, index) => (
+        {en_categories.map((category, index) => (
           <Button
             key={category}
             variant={selectedCategory === category ? "default" : "outline"}
@@ -61,7 +61,7 @@ export function ProductGrid() {
               selectedCategory === category ? "bg-primary hover:bg-primary/90 animate-glow" : "hover:bg-muted"
             }`}
           >
-            {language === "en" ? category : categoriesZh[index]}
+            {language === "en" ? category : zh_categories[index]}
           </Button>
         ))}
       </div>
@@ -78,7 +78,7 @@ export function ProductGrid() {
               <div className="relative overflow-hidden">
                 <img
                   src={product.image || "/placeholder.svg"}
-                  alt={language === "en" ? product.name : product.nameZh}
+                  alt={language === "en" ? product.en_name : product.zh_name}
                   className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 {product.featured && (
@@ -94,14 +94,14 @@ export function ProductGrid() {
               <div className="p-4">
                 <div className="mb-2">
                   <Badge variant="secondary" className="text-xs transition-colors duration-200 hover:bg-primary/20">
-                    {language === "en" ? product.category : product.categoryZh}
+                    {language === "en" ? product.en_category : product.zh_category}
                   </Badge>
                 </div>
                 <h3 className="font-heading text-lg font-semibold mb-2 transition-colors duration-200 group-hover:text-primary">
-                  {language === "en" ? product.name : product.nameZh}
+                  {language === "en" ? product.en_name : product.zh_name}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {language === "en" ? product.description : product.descriptionZh}
+                  {language === "en" ? product.en_description : product.zh_description}
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="font-heading text-lg font-bold text-primary">{product.price}</span>
