@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       email,
       subject,
       message,
-      language: language || "en",
+      language,
       timestamp: timestamp || new Date().toISOString(),
     })
 
