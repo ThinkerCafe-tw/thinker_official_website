@@ -7,8 +7,10 @@ const notion = new Client({
 
 
 const PRODUCTS_DATABASE_ID = process.env.NOTION_PRODUCTS_DATABASE_ID || ""
-const ABOUT_DATABASE_ID = process.env.NOTION_ABOUT_DATABASE_ID || ""
 const CONTACTS_DATABASE_ID = process.env.NOTION_CONTACTS_DATABASE_ID || ""
+const OURSTORY_DATABASE_ID = process.env.NOTION_OURSTORY_DATABASE_ID || ""
+const OURVALUE_DATABASE_ID = process.env.NOTION_OURVALUE_DATABASE_ID || ""
+const OURTEAM_DATABASE_ID = process.env.NOTION_OURTEAM_DATABASE_ID || ""
 
 export interface NotionProduct {
   id: string
@@ -42,15 +44,6 @@ export interface NotionContactSubmission {
   timestamp: string
 }
 
-// Helper function to extract text from Notion rich text
-function extractText(richText: any[]): string {
-  return richText?.map((text: any) => text.plain_text).join("") || ""
-}
-
-// Helper function to extract URL from Notion files
-function extractFileUrl(files: any[]): string {
-  return files?.[0]?.file?.url || files?.[0]?.external?.url || ""
-}
 
 export async function getProducts(): Promise<NotionProduct[]> {
   if (!PRODUCTS_DATABASE_ID) {
@@ -127,28 +120,67 @@ export async function getFeaturedProducts(): Promise<NotionProduct[]> {
   }
 }
 
-// Get about content from Notion database
-export async function getAboutContent(): Promise<NotionAboutContent[]> {
+export async function getOurStoryContent(): Promise<NotionAboutContent[]> {
   try {
     const response = await notion.databases.query({
-      database_id: ABOUT_DATABASE_ID,
-      sorts: [
-        {
-          property: "Order",
-          direction: "ascending",
-        },
-      ],
+      database_id: OURSTORY_DATABASE_ID,
     })
 
     return response.results.map((page: any) => ({
       id: page.id,
-      section: page.properties.Section?.select?.name || "",
-      title: extractText(page.properties.Title?.title || []),
-      titleZh: extractText(page.properties.TitleZh?.rich_text || []),
-      content: extractText(page.properties.Content?.rich_text || []),
-      contentZh: extractText(page.properties.ContentZh?.rich_text || []),
-      image: extractFileUrl(page.properties.Image?.files || []),
-      order: page.properties.Order?.number || 0,
+      en_title: page.properties.Title?.title || [],
+      zh_title: page.properties.zh_name?.rich_text[0]?.text?.content || "",
+      en_description: page.properties.en_description?.rich_text[0]?.text?.content || "",
+      zh_description: page.properties.zh_description?.rich_text[0]?.text?.content || "",
+      image: page.properties.image?.files[0]?.file?.url || "",
+    }))
+  } catch (error) {
+    console.error("Error fetching about content from Notion:", error)
+    return []
+  }
+}
+export async function getOurValueContent(): Promise<NotionAboutContent[]> {
+  try {
+    const response = await notion.databases.query({
+      database_id: OURVALUE_DATABASE_ID,
+    })
+
+    return response.results.map((page: any) => ({
+      id: page.id,
+      en_title: page.properties.Title?.title || [],
+      zh_title: page.properties.zh_name?.rich_text[0]?.text?.content || "",
+      en_description: page.properties.en_description?.rich_text[0]?.text?.content || "",
+      zh_description: page.properties.zh_description?.rich_text[0]?.text?.content || "",
+      en_value_title: page.properties.en_value_title?.rich_text[0]?.text?.content || "",
+      zh_value_title: page.properties.zh_value_title?.rich_text[0]?.text?.content || "",
+      en_value_description: page.properties.en_value_description?.rich_text[0]?.text?.content || "",
+      zh_value_description: page.properties.zh_value_description?.rich_text[0]?.text?.content || "",
+      image: page.properties.image?.files[0]?.file?.url || "",
+    }))
+  } catch (error) {
+    console.error("Error fetching about content from Notion:", error)
+    return []
+  }
+}
+export async function getOurTeamContent(): Promise<NotionAboutContent[]> {
+  try {
+    const response = await notion.databases.query({
+      database_id: OURTEAM_DATABASE_ID,
+    })
+
+    return response.results.map((page: any) => ({
+      id: page.id,
+      en_title: page.properties.Title?.title || [],
+      zh_title: page.properties.zh_name?.rich_text[0]?.text?.content || "",
+      en_description: page.properties.en_description?.rich_text[0]?.text?.content || "",
+      zh_description: page.properties.zh_description?.rich_text[0]?.text?.content || "",
+      en_name: page.properties.en_name?.rich_text[0]?.text?.content || "",
+      zh_name: page.properties.zh_name?.rich_text[0]?.text?.content || "",
+      en_role: page.properties.en_role?.rich_text[0]?.text?.content || "",
+      zh_role: page.properties.zh_role?.rich_text[0]?.text?.content || "",
+      en_role_description: page.properties.en_role_description?.rich_text[0]?.text?.content || "",
+      zh_role_description: page.properties.zh_role_description?.rich_text[0]?.text?.content || "",
+      image: page.properties.image?.files[0]?.file?.url || "",
     }))
   } catch (error) {
     console.error("Error fetching about content from Notion:", error)
@@ -221,27 +253,4 @@ export async function submitContactForm(data: NotionContactSubmission): Promise<
   }
 }
 
-// // Get single product by ID
-// export async function getProductById(id: string): Promise<NotionProduct | null> {
-//   try {
-//     const response = await notion.pages.retrieve({ page_id: id })
-//     const page = response as any
 
-//     return {
-//       id: page.id,
-//       name: extractText(page.properties.Name?.title || []),
-//       nameZh: extractText(page.properties.NameZh?.rich_text || []),
-//       description: extractText(page.properties.Description?.rich_text || []),
-//       descriptionZh: extractText(page.properties.DescriptionZh?.rich_text || []),
-//       price: extractText(page.properties.Price?.rich_text || []),
-//       image: extractFileUrl(page.properties.Image?.files || []),
-//       rating: page.properties.Rating?.number || 0,
-//       category: page.properties.Category?.select?.name || "",
-//       categoryZh: extractText(page.properties.CategoryZh?.rich_text || []),
-//       featured: page.properties.Featured?.checkbox || false,
-//     }
-//   } catch (error) {
-//     console.error("Error fetching product by ID from Notion:", error)
-//     return null
-//   }
-// }
