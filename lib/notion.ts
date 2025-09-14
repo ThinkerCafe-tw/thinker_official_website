@@ -62,6 +62,37 @@ export interface NotionProduct {
   featured: boolean;
 }
 
+export interface NotionProductContent {
+  id: string;
+  en_name: string;
+  zh_name: string;
+  en_description: string;
+  zh_description: string;
+  image: string;
+  en_category: string;
+  zh_category: string;
+  content_video: string;
+  content_highlight1: string;
+  content_highlight2: string;
+  content_highlight3: string;
+  content_highlight4: string;
+  content_highlight5: string;
+  content_highlight6: string;
+  content_highlight1_description: string;
+  content_highlight2_description: string;
+  content_highlight3_description: string;
+  content_highlight4_description: string;
+  content_highlight5_description: string;
+  content_highlight6_description: string;
+  content_highlight1_image: string;
+  content_highlight2_image: string;
+  content_highlight3_image: string;
+  content_highlight4_image: string;
+  content_highlight5_image: string;
+  content_highlight6_image: string;
+  featured: boolean;
+}
+
 export interface NotionOurStory {
   id: string;
   en_title: string;
@@ -137,6 +168,55 @@ export async function getProducts(): Promise<NotionProduct[]> {
     console.error("Error fetching products from Notion:", error);
     return [];
   }
+}
+
+
+export async function getProductById(pageId: string): Promise<NotionProductContent | null> {
+  if (!pageId) throw new Error("Missing Notion Products Page ID");
+  const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+    headers: {
+      Authorization: `Bearer ${NOTION_API_KEY}`,
+      "Notion-Version": NOTION_VERSION,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    console.error("getProductById failed:", await res.text());
+    return null;
+  }
+  const page = (await res.json()) as any;
+  const props = page.properties || {};
+return {
+        id: page.id,
+        en_name: pick.title(props.en_name),
+        zh_name: pick.text(props.zh_name),
+        en_description: pick.text(props.en_description),
+        zh_description: pick.text(props.zh_description),
+        image: pick.file(props.image),
+        en_category: pick.multiFirst(props.en_category),
+        zh_category: pick.multiFirst(props.zh_category),
+        featured: !!props.featured?.checkbox,
+        content_video: pick.file(props.content_video),
+        content_highlight1: pick.text(props.content_highlight1),
+        content_highlight2: pick.text(props.content_highlight2),
+        content_highlight3: pick.text(props.content_highlight3),
+        content_highlight4: pick.text(props.content_highlight4),
+        content_highlight5: pick.text(props.content_highlight5),
+        content_highlight6: pick.text(props.content_highlight6),
+        content_highlight1_description: pick.text(props.content_highlight1_description),
+        content_highlight2_description: pick.text(props.content_highlight2_description),
+        content_highlight3_description: pick.text(props.content_highlight3_description),
+        content_highlight4_description: pick.text(props.content_highlight4_description),
+        content_highlight5_description: pick.text(props.content_highlight5_description),
+        content_highlight6_description: pick.text(props.content_highlight6_description),
+        content_highlight1_image: pick.file(props.content_highlight1_image),
+        content_highlight2_image: pick.file(props.content_highlight2_image),
+        content_highlight3_image: pick.file(props.content_highlight3_image),
+        content_highlight4_image: pick.file(props.content_highlight4_image),
+        content_highlight5_image: pick.file(props.content_highlight5_image),
+        content_highlight6_image: pick.file(props.content_highlight6_image),
+      };
 }
 
 export async function getFeaturedProducts(): Promise<NotionProduct[]> {

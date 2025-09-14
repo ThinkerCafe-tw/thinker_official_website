@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import type { NotionProduct } from "@/lib/notion"
+import Link from "next/dist/client/link"
 
 export function ProductGrid() {
   const [language, setLanguage] = useState<"en" | "zh">("en")
@@ -64,6 +65,7 @@ export function ProductGrid() {
       </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product, index) => (
+          <Link key={product.id} href={`/products/${product.id}`} >
           <Card
             key={product.id}
             className={`group overflow-hidden border-0 bg-card/50 backdrop-blur hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in`}
@@ -108,6 +110,7 @@ export function ProductGrid() {
               </div>
             </CardContent>
           </Card>
+          </Link>
         ))}
       </div>
 
