@@ -1,23 +1,29 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useToast } from "@/hooks/use-toast"
-import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
 
 interface FormData {
-  name: string
-  email: string
-  subject: string
-  message: string
-  language: "en" | "zh"
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  language: "en" | "zh";
 }
 
 export function ContactForm() {
@@ -27,17 +33,17 @@ export function ContactForm() {
     subject: "",
     message: "",
     language: "en",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/contact", {
@@ -49,42 +55,46 @@ export function ContactForm() {
           ...formData,
           timestamp: new Date().toISOString(),
         }),
-      })
+      });
 
       if (response.ok) {
         toast({
           title: "Message Sent Successfully",
-          description: "Thank you for your message. We'll get back to you soon!",
-        })
+          description:
+            "Thank you for your message. We'll get back to you soon!",
+        });
         setFormData({
           name: "",
           email: "",
           subject: "",
           message: "",
           language: "en",
-        })
+        });
       } else {
-        throw new Error("Failed to send message")
+        throw new Error("Failed to send message");
       }
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to send message. Please try again later.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
       {/* Contact Form */}
       <Card className="border-0 bg-card/50 backdrop-blur">
         <CardHeader className="p-4 sm:p-6">
-          <CardTitle className="font-heading text-xl sm:text-2xl">Send us a Message</CardTitle>
+          <CardTitle className="font-heading text-xl sm:text-2xl">
+            Send us a Message
+          </CardTitle>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Have a question or want to learn more about Thinker Cafe? We'd love to hear from you.
+            Have a question or want to learn more about Thinker Cafe? We'd love
+            to hear from you.
           </p>
         </CardHeader>
         <CardContent className="p-4 sm:p-6 pt-0">
@@ -124,16 +134,29 @@ export function ContactForm() {
               <Label htmlFor="subject" className="text-sm">
                 Subject
               </Label>
-              <Select value={formData.subject} onValueChange={(value) => handleInputChange("subject", value)}>
+              <Select
+                value={formData.subject}
+                onValueChange={(value) => handleInputChange("subject", value)}
+              >
                 <SelectTrigger className="bg-background/50">
                   <SelectValue placeholder="Select a subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="General Inquiry">General Inquiry</SelectItem>
-                  <SelectItem value="Product Information">Product Information</SelectItem>
-                  <SelectItem value="Partnership Opportunities">Partnership Opportunities</SelectItem>
-                  <SelectItem value="Feedback & Suggestions">Feedback & Suggestions</SelectItem>
-                  <SelectItem value="Customer Support">Customer Support</SelectItem>
+                  <SelectItem value="General Inquiry">
+                    General Inquiry
+                  </SelectItem>
+                  <SelectItem value="Product Information">
+                    Product Information
+                  </SelectItem>
+                  <SelectItem value="Partnership Opportunities">
+                    Partnership Opportunities
+                  </SelectItem>
+                  <SelectItem value="Feedback & Suggestions">
+                    Feedback & Suggestions
+                  </SelectItem>
+                  <SelectItem value="Customer Support">
+                    Customer Support
+                  </SelectItem>
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
@@ -160,7 +183,9 @@ export function ContactForm() {
               </Label>
               <Select
                 value={formData.language}
-                onValueChange={(value: "en" | "zh") => handleInputChange("language", value)}
+                onValueChange={(value: "en" | "zh") =>
+                  handleInputChange("language", value)
+                }
               >
                 <SelectTrigger className="bg-background/50">
                   <SelectValue />
@@ -193,11 +218,12 @@ export function ContactForm() {
         </CardContent>
       </Card>
 
-      {/* Contact Information */}
       <div className="space-y-6 sm:space-y-8">
         <Card className="border-0 bg-card/50 backdrop-blur">
           <CardContent className="p-4 sm:p-6">
-            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">Get in Touch</h3>
+            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">
+              Get in Touch
+            </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-primary/10 flex-shrink-0">
@@ -205,7 +231,9 @@ export function ContactForm() {
                 </div>
                 <div className="min-w-0">
                   <p className="font-medium text-sm sm:text-base">Email</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground break-all">hello@thinkercafe.com</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground break-all">
+                    hello@thinkercafe.com
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -214,7 +242,10 @@ export function ContactForm() {
                 </div>
                 <div>
                   <p className="font-medium text-sm sm:text-base">Phone</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">+1 (555) 123-4567</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {" "}
+                    +886 937431998
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -224,9 +255,9 @@ export function ContactForm() {
                 <div>
                   <p className="font-medium text-sm sm:text-base">Address</p>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    123 Innovation Street
+                    106 台北市大安區
                     <br />
-                    Tech District, TC 12345
+                    信義路四段170號3樓
                   </p>
                 </div>
               </div>
@@ -236,7 +267,9 @@ export function ContactForm() {
 
         <Card className="border-0 bg-card/50 backdrop-blur">
           <CardContent className="p-4 sm:p-6">
-            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">Business Hours</h3>
+            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">
+              Business Hours
+            </h3>
             <div className="space-y-2 text-xs sm:text-sm">
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Monday - Friday</span>
@@ -256,17 +289,23 @@ export function ContactForm() {
 
         <Card className="border-0 bg-gradient-to-br from-primary/5 to-accent/5 p-4 sm:p-6">
           <CardContent className="p-0">
-            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-3">Visit Our Products</h3>
+            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-3">
+              Visit Our Products
+            </h3>
             <p className="text-muted-foreground text-xs sm:text-sm mb-4">
-              Experience our innovative coffee culture in person. We're located in the heart of the tech district,
-              perfect for meetings, work sessions, or simply enjoying exceptional coffee.
+              Experience our innovative coffee culture in person. We're located
+              in the heart of the tech district, perfect for meetings, work
+              sessions, or simply enjoying exceptional coffee.
             </p>
-            <Button variant="outline" className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate">
+            <Button
+              variant="outline"
+              className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate"
+            >
               Get Directions
             </Button>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

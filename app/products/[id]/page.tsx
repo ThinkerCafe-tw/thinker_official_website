@@ -15,7 +15,8 @@ export default async function ProductContentPage({
 }: {
   params: { id: string };
 }) {
-  const product: any = await getProductById(params.id);
+  const { id } = await params;
+  const product: any = await getProductById(id);
   if (!product) return notFound();
 
   const title = product.en_name || product.zh_name;
