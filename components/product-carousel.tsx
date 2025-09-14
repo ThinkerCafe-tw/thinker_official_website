@@ -1,66 +1,71 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Star } from "lucide-react"
-import type { NotionProduct } from "@/lib/notion"
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import type { NotionProduct } from "@/lib/notion";
+import Link from "next/link";
 
 export function ProductCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [language, setLanguage] = useState<"en" | "zh">("en")
-  const [products, setProducts] = useState<NotionProduct[]>([])
-  const [loading, setLoading] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [language, setLanguage] = useState<"en" | "zh">("en");
+  const [products, setProducts] = useState<NotionProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("/api/products/featured")
-        const data = await response.json()
+        const response = await fetch("/api/products/featured");
+        const data = await response.json();
         if (data.success) {
-          setProducts(data.data)
+          setProducts(data.data);
         }
       } catch (error) {
-        console.error("Error fetching products:", error)
-        setProducts([])
+        console.error("Error fetching products:", error);
+        setProducts([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length)
-  }
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
+  };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length)
-  }
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + products.length) % products.length
+    );
+  };
 
   // Auto-advance carousel
   useEffect(() => {
     if (products.length > 0) {
-      const timer = setInterval(nextSlide, 5000)
-      return () => clearInterval(timer)
+      const timer = setInterval(nextSlide, 5000);
+      return () => clearInterval(timer);
     }
-  }, [products.length])
+  }, [products.length]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-48 sm:h-64">
         <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary animate-glow"></div>
       </div>
-    )
+    );
   }
 
   if (products.length === 0) {
     return (
       <div className="text-center py-8 sm:py-12 animate-fade-in">
-        <p className="text-muted-foreground text-sm sm:text-base">No featured products available at the moment.</p>
+        <p className="text-muted-foreground text-sm sm:text-base">
+          No featured products available at the moment.
+        </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -71,14 +76,21 @@ export function ProductCarousel() {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {products.map((product) => (
-            <div key={product.id} className="w-full flex-shrink-0">
+            <Link
+              key={product.id}
+              className="w-full flex-shrink-0"
+              href={`/products/${product.id}`}
+              prefetch
+            >
               <Card className="border-0 bg-card/50 backdrop-blur hover-lift">
                 <CardContent className="p-0">
                   <div className="grid lg:grid-cols-2 gap-0">
                     <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
                       <img
                         src={product.image || "/placeholder.svg"}
-                        alt={language === "en" ? product.en_name : product.zh_name}
+                        alt={
+                          language === "en" ? product.en_name : product.zh_name
+                        }
                         className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                       />
                       {/* <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs sm:text-sm font-medium animate-glow">
@@ -103,7 +115,9 @@ export function ProductCarousel() {
                         {language === "en" ? product.en_name : product.zh_name}
                       </h3>
                       <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
-                        {language === "en" ? product.en_description : product.zh_description}
+                        {language === "en"
+                          ? product.en_description
+                          : product.zh_description}
                       </p>
                       {/* <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                         <span className="font-heading text-lg sm:text-xl font-bold text-primary">{product.price}</span>
@@ -115,7 +129,7 @@ export function ProductCarousel() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -144,12 +158,14 @@ export function ProductCarousel() {
           <button
             key={index}
             className={`h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full transition-all duration-300 hover:scale-125 ${
-              index === currentIndex ? "bg-primary animate-glow" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+              index === currentIndex
+                ? "bg-primary animate-glow"
+                : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
             }`}
             onClick={() => setCurrentIndex(index)}
           />
         ))}
       </div>
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-import { Navigation } from "@/components/navigation"
-import { ProductCarousel } from "@/components/product-carousel"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { ArrowRight, Zap, Users, Award} from "lucide-react"
-import { ScrollRevealSection } from "@/components/scroll-reveal-section"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import Link from "next/link"
+import { Navigation } from "@/components/navigation";
+import { ProductCarousel } from "@/components/product-carousel";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Zap, Users, Award } from "lucide-react";
+import { ScrollRevealSection } from "@/components/scroll-reveal-section";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -21,18 +21,18 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="mt-6 text-lg lg:text-xl text-gray-200 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-              Built to make you extraordinarily productive, Thinker Cafe is the best way to experience coffee with
-              AI-powered brewing.
+              Built to make you extraordinarily productive, Thinker Cafe is the
+              best way to experience coffee with AI-powered brewing.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
-                <Link href="/products">
-              <Button
-                size="lg"
-                className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
-              >
-                <ArrowRight className="mr-2 h-4 w-4" />
-                Try Our Products
-              </Button>
+              <Link href="/products">
+                <Button
+                  size="lg"
+                  className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
+                >
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                  Try Our Products
+                </Button>
               </Link>
               {/* <Button
                 size="lg"
@@ -75,9 +75,12 @@ export default function HomePage() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">Featured Products</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
+              Featured Products
+            </h2>
             <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-              Discover our carefully curated selection of premium coffee products and brewing equipment.
+              Discover our carefully curated selection of premium coffee
+              products and brewing equipment.
             </p>
           </div>
 
@@ -88,16 +91,17 @@ export default function HomePage() {
         </div>
       </ScrollRevealSection>
 
-      {/* Features Section */}
       <ScrollReveal direction="up" delay={100}>
         <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal direction="fade" delay={200}>
               <div className="mx-auto max-w-2xl text-center">
-                <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">Why Choose Thinker Cafe?</h2>
+                <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
+                  Why Choose Thinker Cafe?
+                </h2>
                 <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-                  We combine traditional coffee craftsmanship with modern technology to deliver an unparalleled
-                  experience.
+                  We combine traditional coffee craftsmanship with modern
+                  technology to deliver an unparalleled experience.
                 </p>
               </div>
             </ScrollReveal>
@@ -109,9 +113,12 @@ export default function HomePage() {
                     <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-primary/10 hover-glow">
                       <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
-                    <h3 className="font-heading text-lg sm:text-xl font-semibold">Innovation</h3>
+                    <h3 className="font-heading text-lg sm:text-xl font-semibold">
+                      Innovation
+                    </h3>
                     <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-                      Cutting-edge brewing technology meets artisanal coffee craftsmanship.
+                      Cutting-edge brewing technology meets artisanal coffee
+                      craftsmanship.
                     </p>
                   </CardContent>
                 </Card>
@@ -123,9 +130,12 @@ export default function HomePage() {
                     <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-accent/10 hover-glow">
                       <Users className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                     </div>
-                    <h3 className="font-heading text-lg sm:text-xl font-semibold">Community</h3>
+                    <h3 className="font-heading text-lg sm:text-xl font-semibold">
+                      Community
+                    </h3>
                     <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-                      A space for thinkers, creators, and coffee enthusiasts to connect.
+                      A space for thinkers, creators, and coffee enthusiasts to
+                      connect.
                     </p>
                   </CardContent>
                 </Card>
@@ -137,9 +147,12 @@ export default function HomePage() {
                     <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-primary/10 hover-glow">
                       <Award className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
-                    <h3 className="font-heading text-lg sm:text-xl font-semibold">Quality</h3>
+                    <h3 className="font-heading text-lg sm:text-xl font-semibold">
+                      Quality
+                    </h3>
                     <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-                      Premium beans sourced globally, roasted to perfection locally.
+                      Premium beans sourced globally, roasted to perfection
+                      locally.
                     </p>
                   </CardContent>
                 </Card>
@@ -153,22 +166,25 @@ export default function HomePage() {
         <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold">Ready to Experience the Future?</h2>
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold">
+                Ready to Experience the Future?
+              </h2>
               <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-                Join us at Thinker Cafe and discover what happens when innovation meets tradition.
+                Join us at Thinker Cafe and discover what happens when
+                innovation meets tradition.
               </p>
               <Link href="/contact">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
-              >
-                Visit Us Today
-              </Button>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
+                >
+                  Visit Us Today
+                </Button>
               </Link>
             </div>
           </div>
         </section>
       </ScrollReveal>
     </div>
-  )
+  );
 }
