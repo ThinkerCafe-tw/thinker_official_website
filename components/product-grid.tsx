@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Star, ShoppingCart } from "lucide-react"
 import type { NotionProduct } from "@/lib/notion"
 
 export function ProductGrid() {
@@ -32,7 +31,6 @@ export function ProductGrid() {
     fetchProducts()
   }, [])
 
-  // Get unique categories from products
   const en_categories = ["all", ...Array.from(new Set(products.map((product) => product.en_category)))]
   const zh_categories = ["全部", ...Array.from(new Set(products.map((product) => product.zh_category)))]
 
@@ -49,7 +47,6 @@ export function ProductGrid() {
 
   return (
     <div>
-      {/* Category Filter */}
       <div className="flex flex-wrap gap-2 mb-8 animate-fade-in">
         {en_categories.map((category, index) => (
           <Button
@@ -65,8 +62,6 @@ export function ProductGrid() {
           </Button>
         ))}
       </div>
-
-      {/* Product Grid */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product, index) => (
           <Card
