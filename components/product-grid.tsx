@@ -78,7 +78,7 @@ export function ProductGrid() {
           <Link key={product.id} href={`/products/${product.id}`} prefetch>
             <Card
               key={product.id}
-              className={`group py-0 pb-6 overflow-hidden border border-gray-600 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}
+              className={`group p-4 overflow-hidden border border-gray-600 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardContent className="p-0">
@@ -86,7 +86,7 @@ export function ProductGrid() {
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={language === "en" ? product.en_name : product.zh_name}
-                    className="h-48 rounded-t-xl w-full  object-cover transition-transform duration-300 group-hover:scale-110"
+                    className="h-40 rounded-md w-full  object-cover transition-transform duration-300 group-hover:scale-110 "
                   />
                   {product.featured && (
                     <Badge className="absolute top-3 left-3  animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate">
@@ -99,7 +99,7 @@ export function ProductGrid() {
                 </div> */}
                 </div>
                 <div className="px-4 pt-4">
-                  <div className="pb-2">
+                  <div className="pb-4">
                     <Badge
                       variant="secondary"
                       className="text-xs transition-colors duration-200 border border-gray-500"
