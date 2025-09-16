@@ -15,14 +15,13 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight animate-fade-in text-white">
-              The Future of{" "}
+              開啟無限可能的{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-600 animate-glow">
-                Product
+                AI 課程
               </span>
             </h1>
             <p className="mt-6 text-lg lg:text-xl text-gray-200 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-              Built to make you extraordinarily productive, Thinker Cafe is the
-              best way to experience coffee with AI-powered brewing.
+              AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
               <Link href="/products">
@@ -31,7 +30,7 @@ export default function HomePage() {
                   className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
                 >
                   <ArrowRight className="mr-2 h-4 w-4" />
-                  Try Our Products
+                  探索課程
                 </Button>
               </Link>
               {/* <Button
@@ -76,11 +75,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
-              Featured Products
+              熱門課程
             </h2>
             <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-              Discover our carefully curated selection of premium coffee
-              products and brewing equipment.
+              看看 Thinker Cafe 最受歡迎的 AI 課程有哪些。
             </p>
           </div>
 
@@ -97,11 +95,10 @@ export default function HomePage() {
             <ScrollReveal direction="fade" delay={200}>
               <div className="mx-auto max-w-2xl text-center">
                 <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
-                  Why Choose Thinker Cafe?
+                  為何選擇我們的課程？
                 </h2>
                 <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-                  We combine traditional coffee craftsmanship with modern
-                  technology to deliver an unparalleled experience.
+                  Thinker Cafe 的課程皆由 AI 專家 Cruz 親自操刀，帶您從入門到精通，一步步掌握未來必備的 AI 力！
                 </p>
               </div>
             </ScrollReveal>
@@ -114,11 +111,10 @@ export default function HomePage() {
                       <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <h3 className="font-heading text-lg sm:text-xl font-semibold">
-                      Innovation
+                      專家規劃
                     </h3>
                     <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-                      Cutting-edge brewing technology meets artisanal coffee
-                      craftsmanship.
+                      課程由 AI 專家親自規劃。內容嚴謹，專業與實用並重。
                     </p>
                   </CardContent>
                 </Card>
@@ -131,11 +127,10 @@ export default function HomePage() {
                       <Users className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                     </div>
                     <h3 className="font-heading text-lg sm:text-xl font-semibold">
-                      Community
+                      路徑完整
                     </h3>
                     <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-                      A space for thinkers, creators, and coffee enthusiasts to
-                      connect.
+                      從基礎到進階的系統化教學，讓學生能穩健掌握 AI 技能。
                     </p>
                   </CardContent>
                 </Card>
@@ -148,11 +143,10 @@ export default function HomePage() {
                       <Award className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <h3 className="font-heading text-lg sm:text-xl font-semibold">
-                      Quality
+                      實用性高
                     </h3>
                     <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-                      Premium beans sourced globally, roasted to perfection
-                      locally.
+                      著重實例與操作，學完後立刻就能在工作或生活中使用。
                     </p>
                   </CardContent>
                 </Card>
@@ -167,18 +161,17 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="font-heading text-2xl sm:text-3xl font-bold">
-                Ready to Experience the Future?
+                準備好提升你的 AI 力了嗎？
               </h2>
               <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-                Join us at Thinker Cafe and discover what happens when
-                innovation meets tradition.
+                立即報名 Thinker Cafe 的課程，開啟你的 AI 學習之旅。
               </p>
-              <Link href="/contact">
+              <Link href="/products">
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
                 >
-                  Visit Us Today
+                  上課去！
                 </Button>
               </Link>
             </div>

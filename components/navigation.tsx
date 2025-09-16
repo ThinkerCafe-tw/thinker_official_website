@@ -23,8 +23,8 @@ export function Navigation() {
 
   const navItems = [
     { href: "/", label: "Home", labelZh: "首頁" },
-    { href: "/products", label: "Products", labelZh: "產品" },
-    { href: "/about", label: "About", labelZh: "關於我們" },
+    { href: "/products", label: "Products", labelZh: "課程一覽" },
+    { href: "/about", label: "About", labelZh: "團隊簡介" },
     { href: "/contact", label: "Contact", labelZh: "聯絡我們" },
   ];
 
@@ -62,14 +62,16 @@ export function Navigation() {
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-white relative group "
                 prefetch
               >
-                {item.label}
+                {item.labelZh}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5  transition-all duration-300 group-hover:w-full bg-gradient-to-r from-orange-600 to-pink-600"></span>
               </Link>
             ))}
+            {/*
             <div className="flex items-center gap-2">
-              {/* <ThemeToggle /> */}
+              <ThemeToggle />
               <LanguageToggle />
             </div>
+            */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -96,13 +98,15 @@ export function Navigation() {
                   onClick={() => setIsOpen(false)}
                   prefetch
                 >
-                  {item.label}
+                  {item.labelZh}
                 </Link>
               ))}
+              {/*
               <div className="pt-2 border-t border-border/50 flex items-center justify-between">
                 <LanguageToggle />
-                {/* <ThemeToggle /> */}
+                <ThemeToggle />
               </div>
+              */}
             </div>
           </div>
         )}
