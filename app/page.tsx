@@ -2,7 +2,7 @@ import { Navigation } from "@/components/navigation";
 import { ProductCarousel } from "@/components/product-carousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Zap, Users, Award } from "lucide-react";
+import { ArrowRight, Users, Route, Sparkles } from "lucide-react";
 import { ScrollRevealSection } from "@/components/scroll-reveal-section";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export default function HomePage() {
                 AI 課程
               </span>
             </h1>
-            <p className="mt-6 text-lg lg:text-xl text-gray-200 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+            <p className="mt-6 text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto animate-fade-in animate-delay-200">
               AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
@@ -77,7 +77,7 @@ export default function HomePage() {
             <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
               熱門課程
             </h2>
-            <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
+            <p className="mt-3 sm:mt-4 text-gray-400 text-sm sm:text-base">
               看看 Thinker Cafe 最受歡迎的 AI 課程有哪些。
             </p>
           </div>
@@ -97,7 +97,7 @@ export default function HomePage() {
                 <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
                   為何選擇我們的課程？
                 </h2>
-                <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
+                <p className="mt-3 sm:mt-4 text-gray-400 text-sm sm:text-base">
                   Thinker Cafe 的課程皆由 AI 專家 Cruz 親自操刀，帶您從入門到精通，一步步掌握未來必備的 AI 力！
                 </p>
               </div>
@@ -108,7 +108,7 @@ export default function HomePage() {
                 <Card className="border-0 bg-card/50 backdrop-blur hover-lift">
                   <CardContent className="p-4 sm:p-6 text-center">
                     <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-primary/10 hover-glow">
-                      <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                      <Users className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <h3 className="font-heading text-lg sm:text-xl font-semibold">
                       專家規劃
@@ -124,7 +124,7 @@ export default function HomePage() {
                 <Card className="border-0 bg-card/50 backdrop-blur hover-lift">
                   <CardContent className="p-4 sm:p-6 text-center">
                     <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-accent/10 hover-glow">
-                      <Users className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
+                      <Route className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                     </div>
                     <h3 className="font-heading text-lg sm:text-xl font-semibold">
                       路徑完整
@@ -140,7 +140,7 @@ export default function HomePage() {
                 <Card className="border-0 bg-card/50 backdrop-blur sm:col-span-2 lg:col-span-1 hover-lift">
                   <CardContent className="p-4 sm:p-6 text-center">
                     <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-primary/10 hover-glow">
-                      <Award className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                      <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <h3 className="font-heading text-lg sm:text-xl font-semibold">
                       實用性高
@@ -163,7 +163,7 @@ export default function HomePage() {
               <h2 className="font-heading text-2xl sm:text-3xl font-bold">
                 準備好提升你的 AI 力了嗎？
               </h2>
-              <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
+              <p className="mt-3 sm:mt-4 text-gray-400 text-sm sm:text-base">
                 立即報名 Thinker Cafe 的課程，開啟你的 AI 學習之旅。
               </p>
               <Link href="/products">
