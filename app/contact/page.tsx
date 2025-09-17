@@ -10,15 +10,13 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
-              Contact Us
+              聯絡我們
             </Badge>
             <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-              Let's Start a <span className="text-primary">Conversation</span>
+              開啟與我們的 <span className="text-primary">對話</span>
             </h1>
-            <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg text-muted-foreground max-w-xl mx-auto">
-              Whether you have questions about our products, want to explore
-              partnership opportunities, or simply want to share your thoughts,
-              we're here to listen.
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg text-gray-400 max-w-xl mx-auto">
+              無論您想更深入了解課程、討論合作、或交流心得，都歡迎與我們聯繫！
             </p>
           </div>
         </div>
