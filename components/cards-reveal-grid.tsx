@@ -38,8 +38,7 @@ export default function RevealItem({
       ref={ref}
       className={[
         "h-full overflow-hidden",
-        "opacity-0 translate-y-6",
-        shown ? "opacity-100 translate-y-0 blur-0" : "",
+        shown ? "opacity-100 translate-y-0 blur-0" : "opacity-0 translate-y-6",
         "transition-all duration-700 will-change-transform will-change-opacity",
         className,
       ].join(" ")}

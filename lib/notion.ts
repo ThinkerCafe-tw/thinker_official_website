@@ -47,6 +47,7 @@ const pick = {
   text: (p: any) => p?.rich_text?.[0]?.plain_text ?? "",
   file: (p: any) => p?.files?.[0]?.file?.url ?? p?.files?.[0]?.external?.url ?? "",
   multiFirst: (p: any) => p?.multi_select?.[0]?.name ?? "",
+  multiAll: (p: any) => p.multi_select.map(({ name }) => name),
 };
 
 
@@ -216,6 +217,14 @@ return {
         content_highlight4_image: pick.file(props.content_highlight4_image),
         content_highlight5_image: pick.file(props.content_highlight5_image),
         content_highlight6_image: pick.file(props.content_highlight6_image),
+        bar_text_1: pick.text(props.bar_text_1),
+        bar_text_2: pick.text(props.bar_text_2),
+        bar_text_3: pick.text(props.bar_text_3),
+        bar_text_4: pick.text(props.bar_text_4),
+        you_will_learn: pick.text(props.you_will_learn),
+        skill_tags: pick.multiAll(props.skill_tags),
+        content_tags: pick.multiAll(props.content_tags),
+        summery: pick.text(props.summery),
       };
 }
 

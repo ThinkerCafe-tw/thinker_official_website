@@ -4,6 +4,8 @@ import { getProductById } from "@/lib/notion";
 import { Badge } from "@/components/ui/badge";
 import { Navigation } from "@/components/navigation";
 import RevealItem from "@/components/cards-reveal-grid";
+import { BsLine } from "react-icons/bs";
+import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -19,17 +21,21 @@ export default async function ProductContentPage({
   const product: any = await getProductById(id);
   if (!product) return notFound();
 
-  const title = product.en_name || product.zh_name;
-  const subtitle = product.en_description || product.zh_description;
+  const title = product.zh_name;
+  const subtitle = product.zh_description;
   const heroMedia = product.content_video || product.image;
-
   const items = FIXED_SIX(product);
+  const contentTagIcons = {
+    '社群參與': <BsLine />,
+    '課後提問': <FaHand />,
+    '研習證書': <FaAward />,
+  };
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
       <Navigation />
 
-      <section className="h-full w-full">
+      <section className="h-full w-full mb-16">
         <video
           className="inset-0 h-screen w-full object-cover absolute"
           src={heroMedia}
@@ -41,12 +47,12 @@ export default async function ProductContentPage({
         <div className="relative h-screen mx-auto px-26 flex items-end pb-16">
           <div className="grid grid-cols-12 items-end w-full">
             <div className="col-span-12 md:col-span-8 lg:col-span-9">
-              {(product.en_category || product.zh_category) && (
+              {(product.zh_category) && (
                 <Badge
                   variant="secondary"
                   className="mb-2 animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate"
                 >
-                  {product.en_category || product.zh_category}
+                  {product.zh_category}
                 </Badge>
               )}
               <h1 className="font-heading text-3xl md:text-5xl font-bold tracking-tight text-shadow-lg text-shadow-black/50">
@@ -59,14 +65,63 @@ export default async function ProductContentPage({
               )}
             </div>
             <div className="col-span-12 md:col-span-4 lg:col-span-3 mt-6 md:mt-0 flex md:justify-end">
-              <button className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
-                <Link href="/contact">Contact us</Link>
+              <button type="button" className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
+                立即報名
               </button>
             </div>
           </div>
         </div>
       </section>
-      <section className="py-16 md:py-24">
+      <section className="mb-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 gap-3 py-6 rounded-xl text-xl font-semibold text-center bg-white/20 shadow-xl lg:grid-cols-4 lg:divide-x lg:divide-white/25">
+            <span>{product.bar_text_1}</span>
+            <span>{product.bar_text_2}</span>
+            <span>{product.bar_text_3}</span>
+            <span>{product.bar_text_4}</span>
+          </div>
+        </div>
+      </section>
+      <section className="mb-16">
+        <div className="container mx-auto px-10">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-6">
+            <div className="md:col-span-2 lg:col-span-3">
+              <h2 className="mb-5 text-3xl font-semibold">你將會學到</h2>
+              <pre className="text-xl text-gray-300">
+                {product.you_will_learn}
+              </pre>
+            </div>
+            <div className="md:col-span-1 lg:col-span-2">
+              <h2 className="mb-5 text-3xl font-semibold">技能提升</h2>
+              <div className="flex flex-wrap">
+                {product.skill_tags.map(tag => (
+                  <span key={tag} className="px-4 py-1 border border-slate-400 rounded-full mr-2 mb-2 bg-slate-500">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="md:col-span-3 lg:col-span-1">
+              <h2 className="mb-5 text-3xl font-semibold">包含內容</h2>
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-1">
+                {product.content_tags.map(tag => (
+                  <div key={tag} className="flex items-center text-xl text-gray-300">
+                    {contentTagIcons[tag] || <FaRegCircleCheck />}
+                    <span className="ml-2">{tag}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="md:col-span-3 lg:col-span-4">
+              <h2 className="mb-5 text-3xl font-semibold">課程大綱</h2>
+              <div className="text-xl text-gray-300">
+                {product.summery}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="mb-16">
         <div className="container mx-auto px-4">
           <div
             className="
@@ -266,22 +321,11 @@ export default async function ProductContentPage({
           </div>
         </div>
       </section>
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4">
-          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-            <div className="pointer-events-none absolute -inset-1 opacity-40 [mask-image:radial-gradient(white,transparent_60%)]">
-              <div className="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-orange-500/30 blur-3xl" />
-              <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-pink-500/30 blur-3xl" />
-            </div>
-
-            <div className="relative z-10 px-6 py-10 text-center">
-              <p className="font-heading text-2xl md:text-3xl font-bold tracking-tight">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-600">
-                  Where Innovation Meets Tradition.
-                </span>
-              </p>
-            </div>
-          </div>
+      <section className="pb-16">
+        <div className="container mx-auto px-4 flex justify-center">
+          <button type="button" className="w-full px-12 py-3 rounded-xl shadow-xl text-xl font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all md:w-auto bg-gradient-animate hover-lift hover-glow">
+            立即報名
+          </button>
         </div>
       </section>
     </div>
