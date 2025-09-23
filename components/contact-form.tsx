@@ -87,7 +87,7 @@ export function ContactForm() {
   return (
     <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
       {/* Contact Form */}
-      <Card className="border-0 bg-card/50 backdrop-blur">
+      <Card className="border-0 bg-card/50 backdrop-blur lg:row-span-2">
         <CardHeader className="p-4 sm:p-6">
           <CardTitle className="font-heading text-xl sm:text-2xl">
             傳送訊息
@@ -127,9 +127,7 @@ export function ContactForm() {
                   className="bg-background/50"
                 />
               </div>
-            </div>
-
-            <div className="space-y-2">
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="subject" className="text-sm">
                 類別
               </Label>
@@ -137,7 +135,7 @@ export function ContactForm() {
                 value={formData.subject}
                 onValueChange={(value) => handleInputChange("subject", value)}
               >
-                <SelectTrigger className="bg-background/50">
+                <SelectTrigger className="w-full bg-background/50">
                   <SelectValue placeholder="請選擇" />
                 </SelectTrigger>
                 <SelectContent>
@@ -160,8 +158,7 @@ export function ContactForm() {
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="space-y-2">
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="message" className="text-sm">
                 訊息
               </Label>
@@ -175,7 +172,7 @@ export function ContactForm() {
                 className="bg-background/50 resize-none"
               />
             </div>
-
+            {/*
             <div className="space-y-2">
               <Label htmlFor="language" className="text-sm">
                 偏好語言
@@ -186,7 +183,7 @@ export function ContactForm() {
                   handleInputChange("language", value)
                 }
               >
-                <SelectTrigger className="bg-background/50">
+                <SelectTrigger className="w-full bg-background/50">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -195,10 +192,10 @@ export function ContactForm() {
                 </SelectContent>
               </Select>
             </div>
-
+            */}
             <Button
               type="submit"
-              className=" max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
+              className=" max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex sm:col-span-2"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -213,11 +210,11 @@ export function ContactForm() {
                 </>
               )}
             </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
 
-      <div className="space-y-6 sm:space-y-8">
         <Card className="border-0 bg-card/50 backdrop-blur">
           <CardContent className="p-4 sm:p-6">
             <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">
@@ -285,26 +282,6 @@ export function ContactForm() {
             </div>
           </CardContent>
         </Card>
-
-        <Card className="border-0 bg-gradient-to-br from-primary/5 to-accent/5 p-4 sm:p-6">
-          <CardContent className="p-0">
-            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-3">
-              Visit Our Products
-            </h3>
-            <p className="text-muted-foreground text-xs sm:text-sm mb-4">
-              Experience our innovative coffee culture in person. We're located
-              in the heart of the tech district, perfect for meetings, work
-              sessions, or simply enjoying exceptional coffee.
-            </p>
-            <Button
-              variant="outline"
-              className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate"
-            >
-              Get Directions
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 }

@@ -3,6 +3,45 @@ import { ContactForm } from "@/components/contact-form";
 import { Badge } from "@/components/ui/badge";
 
 export default function ContactPage() {
+  const faqs = [
+    {
+      question: '課程適合誰？我沒有技術背景可以參加嗎？',
+      answer: '課程設計以「AI + 創作」為核心，不需要寫程式基礎也能上手。我們從零開始帶你打造屬於自己的創作品牌，包括內容風格定位、簡單自動化、AI 工具實作與實際社群應用，讓你用自己熟悉的方式駕馭 AI 助手。'
+    },
+    {
+      question: '上完課我會有什麼產出？具體能做出什麼？',
+      answer: '每堂課都有「對外可用」的成果輸出，像是：AI 品牌角色設定、語音輸入內容、短影音腳本、生圖素材、自動化產線流程、內容成效追蹤模型等。你將擁有一套可以反覆使用的 AI 創作流程。'
+    },
+    {
+      question: '這不是 AI 工程師課程，我真的能學會嗎？',
+      answer: '絕對可以。我們強調的是「用 AI 當助手」，不是學 AI 的原理。你會學到怎麼給 AI 指令、設計腳本、整合工具，甚至用它幫你規劃流程與創作，核心是「概念轉現金」的實戰操作。'
+    },
+    {
+      question: '我可以邊工作邊上課嗎？每週進度會不會跟不上？',
+      answer: '課程設計採「模組化｜任務驅動」的方式，你可以依照自己的步調完成每章任務。我們也會提供每週回顧、群組討論、AI 小助理支援，協助你持續前進。'
+    },
+    {
+      question: '課程內容會一直過時嗎？AI 進步這麼快，學了會不會馬上被淘汰？',
+      answer: '正因為 AI 太快，我們不教單一工具，而是幫你建立：通用創作邏輯、AI 提示語感、內容模組結構、Notion 流程架構。這樣不論工具怎麼變，你都能持續使用與優化。'
+    },
+    {
+      question: '我還沒有明確的品牌主題或定位，這樣可以參加嗎？',
+      answer: '完全可以。Lesson 1–3 就是為此設計，幫助你釐清方向、試驗風格、錄製 Podcast、產出短影音，邊做邊找到你真正想說的話與對的人群。'
+    },
+    {
+      question: '你們有提供錄影回放嗎？我無法固定時間參與。',
+      answer: '有，所有課程皆同步錄製，可於 Notion 教室中觀看、下載講義與提交作業。我們也會開放錄影現場觀摩，讓你貼近實戰節奏。'
+    },
+    {
+      question: '完課之後，我可以怎麼繼續和 Thinker Cafe 保持連結？',
+      answer: '我們會邀請學員進入共學社群、專案實作、Podcast 訪談，並可進一步參與創作者飛輪計畫，讓作品走向收入變現。'
+    },
+    {
+      question: '你們會協助曝光嗎？我內容做好了但沒人看怎麼辦？',
+      answer: '我們會教你設計內容金句、分析貼文成效（按讚數、觀看數、短連結點擊）、透過 Threads / IG 建立飛輪。未來也會選出優秀學員協助曝光與合作。'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
       <Navigation />
@@ -36,58 +75,20 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
-              Frequently Asked Questions
+              常見問題
             </h2>
-            <p className="mt-3 sm:mt-4 text-muted-foreground text-sm sm:text-base">
-              Quick answers to common questions about Thinker Cafe.
-            </p>
           </div>
-
           <div className="mx-auto max-w-3xl space-y-4 sm:space-y-6">
-            <div className="rounded-lg bg-card/50 backdrop-blur p-4 sm:p-6">
-              <h3 className="font-heading text-base sm:text-lg font-semibold mb-2">
-                What makes Thinker Cafe different?
-              </h3>
-              <p className="text-muted-foreground text-xs sm:text-sm">
-                We combine cutting-edge technology with traditional coffee
-                craftsmanship to create unique experiences. Our tech-enabled
-                ordering system, precision brewing methods, and
-                innovation-focused environment set us apart.
-              </p>
-            </div>
-
-            <div className="rounded-lg bg-card/50 backdrop-blur p-4 sm:p-6">
-              <h3 className="font-heading text-base sm:text-lg font-semibold mb-2">
-                Do you offer wholesale or bulk orders?
-              </h3>
-              <p className="text-muted-foreground text-xs sm:text-sm">
-                Yes! We offer wholesale pricing for businesses and bulk orders
-                for events. Contact us with your requirements and we'll provide
-                a custom quote.
-              </p>
-            </div>
-
-            <div className="rounded-lg bg-card/50 backdrop-blur p-4 sm:p-6">
-              <h3 className="font-heading text-base sm:text-lg font-semibold mb-2">
-                Can I host events at Thinker Cafe?
-              </h3>
-              <p className="text-muted-foreground text-xs sm:text-sm">
-                Our space is perfect for tech meetups, workshops, and networking
-                events. We offer flexible packages to accommodate different
-                event types and sizes.
-              </p>
-            </div>
-
-            <div className="rounded-lg bg-card/50 backdrop-blur p-4 sm:p-6">
-              <h3 className="font-heading text-base sm:text-lg font-semibold mb-2">
-                Do you ship internationally?
-              </h3>
-              <p className="text-muted-foreground text-xs sm:text-sm">
-                Currently, we ship within the continental US. We're working on
-                expanding our shipping options to serve international customers.
-                Stay tuned for updates!
-              </p>
-            </div>
+            {faqs.map(({ question, answer }) => (
+              <div key={question} className="rounded-lg bg-card/50 backdrop-blur p-4 sm:p-6">
+                <h3 className="font-heading text-base sm:text-lg font-semibold mb-2">
+                  {question}
+                </h3>
+                <p className="text-muted-foreground text-xs sm:text-sm">
+                  {answer}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
