@@ -32,7 +32,7 @@ export function ContactForm() {
     email: "",
     subject: "",
     message: "",
-    language: "en",
+    language: "zh",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -87,14 +87,13 @@ export function ContactForm() {
   return (
     <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
       {/* Contact Form */}
-      <Card className="border-0 bg-card/50 backdrop-blur">
+      <Card className="border-0 bg-card/50 backdrop-blur lg:row-span-2">
         <CardHeader className="p-4 sm:p-6">
           <CardTitle className="font-heading text-xl sm:text-2xl">
-            Send us a Message
+            傳送訊息
           </CardTitle>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Have a question or want to learn more about Thinker Cafe? We'd love
-            to hear from you.
+            有任何疑問或想進一步了解 Thinker Cafe？和我們聊聊吧！
           </p>
         </CardHeader>
         <CardContent className="p-4 sm:p-6 pt-0">
@@ -102,12 +101,12 @@ export function ContactForm() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm">
-                  Full Name
+                  姓名
                 </Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Your full name"
+                  placeholder="姓名"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   required
@@ -116,7 +115,7 @@ export function ContactForm() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm">
-                  Email Address
+                  信箱
                 </Label>
                 <Input
                   id="email"
@@ -128,47 +127,44 @@ export function ContactForm() {
                   className="bg-background/50"
                 />
               </div>
-            </div>
-
-            <div className="space-y-2">
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="subject" className="text-sm">
-                Subject
+                類別
               </Label>
               <Select
                 value={formData.subject}
                 onValueChange={(value) => handleInputChange("subject", value)}
               >
-                <SelectTrigger className="bg-background/50">
-                  <SelectValue placeholder="Select a subject" />
+                <SelectTrigger className="w-full bg-background/50">
+                  <SelectValue placeholder="請選擇" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="General Inquiry">
-                    General Inquiry
+                    一般詢問
                   </SelectItem>
                   <SelectItem value="Product Information">
-                    Product Information
+                    課程資訊
                   </SelectItem>
                   <SelectItem value="Partnership Opportunities">
-                    Partnership Opportunities
+                    合作機會
                   </SelectItem>
                   <SelectItem value="Feedback & Suggestions">
-                    Feedback & Suggestions
+                    意見回饋
                   </SelectItem>
                   <SelectItem value="Customer Support">
-                    Customer Support
+                    售後服務
                   </SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="Other">其他</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="space-y-2">
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="message" className="text-sm">
-                Message
+                訊息
               </Label>
               <Textarea
                 id="message"
-                placeholder="Tell us more about your inquiry..."
+                placeholder="告訴我們更多資訊⋯⋯"
                 value={formData.message}
                 onChange={(e) => handleInputChange("message", e.target.value)}
                 required
@@ -176,10 +172,10 @@ export function ContactForm() {
                 className="bg-background/50 resize-none"
               />
             </div>
-
+            {/*
             <div className="space-y-2">
               <Label htmlFor="language" className="text-sm">
-                Preferred Language
+                偏好語言
               </Label>
               <Select
                 value={formData.language}
@@ -187,42 +183,42 @@ export function ContactForm() {
                   handleInputChange("language", value)
                 }
               >
-                <SelectTrigger className="bg-background/50">
+                <SelectTrigger className="w-full bg-background/50">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
                   <SelectItem value="zh">中文</SelectItem>
+                  <SelectItem value="en">English</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-
+            */}
             <Button
               type="submit"
-              className=" max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
+              className=" max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex sm:col-span-2"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sending...
+                  傳送中...
                 </>
               ) : (
                 <>
                   <Send className="mr-2 h-4 w-4" />
-                  Send Message
+                  傳送訊息
                 </>
               )}
             </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
 
-      <div className="space-y-6 sm:space-y-8">
         <Card className="border-0 bg-card/50 backdrop-blur">
           <CardContent className="p-4 sm:p-6">
             <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">
-              Get in Touch
+              聯絡方式
             </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
@@ -230,7 +226,7 @@ export function ContactForm() {
                   <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-medium text-sm sm:text-base">Email</p>
+                  <p className="font-medium text-sm sm:text-base">信箱</p>
                   <p className="text-xs sm:text-sm text-muted-foreground break-all">
                     hello@thinkercafe.com
                   </p>
@@ -241,7 +237,7 @@ export function ContactForm() {
                   <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm sm:text-base">Phone</p>
+                  <p className="font-medium text-sm sm:text-base">電話</p>
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     {" "}
                     +886 937431998
@@ -253,7 +249,7 @@ export function ContactForm() {
                   <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm sm:text-base">Address</p>
+                  <p className="font-medium text-sm sm:text-base">地址</p>
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     106 台北市大安區
                     <br />
@@ -268,44 +264,24 @@ export function ContactForm() {
         <Card className="border-0 bg-card/50 backdrop-blur">
           <CardContent className="p-4 sm:p-6">
             <h3 className="font-heading text-lg sm:text-xl font-semibold mb-4">
-              Business Hours
+              服務時間
             </h3>
             <div className="space-y-2 text-xs sm:text-sm">
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Monday - Friday</span>
+                <span className="text-muted-foreground">週一至週五</span>
                 <span className="font-medium">7:00 AM - 9:00 PM</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Saturday</span>
+                <span className="text-muted-foreground">週六</span>
                 <span className="font-medium">8:00 AM - 10:00 PM</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Sunday</span>
+                <span className="text-muted-foreground">週日</span>
                 <span className="font-medium">8:00 AM - 8:00 PM</span>
               </div>
             </div>
           </CardContent>
         </Card>
-
-        <Card className="border-0 bg-gradient-to-br from-primary/5 to-accent/5 p-4 sm:p-6">
-          <CardContent className="p-0">
-            <h3 className="font-heading text-lg sm:text-xl font-semibold mb-3">
-              Visit Our Products
-            </h3>
-            <p className="text-muted-foreground text-xs sm:text-sm mb-4">
-              Experience our innovative coffee culture in person. We're located
-              in the heart of the tech district, perfect for meetings, work
-              sessions, or simply enjoying exceptional coffee.
-            </p>
-            <Button
-              variant="outline"
-              className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate"
-            >
-              Get Directions
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 }
