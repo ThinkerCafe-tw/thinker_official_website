@@ -1,7 +1,6 @@
 export const runtime = "nodejs";
 export const revalidate = 0; 
 
-import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CountUp } from "@/components/count-number";
@@ -45,8 +44,7 @@ const paragraphs = Array.from(
 );
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
-      <Navigation />
+    <>
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center">
@@ -250,6 +248,6 @@ const paragraphs = Array.from(
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 } 

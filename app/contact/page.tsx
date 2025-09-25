@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/navigation";
 import { ContactForm } from "@/components/contact-form";
 import { Badge } from "@/components/ui/badge";
 
@@ -43,8 +42,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
-      <Navigation />
+    <>
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
@@ -92,6 +90,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
