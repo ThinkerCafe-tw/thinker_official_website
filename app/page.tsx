@@ -73,7 +73,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
-              熱門課程
+              精選課程
             </h2>
             <p className="mt-3 sm:mt-4 text-gray-400 text-sm sm:text-base">
               看看 Thinker Cafe 最受歡迎的 AI 課程有哪些。
