@@ -2,7 +2,6 @@ export const runtime = "nodejs";
 export const revalidate = 0; 
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { CountUp } from "@/components/count-number";
 import {
   getOurStoryContent,

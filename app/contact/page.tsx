@@ -1,5 +1,4 @@
 import { ContactForm } from "@/components/contact-form";
-import { Badge } from "@/components/ui/badge";
 
 export default function ContactPage() {
   const faqs = [
@@ -46,9 +45,6 @@ export default function ContactPage() {
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
-              聯絡我們
-            </Badge>
             <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
               開啟與我們的 <span className="text-primary">對話</span>
             </h1>
