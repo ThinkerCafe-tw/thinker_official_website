@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductById } from "@/lib/notion";
 import { Badge } from "@/components/ui/badge";
-import { Navigation } from "@/components/navigation";
 import RevealItem from "@/components/cards-reveal-grid";
 import { BsLine } from "react-icons/bs";
 import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
@@ -32,9 +31,7 @@ export default async function ProductContentPage({
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
-      <Navigation />
-
+    <>
       <section className="h-full w-full mb-16">
         <video
           className="inset-0 h-screen w-full object-cover absolute"
@@ -328,7 +325,7 @@ export default async function ProductContentPage({
           </button>
         </div>
       </section>
-    </div>
+    </>
   );
 }
 

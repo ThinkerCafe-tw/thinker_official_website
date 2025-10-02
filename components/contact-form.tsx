@@ -228,7 +228,7 @@ export function ContactForm() {
                 <div className="min-w-0">
                   <p className="font-medium text-sm sm:text-base">信箱</p>
                   <p className="text-xs sm:text-sm text-muted-foreground break-all">
-                    hello@thinkercafe.com
+                    hello@thinker.cafe
                   </p>
                 </div>
               </div>
