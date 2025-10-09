@@ -29,9 +29,9 @@ export function Navigation() {
   ];
 
   return (
-    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-6xl">
+    <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-5">
       <div
-        className={`bg-background/40 backdrop-blur-md border border-gray-00 rounded-2xl shadow-lg shadow-black/5 px-4 sm:px-6 transition-all duration-300 ${
+        className={`bg-background/40 backdrop-blur-md rounded-2xl shadow-lg shadow-black/5 px-4 md:px-5 transition-all duration-300 ${
           scrolled
             ? "bg-background/30 border-border/20 shadow-black/5"
             : "bg-background/80 border-border/50 shadow-black/10"
