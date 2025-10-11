@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { getProducts } from "@/lib/notion";
-import { supabase } from '@/lib/supabase.js';
+import { createClient } from '@/utils/supabase/server.ts';
 
 export async function GET() {
   try {
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('courses')
       .select()

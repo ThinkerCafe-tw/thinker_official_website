@@ -1,8 +1,10 @@
 'use client';
-
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { TriangleAlert, LoaderCircle } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -20,8 +22,13 @@ import Title from '@/components/core/Title.js';
 import FormCard from '@/components/core/FormCard.js';
 import FormFooter from '@/components/core/FormFooter.js';
 import FormButton from '@/components/core/FormButton.js';
+import { createClient } from '@/utils/supabase/client.ts';
 
 export default function SignUpPage() {
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+
   const formSchema = z.object({
     email: z
       .string({ required_error: '請填寫電子信箱' })
@@ -76,8 +83,42 @@ export default function SignUpPage() {
     },
   });
 
-  function onSubmit(values) {
-    console.log('values', values);
+  async function onSubmit(values) {
+    setErrorMessage('');
+    setLoading(true);
+
+    const {
+      email,
+      password,
+      fullName,
+      phoneNumber,
+      agreeTos,
+    } = values;
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          fullName,
+          phoneNumber,
+          agreeTos,
+        }
+      }
+    });
+
+    if (error) {
+      const { code, message } = error;
+      if (code === 'user_already_exists') {
+        setErrorMessage('此信箱已被註冊，請改用其他信箱或直接登入。');
+      } else {
+        setErrorMessage(`[${code}] ${message}`);
+      }
+      setLoading(false);
+      return;
+    }
+
+    router.replace('/signup/success');
   }
 
   return (
@@ -206,9 +247,30 @@ export default function SignUpPage() {
               )}
             />
           </FormCard>
+          {errorMessage && (
+            <FormCard error singleColumn>
+              <p className="flex items-center gap-2">
+                <TriangleAlert size={18} />
+                {errorMessage}
+              </p>
+            </FormCard>
+          )}
           <FormFooter>
-            <FormButton type="submit" primary>確認送出</FormButton>
-            <FormButton type="button">回上一頁</FormButton>
+            <FormButton
+              primary
+              type="submit"
+              disabled={loading}
+            >
+              {loading && <LoaderCircle size={20} className="mr-1 animate-spin" />}
+              確認送出
+            </FormButton>
+            <FormButton
+              type="button"
+              onClick={() => router.back()}
+              disabled={loading}
+            >
+              回上一頁
+            </FormButton>
           </FormFooter>
         </form>
       </Form>

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 
-export default function FormCard({ title, singleColumn, children }) {
+export default function FormCard({ error, title, singleColumn, children }) {
   return (
-    <div className="p-5 rounded-xl bg-card/50 text-card-foreground shadow-sm">
+    <div className={clsx('p-5 rounded-xl text-card-foreground shadow-sm', !error && 'bg-card/50', error && 'bg-red-900/75')}>
       {title && (
         <h2 className="mb-7 text-xl font-semibold lg:text-2xl">
           {title}
