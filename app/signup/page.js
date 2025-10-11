@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Link from 'next/link';
 import { TriangleAlert, LoaderCircle } from 'lucide-react';
 import {
   Form,
@@ -125,6 +126,9 @@ export default function SignUpPage() {
     <Page>
       <Cover>
         <Title>學員註冊</Title>
+        <p>
+          已經是學員了嗎？<Link href="/signin" className="text-orange-400">前往登入</Link>。
+        </p>
       </Cover>
       <Form {...form}>
         <form
