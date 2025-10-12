@@ -119,7 +119,8 @@ export default function SignUpPage() {
       return;
     }
 
-    router.replace('/signup/success');
+    router.replace('/signup-success');
+    router.refresh();
   }
 
   return (
