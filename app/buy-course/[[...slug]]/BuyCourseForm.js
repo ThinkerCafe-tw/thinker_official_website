@@ -64,7 +64,29 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
   }[variant] : 0;
 
   async function onSubmit(values) {
-    console.log('values', values);
+    setErrorMessage('');
+    setLoading(true);
+
+    const { courseId, variant } = values;
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('orders')
+      .insert({
+        course_id: courseId,
+        variant,
+        total: priceEarly || price,
+      })
+      .select();
+
+    if (error) {
+      const { code, message } = error;
+      setErrorMessage(`[${code}] ${message}`);
+      setLoading(false);
+      return;
+    }
+
+    router.replace(`/order/${data[0].order_id}`);
+    router.refresh();
   }
 
   return (
