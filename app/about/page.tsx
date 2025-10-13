@@ -1,5 +1,5 @@
 export const runtime = "nodejs";
-export const revalidate = 0; 
+export const revalidate = 0;
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CountUp } from "@/components/count-number";
@@ -14,7 +14,6 @@ import {
   type NotionOurMissionVision,
 } from "@/lib/notion";
 
-
 export default async function AboutPage() {
   const [values, team, storyList, missionVision] = await Promise.all([
     getOurValueContent(),
@@ -26,7 +25,7 @@ export default async function AboutPage() {
   const heroTitle =
     'Where <span class="text-primary">Innovation</span> Meets Tradition';
   const heroSubtitle =
-    "Founded on the belief that great coffee and great ideas go hand in hand, Thinker Cafe is more than just a coffee shop—it's a hub for creativity, innovation, and community"
+    "Founded on the belief that great coffee and great ideas go hand in hand, Thinker Cafe is more than just a coffee shop—it's a hub for creativity, innovation, and community";
 
   return (
     <>
@@ -70,68 +69,63 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              Our Values
+              我們的價值觀
             </h2>
             <p className="mt-4 text-muted-foreground">
-              The principles that guide everything we do at Thinker Cafe.
+              這些原則引領著思考者咖啡不斷前進，塑造我們的文化和決策。
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {(values?.length ? values : []).map(
-              (v: NotionOurValue ) => {
-                return (
-                  <Card
-                    key={v.id}
-                    className="border-0 bg-card/50 backdrop-blur"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div
-                        className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 hover:bg-primary/10"
-                      >
-                        <img
-                          src={v.image}
-                          alt={v.zh_title }
-                          className="h-10 w-10 text-accent hover:text-primary"
-                        />
-                      </div>
-                      <h3 className="font-heading text-xl font-semibold mb-3">
-                        {v.zh_title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{v.zh_description}</p>
-                    </CardContent>
-                  </Card>
-                );
-              }
-            )}
+            {(values?.length ? values : []).map((v: NotionOurValue) => {
+              return (
+                <Card key={v.id} className="border-0 bg-card/50 backdrop-blur">
+                  <CardContent className="p-6 text-center">
+                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 hover:bg-primary/10">
+                      <img
+                        src={v.image}
+                        alt={v.zh_title}
+                        className="h-10 w-10 text-accent hover:text-primary"
+                      />
+                    </div>
+                    <h3 className="font-heading text-xl font-semibold mb-3">
+                      {v.zh_title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {v.zh_description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-             {(missionVision?.length ? missionVision : []).map(
-              (mv: NotionOurMissionVision ) => {
+            {(missionVision?.length ? missionVision : []).map(
+              (mv: NotionOurMissionVision) => {
                 return (
                   <Card
                     key={mv.id}
                     className="border-0 bg-gradient-to-br from-primary/5 to-primary/10 p-8"
                   >
                     <CardContent className="p-0">
-                      <div
-                        className="mb-6"
-                      >
-                         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20 mb-4">
-                           <img
-                             src={mv.image}
-                             alt={mv.zh_title}
-                             className="h-12 w-12 text-accent hover:text-primary"
-                           />
-                         </div>
+                      <div className="mb-6">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20 mb-4">
+                          <img
+                            src={mv.image}
+                            alt={mv.zh_title}
+                            className="h-12 w-12 text-accent hover:text-primary"
+                          />
+                        </div>
                       </div>
                       <h3 className="font-heading text-2xl font-bold">
                         {mv.zh_title}
                       </h3>
-                      <p className="text-muted-foreground">{mv.zh_description}</p>
+                      <p className="text-muted-foreground">
+                        {mv.zh_description}
+                      </p>
                     </CardContent>
                   </Card>
                 );
@@ -144,10 +138,10 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              By the Numbers
+              使用數據
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Our journey in numbers since we opened our doors.
+              我們的旅程以數字為依據。
             </p>
           </div>
 
@@ -156,25 +150,25 @@ export default async function AboutPage() {
               <div className="font-heading text-4xl font-bold text-primary mb-2">
                 <CountUp end={50} suffix="K+" />
               </div>
-              <div className="text-sm text-muted-foreground">Cups Served</div>
+              <div className="text-sm text-muted-foreground">課程參與者</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-accent mb-2">
                 <CountUp end={1200} suffix="+" />
               </div>
-              <div className="text-sm text-muted-foreground">Happy Customers</div>
+              <div className="text-sm text-muted-foreground">產品合作夥伴</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-primary mb-2">
                 <CountUp end={25} suffix="+" />
               </div>
-              <div className="text-sm text-muted-foreground">Coffee Origins</div>
+              <div className="text-sm text-muted-foreground">產品課程</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-accent mb-2">
                 <CountUp end={99} suffix="%" />
               </div>
-              <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
+              <div className="text-sm text-muted-foreground">客戶滿意度</div>
             </div>
           </div>
         </div>
@@ -183,10 +177,10 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              Meet Our Team
+              認識我們
             </h2>
             <p className="mt-4 text-muted-foreground">
-              The passionate individuals behind Thinker Cafe&apos;s success.
+              這些人們是思考者咖啡成功的背後推手。
             </p>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -206,12 +200,10 @@ export default async function AboutPage() {
                   <h3 className="font-heading text-lg font-semibold">
                     {m.zh_name}
                   </h3>
-                  <p className="text-sm text-primary mb-2">
-                    {m.zh_role}
+                  <p className="text-sm text-primary mb-2">{m.zh_role}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {m.zh_role_description}
                   </p>
-                    <p className="text-xs text-muted-foreground">
-                      {m.zh_role_description}
-                    </p>
                 </CardContent>
               </Card>
             ))}
@@ -220,4 +212,4 @@ export default async function AboutPage() {
       </section>
     </>
   );
-} 
+}
