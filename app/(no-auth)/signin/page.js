@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -23,11 +23,18 @@ import FormCard from '@/components/core/FormCard.js';
 import FormFooter from '@/components/core/FormFooter.js';
 import FormButton from '@/components/core/FormButton.js';
 import { createClient } from '@/utils/supabase/client.ts';
+import sanitizeRedirectPath from '@/utils/sanitizeRedirectPath.js';
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = sanitizeRedirectPath(searchParams.get('redirect'));
+  const signUpPath = {
+    pathname: '/signup',
+    query: redirectPath ? { redirect: redirectPath } : {},
+  };
 
   const formSchema = z.object({
     email: z
@@ -69,7 +76,8 @@ export default function SignInPage() {
       return;
     }
 
-    router.replace('/');
+    router.replace(redirectPath ?? '/');
+    router.refresh();
   }
 
   return (
@@ -77,7 +85,7 @@ export default function SignInPage() {
       <Cover>
         <Title>學員登入</Title>
         <p>
-          還不是學員嗎？<Link href="/signup" className="text-orange-400">前往註冊</Link>。
+          還不是學員嗎？<Link href={signUpPath} className="text-orange-400">前往註冊</Link>。
         </p>
       </Cover>
       <Form {...form}>

@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { getProductById } from "@/lib/notion";
 import { Badge } from "@/components/ui/badge";
 import RevealItem from "@/components/cards-reveal-grid";
 import { BsLine } from "react-icons/bs";
 import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
+import BuyCourseButton from './BuyCourseButton.js';
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -20,6 +21,7 @@ export default async function ProductContentPage({
   const product: any = await getProductById(id);
   if (!product) return notFound();
 
+  const courseId = product.course_id;
   const title = product.zh_name;
   const subtitle = product.zh_description;
   const heroMedia = product.content_video || product.image;
@@ -62,9 +64,9 @@ export default async function ProductContentPage({
               )}
             </div>
             <div className="col-span-12 md:col-span-4 lg:col-span-3 mt-6 md:mt-0 flex md:justify-end">
-              <button type="button" className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
+              <BuyCourseButton courseId={courseId} type="button" className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
                 立即報名
-              </button>
+              </BuyCourseButton>
             </div>
           </div>
         </div>
@@ -320,9 +322,9 @@ export default async function ProductContentPage({
       </section>
       <section className="pb-16">
         <div className="container mx-auto px-4 flex justify-center">
-          <button type="button" className="w-full px-12 py-3 rounded-xl shadow-xl text-xl font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all md:w-auto bg-gradient-animate hover-lift hover-glow">
+          <BuyCourseButton courseId={courseId} type="button" className="w-full px-12 py-3 rounded-xl shadow-xl text-xl font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all md:w-auto bg-gradient-animate hover-lift hover-glow">
             立即報名
-          </button>
+          </BuyCourseButton>
         </div>
       </section>
     </>
