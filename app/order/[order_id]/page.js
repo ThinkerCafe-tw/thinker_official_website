@@ -6,6 +6,7 @@ import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
 import CreatedOrderForm from './CreatedOrderForm.js';
 import PayedOrderForm from './PayedOrderForm.js';
+import ConfirmedOrderForm from './ConfirmedOrderForm.js';
 
 export default async function OrderPage({ params }) {
   const { order_id } = await params;
@@ -57,6 +58,13 @@ export default async function OrderPage({ params }) {
         <PayedOrderForm
           order={order}
           profile={profile}
+        />
+      )}
+      {order.state === 'confirmed' && (
+        <ConfirmedOrderForm
+          order={order}
+          profile={profile}
+          course={course}
         />
       )}
     </Page>
