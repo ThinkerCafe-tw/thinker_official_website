@@ -1,5 +1,5 @@
 export const runtime = "nodejs";
-export const revalidate = 0; 
+export const revalidate = 0;
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CountUp } from "@/components/count-number";
@@ -23,11 +23,6 @@ export default async function AboutPage() {
     getOurMissionVisionContent(),
   ]);
 
-  const heroTitle =
-    'Where <span class="text-primary">Innovation</span> Meets Tradition';
-  const heroSubtitle =
-    "Founded on the belief that great coffee and great ideas go hand in hand, Thinker Cafe is more than just a coffee shop—it's a hub for creativity, innovation, and community"
-
   return (
     <>
       <section className="relative overflow-hidden py-20 lg:py-32">
@@ -35,10 +30,11 @@ export default async function AboutPage() {
           <div className="mx-auto max-w-4xl text-center">
             <h1
               className="font-heading text-4xl font-bold tracking-tight lg:text-6xl"
-              dangerouslySetInnerHTML={{ __html: heroTitle }}
-            />
+            >
+              用學習，讓 <span className="text-primary">AI</span> 為你所用
+            </h1>
             <p className="mt-6 text-lg text-muted-foreground lg:text-xl">
-              {heroSubtitle}
+              我們是一群對科技與教育充滿熱情的創作者，堅信 AI 不該是少數人的專利。
             </p>
           </div>
         </div>
@@ -70,10 +66,10 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              Our Values
+              我們的價值觀
             </h2>
             <p className="mt-4 text-muted-foreground">
-              The principles that guide everything we do at Thinker Cafe.
+              這些原則引領著思考者咖啡不斷前進，塑造我們的文化和決策。
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -144,10 +140,10 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              By the Numbers
+              使用數據
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Our journey in numbers since we opened our doors.
+              我們的旅程以數字為依據。
             </p>
           </div>
 
@@ -156,25 +152,25 @@ export default async function AboutPage() {
               <div className="font-heading text-4xl font-bold text-primary mb-2">
                 <CountUp end={50} suffix="K+" />
               </div>
-              <div className="text-sm text-muted-foreground">Cups Served</div>
+              <div className="text-sm text-muted-foreground">課程參與者</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-accent mb-2">
                 <CountUp end={1200} suffix="+" />
               </div>
-              <div className="text-sm text-muted-foreground">Happy Customers</div>
+              <div className="text-sm text-muted-foreground">產品合作夥伴</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-primary mb-2">
                 <CountUp end={25} suffix="+" />
               </div>
-              <div className="text-sm text-muted-foreground">Coffee Origins</div>
+              <div className="text-sm text-muted-foreground">產品課程</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-accent mb-2">
                 <CountUp end={99} suffix="%" />
               </div>
-              <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
+              <div className="text-sm text-muted-foreground">客戶滿意度</div>
             </div>
           </div>
         </div>
@@ -183,10 +179,10 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              Meet Our Team
+              認識我們
             </h2>
             <p className="mt-4 text-muted-foreground">
-              The passionate individuals behind Thinker Cafe&apos;s success.
+              這些人們是思考者咖啡成功的背後推手。
             </p>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -220,4 +216,4 @@ export default async function AboutPage() {
       </section>
     </>
   );
-} 
+}
