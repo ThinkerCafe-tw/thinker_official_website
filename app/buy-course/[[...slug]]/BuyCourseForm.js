@@ -37,43 +37,47 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
   const router = useRouter();
 
   const formSchema = z.object({
-    courseId: z.number({ message: '請選擇課程' }).int().positive(),
-    variant: z.union([z.literal(0), z.literal(1)], { message: '請選擇班制' }),
+    courseId: z.number({ message: '請選擇課程名稱' }).int().positive(),
+    courseVariant: z.enum(['group', 'single'], { message: '請選擇上課方式' }),
   });
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       courseId: defaultCourseId,
-      variant: 0,
+      courseVariant: 'group',
     },
   });
   const courseId = form.watch('courseId'); 
-  const variant = form.watch('variant'); 
+  const courseVariant = form.watch('courseVariant'); 
   const selectedCourse = courses.find(({ course_id }) => course_id === courseId);
-  const variantName = {
-    0: '小班制',
-    1: '一對一',
-  }[variant];
-  const price = selectedCourse ? {
-    0: selectedCourse.group_price,
-    1: selectedCourse.single_price,
-  }[variant] : 0;
-  const priceEarly = selectedCourse ? {
-    0: selectedCourse.group_price_early,
-    1: selectedCourse.single_price_early,
-  }[variant] : 0;
+  const groupPrice = selectedCourse?.group_price.toLocaleString('zh-TW') ?? '';
+  const groupPriceEarly = selectedCourse?.group_price_early.toLocaleString('zh-TW') ?? '';
+  const singlePrice = selectedCourse?.single_price.toLocaleString('zh-TW') ?? '';
+  const singlePriceEarly = selectedCourse?.single_price_early.toLocaleString('zh-TW') ?? '';
+  const courseVariantName = {
+    group: '小班制',
+    single: '一對一',
+  }[courseVariant];
 
   async function onSubmit(values) {
     setErrorMessage('');
     setLoading(true);
 
-    const { courseId, variant } = values;
+    const { courseId, courseVariant } = values;
+    const price = {
+      group: selectedCourse.group_price,
+      single: selectedCourse.single_price,
+    }[courseVariant];
+    const priceEarly = {
+      group: selectedCourse.group_price_early,
+      single: selectedCourse.single_price_early,
+    }[courseVariant];
     const supabase = createClient();
     const { data, error } = await supabase
       .from('orders')
       .insert({
         course_id: courseId,
-        variant,
+        course_variant: courseVariant,
         total: priceEarly || price,
       })
       .select();
@@ -95,7 +99,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
         className="max-w-3xl mx-auto space-y-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FormCard title="選擇課程與班制">
+        <FormCard title="步驟 1. 選擇課程">
           <div>
             <FormField
               control={form.control}
@@ -103,7 +107,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    課程
+                    課程名稱
                     <span className="-ml-1 text-red-700">*</span>
                   </FormLabel>
                   <Select
@@ -131,33 +135,51 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
           <div>
             <FormField
               control={form.control}
-              name="variant"
+              name="courseVariant"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    班制
+                    上課方式
                     <span className="-ml-1 text-red-700">*</span>
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
                       value={field.value}
                       onValueChange={field.onChange}
-                      className="flex items-center space-x-2"
+                      className="grid grid-cols-2 gap-x-2 mt-2"
                     >
-                      <FormItem className="flex items-center">
+                      <FormItem className="flex items-start">
                         <FormControl>
-                          <RadioGroupItem value={0} />
+                          <RadioGroupItem value="group" />
                         </FormControl>
-                        <FormLabel>
-                          小班制
+                        <FormLabel className="flex-col items-start">
+                          <span>小班制</span>
+                          {selectedCourse && groupPriceEarly === '0' && (
+                            <span className="font-bold text-orange-400">定價 {groupPrice} 元</span>
+                          )}
+                          {selectedCourse && groupPriceEarly !== '0' && (
+                            <>
+                              <span className="line-through text-gray-500">原價 {groupPrice} 元</span>
+                              <span className="font-bold text-orange-400">早鳥價 {groupPriceEarly} 元</span>
+                            </>
+                          )}
                         </FormLabel>
                       </FormItem>
-                      <FormItem className="flex items-center">
+                      <FormItem className="flex items-start">
                         <FormControl>
-                          <RadioGroupItem value={1} />
+                          <RadioGroupItem value="single" />
                         </FormControl>
-                        <FormLabel>
-                          一對一
+                        <FormLabel className="flex-col items-start">
+                          <span>一對一</span>
+                          {selectedCourse && singlePriceEarly === '0' && (
+                            <span className="font-bold text-orange-400">定價 {singlePrice} 元</span>
+                          )}
+                          {selectedCourse && singlePriceEarly !== '0' && (
+                            <>
+                              <span className="line-through text-gray-500">原價 {singlePrice} 元</span>
+                              <span className="font-bold text-orange-400">早鳥價 {singlePriceEarly} 元</span>
+                            </>
+                          )}
                         </FormLabel>
                       </FormItem>
                     </RadioGroup>
@@ -167,34 +189,6 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
               )}
             />
           </div>
-        </FormCard>
-        <FormCard singleColumn title="訂單預覽">
-          {selectedCourse ? (
-            <>
-              <p>
-                [{String(selectedCourse.course_id).padStart(3, '0')}]
-                {' '}
-                {selectedCourse.zh_name}
-                {'、'}
-                {variantName}
-              </p>
-              <p>
-                {priceEarly ? (
-                  <>
-                    <span className="line-through text-gray-500">原價 {price} 元</span>
-                    <br />
-                    早鳥價 <span className="font-bold text-orange-400">{priceEarly}</span> 元
-                  </>
-                ) : (
-                  <>
-                    售價 <span className="font-bold text-orange-400">{price}</span> 元
-                  </>
-                )}
-              </p>
-            </>
-          ): (
-            <p>無</p>
-          )}
         </FormCard>
         {errorMessage && (
           <FormCard error singleColumn>
@@ -211,7 +205,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
             disabled={loading}
           >
             {loading && <LoaderCircle size={20} className="mr-1 animate-spin" />}
-            前往結帳
+            前往繳費
           </FormButton>
           <FormButton
             type="button"

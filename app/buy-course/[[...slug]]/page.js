@@ -27,7 +27,7 @@ export default async function BuyCoursePage({ params }) {
   return (
     <Page>
       <Cover>
-        <Title>購買課程</Title>
+        <Title>報名課程</Title>
       </Cover>
       <BuyCourseForm
         courses={courses}
