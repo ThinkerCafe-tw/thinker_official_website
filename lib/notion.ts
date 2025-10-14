@@ -165,6 +165,10 @@ export async function getProducts(): Promise<NotionProduct[]> {
         en_category: pick.multiFirst(props.en_category),
         zh_category: pick.multiFirst(props.zh_category),
         featured: !!props.featured?.checkbox,
+        group_price: pick.number(props.group_price),
+        group_price_early: pick.number(props.group_price_early),
+        single_price: pick.number(props.single_price),
+        single_price_early: pick.number(props.single_price_early),
       } as NotionProduct;
     });
   } catch (error) {
@@ -192,6 +196,7 @@ export async function getProductById(pageId: string): Promise<NotionProductConte
   const props = page.properties || {};
 return {
         id: page.id,
+        course_id: pick.number(props.course_id),
         en_name: pick.title(props.en_name),
         zh_name: pick.text(props.zh_name),
         en_description: pick.text(props.en_description),
@@ -227,6 +232,11 @@ return {
         skill_tags: pick.multiAll(props.skill_tags),
         content_tags: pick.multiAll(props.content_tags),
         summery: pick.text(props.summery),
+        featured: !!props.featured?.checkbox,
+        group_price: pick.number(props.group_price),
+        group_price_early: pick.number(props.group_price_early),
+        single_price: pick.number(props.single_price),
+        single_price_early: pick.number(props.single_price_early),
       };
 }
 
