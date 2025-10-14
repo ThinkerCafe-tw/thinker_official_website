@@ -87,7 +87,7 @@ export default function CreatedOrderForm({ order, profile, course }) {
           disabled={loading}
         >
           {loading && <LoaderCircle size={20} className="mr-1 animate-spin" />}
-          我已完成轉帳繳費
+          我已完成繳費，下一步
         </FormButton>
       </FormFooter>
     </div>

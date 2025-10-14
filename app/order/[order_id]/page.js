@@ -5,6 +5,7 @@ import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
 import CreatedOrderForm from './CreatedOrderForm.js';
+import PayedOrderForm from './PayedOrderForm.js';
 
 export default async function OrderPage({ params }) {
   const { order_id } = await params;
@@ -50,6 +51,12 @@ export default async function OrderPage({ params }) {
           order={order}
           profile={profile}
           course={course}
+        />
+      )}
+      {order.state === 'payed' && (
+        <PayedOrderForm
+          order={order}
+          profile={profile}
         />
       )}
     </Page>
