@@ -118,7 +118,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
                     <SelectContent>
                       {courses.map(({ course_id, zh_name }) => (
                         <SelectItem key={course_id} value={String(course_id)}>
-                          [{String(course_id).padStart(3, '0')}] {zh_name}
+                          【{String(course_id).padStart(3, '0')}】{zh_name}
                         </SelectItem>
                       ))}
                     </SelectContent>
