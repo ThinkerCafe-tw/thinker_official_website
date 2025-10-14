@@ -157,6 +157,8 @@ export async function getProducts(): Promise<NotionProduct[]> {
       return {
         id: page.id,
         course_id: pick.number(props.course_id),
+        published: !!props.published?.checkbox,
+        sort_desc: pick.number(props.sort_desc),
         en_name: pick.title(props.en_name),
         zh_name: pick.text(props.zh_name),
         en_description: pick.text(props.en_description),
@@ -197,6 +199,8 @@ export async function getProductById(pageId: string): Promise<NotionProductConte
 return {
         id: page.id,
         course_id: pick.number(props.course_id),
+        published: !!props.published?.checkbox,
+        sort_desc: pick.number(props.sort_desc),
         en_name: pick.title(props.en_name),
         zh_name: pick.text(props.zh_name),
         en_description: pick.text(props.en_description),
