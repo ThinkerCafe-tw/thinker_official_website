@@ -1,9 +1,7 @@
 export const runtime = "nodejs";
-export const revalidate = 0; 
+export const revalidate = 0;
 
-import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { CountUp } from "@/components/count-number";
 import {
   getOurStoryContent,
@@ -25,85 +23,53 @@ export default async function AboutPage() {
     getOurMissionVisionContent(),
   ]);
 
-  const heroBadge = "About Thinker Cafe";
-  const heroTitle =
-    'Where <span class="text-primary">Innovation</span> Meets Tradition';
-  const heroSubtitle =
-    "Founded on the belief that great coffee and great ideas go hand in hand, Thinker Cafe is more than just a coffee shop—it's a hub for creativity, innovation, and community"
-
-const titleRow = storyList.find(s => (s.en_title || "").trim().length > 0) || null;
-const storyTitle = titleRow?.en_title || null;
-const storyImage = titleRow?.image || null;
-
-const paragraphs = Array.from(
-  new Set( 
-    storyList
-      .map(s => (s.en_description || "").trim())
-      .filter(Boolean)
-      .filter(p => p !== (storyTitle || "").trim())
-  )
-);
-
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
-      <Navigation />
+    <>
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center">
-            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
-              {heroBadge}
-            </Badge>
             <h1
               className="font-heading text-4xl font-bold tracking-tight lg:text-6xl"
-              dangerouslySetInnerHTML={{ __html: heroTitle }}
-            />
+            >
+              用學習，讓 <span className="text-primary">AI</span> 為你所用
+            </h1>
             <p className="mt-6 text-lg text-muted-foreground lg:text-xl">
-              {heroSubtitle}
+              我們是一群對科技與教育充滿熱情的創作者，堅信 AI 不該是少數人的專利。
             </p>
           </div>
         </div>
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-1/4 top-1/4 h-[600px] w-[600px] rounded-full bg-gradient-to-r from-primary/5 to-accent/5 blur-3xl" />
-          <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] rounded-full bg-gradient-to-l from-accent/5 to-primary/5 blur-3xl" />
-        </div>
       </section>
-    {paragraphs.length > 0 && (
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-         <div className="grid gap-12 lg:grid-cols-12 items-start">
-          <div className="lg:col-span-7">
-            {storyTitle && (
-              <h2 className="font-heading text-3xl font-bold lg:text-4xl mb-6">
-                {storyTitle}
-              </h2>
-            )}
-            <div className="space-y-4 text-muted-foreground max-w-[720px]">
-              {paragraphs.map((d, i) => (
-                <p key={i}>{d}</p>
-              ))}
-            </div>
-          </div>
-            {storyImage && (
+      {storyList.map(({ id, zh_title, zh_description, image }) => (
+        <section key={id} className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="grid gap-12 lg:grid-cols-12 items-start">
+              <div className="lg:col-span-7">
+                <h2 className="font-heading text-3xl font-bold lg:text-4xl mb-6 text-center lg:text-left">
+                  {zh_title}
+                </h2>
+                <div className="space-y-4 text-muted-foreground max-w-[720px] whitespace-pre-line">
+                  {zh_description}
+                </div>
+              </div>
               <div className="lg:col-span-5">
                 <img
-                src={storyImage}
-                alt="Thinker Cafe Interior"
-                className="w-full max-w-[520px] mx-auto rounded-xl shadow-2xl h-auto object-cover"
+                  src={image}
+                  alt={zh_title}
+                  className="w-full max-w-[520px] mx-auto rounded-xl shadow-2xl h-auto object-cover"
                 />
               </div>
-           )}
+            </div>
           </div>
-        </div>
-      </section>
-    )}
+        </section>
+      ))}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              Our Values
+              我們的價值觀
             </h2>
             <p className="mt-4 text-muted-foreground">
-              The principles that guide everything we do at Thinker Cafe.
+              這些原則引領著思考者咖啡不斷前進，塑造我們的文化和決策。
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -120,14 +86,14 @@ const paragraphs = Array.from(
                       >
                         <img
                           src={v.image}
-                          alt={v.en_title || v.zh_title }
+                          alt={v.zh_title }
                           className="h-10 w-10 text-accent hover:text-primary"
                         />
                       </div>
                       <h3 className="font-heading text-xl font-semibold mb-3">
-                        {v.en_title}
+                        {v.zh_title}
                       </h3>
-                      <p className="text-sm text-muted-foreground">{v.en_description}</p>
+                      <p className="text-sm text-muted-foreground">{v.zh_description}</p>
                     </CardContent>
                   </Card>
                 );
@@ -153,15 +119,15 @@ const paragraphs = Array.from(
                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20 mb-4">
                            <img
                              src={mv.image}
-                             alt={mv.en_title || mv.zh_title}
+                             alt={mv.zh_title}
                              className="h-12 w-12 text-accent hover:text-primary"
                            />
                          </div>
                       </div>
                       <h3 className="font-heading text-2xl font-bold">
-                        {mv.en_title}
+                        {mv.zh_title}
                       </h3>
-                      <p className="text-muted-foreground">{mv.en_description}</p>
+                      <p className="text-muted-foreground">{mv.zh_description}</p>
                     </CardContent>
                   </Card>
                 );
@@ -174,10 +140,10 @@ const paragraphs = Array.from(
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              By the Numbers
+              使用數據
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Our journey in numbers since we opened our doors.
+              我們的旅程以數字為依據。
             </p>
           </div>
 
@@ -186,25 +152,25 @@ const paragraphs = Array.from(
               <div className="font-heading text-4xl font-bold text-primary mb-2">
                 <CountUp end={50} suffix="K+" />
               </div>
-              <div className="text-sm text-muted-foreground">Cups Served</div>
+              <div className="text-sm text-muted-foreground">課程參與者</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-accent mb-2">
                 <CountUp end={1200} suffix="+" />
               </div>
-              <div className="text-sm text-muted-foreground">Happy Customers</div>
+              <div className="text-sm text-muted-foreground">產品合作夥伴</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-primary mb-2">
                 <CountUp end={25} suffix="+" />
               </div>
-              <div className="text-sm text-muted-foreground">Coffee Origins</div>
+              <div className="text-sm text-muted-foreground">產品課程</div>
             </div>
             <div className="text-center">
               <div className="font-heading text-4xl font-bold text-accent mb-2">
                 <CountUp end={99} suffix="%" />
               </div>
-              <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
+              <div className="text-sm text-muted-foreground">客戶滿意度</div>
             </div>
           </div>
         </div>
@@ -213,10 +179,10 @@ const paragraphs = Array.from(
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="font-heading text-3xl font-bold lg:text-4xl">
-              Meet Our Team
+              認識我們
             </h2>
             <p className="mt-4 text-muted-foreground">
-              The passionate individuals behind Thinker Cafe&apos;s success.
+              這些人們是思考者咖啡成功的背後推手。
             </p>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -229,27 +195,25 @@ const paragraphs = Array.from(
                   <div className="mb-4">
                     <img
                       src={m.image || "/coffee-shop-founder-headshot.png"}
-                      alt={m.en_name || m.zh_name || "Team member"}
+                      alt={m.zh_name || "Team member"}
                       className="mx-auto h-20 w-20 rounded-full object-cover"
                     />
                   </div>
                   <h3 className="font-heading text-lg font-semibold">
-                    {m.en_name || m.zh_name}
+                    {m.zh_name}
                   </h3>
                   <p className="text-sm text-primary mb-2">
-                    {m.en_role || m.zh_role}
+                    {m.zh_role}
                   </p>
-                  {(m.en_role_description || m.zh_role_description) && (
                     <p className="text-xs text-muted-foreground">
-                      {m.en_role_description || m.zh_role_description}
+                      {m.zh_role_description}
                     </p>
-                  )}
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
-} 
+}

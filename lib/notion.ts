@@ -48,6 +48,7 @@ const pick = {
   file: (p: any) => p?.files?.[0]?.file?.url ?? p?.files?.[0]?.external?.url ?? "",
   multiFirst: (p: any) => p?.multi_select?.[0]?.name ?? "",
   multiAll: (p: any) => p.multi_select.map(({ name }) => name),
+  number: (p: any) => p.number ?? 0,
 };
 
 
@@ -155,6 +156,9 @@ export async function getProducts(): Promise<NotionProduct[]> {
       const props = page.properties || {};
       return {
         id: page.id,
+        course_id: pick.number(props.course_id),
+        published: !!props.published?.checkbox,
+        sort_desc: pick.number(props.sort_desc),
         en_name: pick.title(props.en_name),
         zh_name: pick.text(props.zh_name),
         en_description: pick.text(props.en_description),
@@ -163,6 +167,10 @@ export async function getProducts(): Promise<NotionProduct[]> {
         en_category: pick.multiFirst(props.en_category),
         zh_category: pick.multiFirst(props.zh_category),
         featured: !!props.featured?.checkbox,
+        group_price: pick.number(props.group_price),
+        group_price_early: pick.number(props.group_price_early),
+        single_price: pick.number(props.single_price),
+        single_price_early: pick.number(props.single_price_early),
       } as NotionProduct;
     });
   } catch (error) {
@@ -190,6 +198,9 @@ export async function getProductById(pageId: string): Promise<NotionProductConte
   const props = page.properties || {};
 return {
         id: page.id,
+        course_id: pick.number(props.course_id),
+        published: !!props.published?.checkbox,
+        sort_desc: pick.number(props.sort_desc),
         en_name: pick.title(props.en_name),
         zh_name: pick.text(props.zh_name),
         en_description: pick.text(props.en_description),
@@ -225,41 +236,13 @@ return {
         skill_tags: pick.multiAll(props.skill_tags),
         content_tags: pick.multiAll(props.content_tags),
         summery: pick.text(props.summery),
+        featured: !!props.featured?.checkbox,
+        group_price: pick.number(props.group_price),
+        group_price_early: pick.number(props.group_price_early),
+        single_price: pick.number(props.single_price),
+        single_price_early: pick.number(props.single_price_early),
       };
 }
-
-export async function getFeaturedProducts(): Promise<NotionProduct[]> {
-  if (!PRODUCTS_DATABASE_ID) throw new Error("Missing Notion Products Database ID");
-  try {
-    const data = await queryDatabase(PRODUCTS_DATABASE_ID, {
-      filter: { property: "featured", checkbox: { equals: true } },
-      // sorts: [
-      //   { property: "en_category", direction: "descending" },
-      //   { property: "created_time", direction: "ascending" },
-      // ],
-      page_size: 100,
-    });
-
-    return data.results.map((page: any) => {
-      const props = page.properties || {};
-      return {
-        id: page.id,
-        en_name: pick.title(props.en_name),
-        zh_name: pick.text(props.zh_name),
-        en_description: pick.text(props.en_description),
-        zh_description: pick.text(props.zh_description),
-        image: pick.file(props.image),
-        en_category: pick.multiFirst(props.en_category),
-        zh_category: pick.multiFirst(props.zh_category),
-        featured: !!props.featured?.checkbox,
-      } as NotionProduct;
-    });
-  } catch (error) {
-    console.error("Error fetching featured products from Notion:", error);
-    return [];
-  }
-}
-
 
 export async function getOurStoryContent(): Promise<NotionOurStory[]> {
   if (!OURSTORY_DATABASE_ID) throw new Error("Missing Notion Our Story Database ID");

@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { getProductById } from "@/lib/notion";
 import { Badge } from "@/components/ui/badge";
-import { Navigation } from "@/components/navigation";
 import RevealItem from "@/components/cards-reveal-grid";
 import { BsLine } from "react-icons/bs";
 import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
+import BuyCourseButton from './BuyCourseButton.js';
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -21,6 +21,7 @@ export default async function ProductContentPage({
   const product: any = await getProductById(id);
   if (!product) return notFound();
 
+  const courseId = product.course_id;
   const title = product.zh_name;
   const subtitle = product.zh_description;
   const heroMedia = product.content_video || product.image;
@@ -32,9 +33,7 @@ export default async function ProductContentPage({
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
-      <Navigation />
-
+    <>
       <section className="h-full w-full mb-16">
         <video
           className="inset-0 h-screen w-full object-cover absolute"
@@ -56,18 +55,18 @@ export default async function ProductContentPage({
                 </Badge>
               )}
               <h1 className="font-heading text-3xl md:text-5xl font-bold tracking-tight text-shadow-lg text-shadow-black/50">
-                {title}
+                【{String(courseId).padStart(3, '0')}】{title}
               </h1>
               {subtitle && (
-                <p className="mt-3 text-gray-700 md:text-lg  max-w-3xl">
+                <p className="mt-3 text-white-700 md:text-lg max-w-3xl text-shadow-lg text-shadow-black/50">
                   {subtitle}
                 </p>
               )}
             </div>
             <div className="col-span-12 md:col-span-4 lg:col-span-3 mt-6 md:mt-0 flex md:justify-end">
-              <button type="button" className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
+              <BuyCourseButton courseId={courseId} type="button" className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
                 立即報名
-              </button>
+              </BuyCourseButton>
             </div>
           </div>
         </div>
@@ -87,9 +86,9 @@ export default async function ProductContentPage({
           <div className="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-6">
             <div className="md:col-span-2 lg:col-span-3">
               <h2 className="mb-5 text-3xl font-semibold">你將會學到</h2>
-              <pre className="text-xl text-gray-300">
+              <div className="whitespace-pre-line text-xl text-gray-300">
                 {product.you_will_learn}
-              </pre>
+              </div>
             </div>
             <div className="md:col-span-1 lg:col-span-2">
               <h2 className="mb-5 text-3xl font-semibold">技能提升</h2>
@@ -114,7 +113,7 @@ export default async function ProductContentPage({
             </div>
             <div className="md:col-span-3 lg:col-span-4">
               <h2 className="mb-5 text-3xl font-semibold">課程大綱</h2>
-              <div className="text-xl text-gray-300">
+              <div className="whitespace-pre-line text-xl text-gray-300">
                 {product.summery}
               </div>
             </div>
@@ -323,12 +322,12 @@ export default async function ProductContentPage({
       </section>
       <section className="pb-16">
         <div className="container mx-auto px-4 flex justify-center">
-          <button type="button" className="w-full px-12 py-3 rounded-xl shadow-xl text-xl font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all md:w-auto bg-gradient-animate hover-lift hover-glow">
+          <BuyCourseButton courseId={courseId} type="button" className="w-full px-12 py-3 rounded-xl shadow-xl text-xl font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all md:w-auto bg-gradient-animate hover-lift hover-glow">
             立即報名
-          </button>
+          </BuyCourseButton>
         </div>
       </section>
-    </div>
+    </>
   );
 }
 

@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export function ProductGrid() {
   const [language, setLanguage] = useState<"en" | "zh">("en");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("全部");
   const [products, setProducts] = useState<NotionProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,9 +42,9 @@ export function ProductGrid() {
   ];
 
   const filteredProducts =
-    selectedCategory === "all"
+    selectedCategory === "全部"
       ? products
-      : products.filter((product) => product.en_category === selectedCategory);
+      : products.filter((product) => product.zh_category === selectedCategory);
 
   if (loading) {
     return (
@@ -57,7 +57,7 @@ export function ProductGrid() {
   return (
     <div>
       <div className="flex flex-wrap gap-2 mb-8 animate-fade-in">
-        {en_categories.map((category, index) => (
+        {zh_categories.map((category, index) => (
           <Button
             key={category}
             variant={selectedCategory === category ? "default" : "outline"}
@@ -69,28 +69,28 @@ export function ProductGrid() {
                 : "hover:from-orange-600 hover:to-pink-600 hover:text-white text-gray-300"
             }`}
           >
-            {language === "en" ? category : zh_categories[index]}
+            {category}
           </Button>
         ))}
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 auto-rows-max gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product, index) => (
           <Link key={product.id} href={`/products/${product.id}`} prefetch>
             <Card
               key={product.id}
-              className={`group p-4 overflow-hidden border border-gray-600 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}
+              className={`h-full group p-4 overflow-hidden border border-gray-600 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardContent className="p-0">
                 <div className="relative overflow-hidden">
                   <img
                     src={product.image || "/placeholder.svg"}
-                    alt={language === "en" ? product.en_name : product.zh_name}
+                    alt={product.zh_name}
                     className="h-40 rounded-md w-full  object-cover transition-transform duration-300 group-hover:scale-110 "
                   />
                   {product.featured && (
                     <Badge className="absolute top-3 left-3  animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate">
-                      {language === "en" ? "Featured" : "精選"}
+                      精選
                     </Badge>
                   )}
                   {/* <div className="absolute top-3 right-3 flex items-center gap-1 bg-background/80 backdrop-blur px-2 py-1 rounded-full transition-all duration-200 hover:bg-background/90">
@@ -104,18 +104,14 @@ export function ProductGrid() {
                       variant="secondary"
                       className="text-xs transition-colors duration-200 border border-gray-500"
                     >
-                      {language === "en"
-                        ? product.en_category
-                        : product.zh_category}
+                      {product.zh_category}
                     </Badge>
                   </div>
                   <h3 className="font-heading text-lg font-semibold mb-2 transition-colors duration-200 group-hover:text-primary ">
-                    {language === "en" ? product.en_name : product.zh_name}
+                    【{String(product.course_id).padStart(3, '0')}】{product.zh_name}
                   </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {language === "en"
-                      ? product.en_description
-                      : product.zh_description}
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {product.zh_description}
                   </p>
                   {/* <div className="flex items-center justify-between">
                   <span className="font-heading text-lg font-bold text-primary">{product.price}</span>

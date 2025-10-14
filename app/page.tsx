@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/navigation";
 import { ProductCarousel } from "@/components/product-carousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,8 +8,7 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen   bg-[radial-gradient(circle_at_30%_70%,rgba(120,119,198,0.3),transparent_50%),linear-gradient(to_top_right,rgba(249,115,22,0.2),transparent,rgba(34,197,94,0.2)),linear-gradient(to_bottom_right,#581c87,#1e3a8a,#0f766e)]">
-      <Navigation />
+    <>
       <section className="relative overflow-hidden h-screen flex items-center justify-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
@@ -75,7 +73,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold">
-              熱門課程
+              精選課程
             </h2>
             <p className="mt-3 sm:mt-4 text-gray-400 text-sm sm:text-base">
               看看 Thinker Cafe 最受歡迎的 AI 課程有哪些。
@@ -178,6 +176,6 @@ export default function HomePage() {
           </div>
         </section>
       </ScrollReveal>
-    </div>
+    </>
   );
 }
