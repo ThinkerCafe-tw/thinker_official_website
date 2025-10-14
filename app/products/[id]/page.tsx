@@ -55,10 +55,10 @@ export default async function ProductContentPage({
                 </Badge>
               )}
               <h1 className="font-heading text-3xl md:text-5xl font-bold tracking-tight text-shadow-lg text-shadow-black/50">
-                {title}
+                【{String(courseId).padStart(3, '0')}】{title}
               </h1>
               {subtitle && (
-                <p className="mt-3 text-gray-700 md:text-lg  max-w-3xl">
+                <p className="mt-3 text-white-700 md:text-lg max-w-3xl text-shadow-lg text-shadow-black/50">
                   {subtitle}
                 </p>
               )}
@@ -86,9 +86,9 @@ export default async function ProductContentPage({
           <div className="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-6">
             <div className="md:col-span-2 lg:col-span-3">
               <h2 className="mb-5 text-3xl font-semibold">你將會學到</h2>
-              <pre className="text-xl text-gray-300">
+              <div className="whitespace-pre-line text-xl text-gray-300">
                 {product.you_will_learn}
-              </pre>
+              </div>
             </div>
             <div className="md:col-span-1 lg:col-span-2">
               <h2 className="mb-5 text-3xl font-semibold">技能提升</h2>
@@ -113,7 +113,7 @@ export default async function ProductContentPage({
             </div>
             <div className="md:col-span-3 lg:col-span-4">
               <h2 className="mb-5 text-3xl font-semibold">課程大綱</h2>
-              <div className="text-xl text-gray-300">
+              <div className="whitespace-pre-line text-xl text-gray-300">
                 {product.summery}
               </div>
             </div>

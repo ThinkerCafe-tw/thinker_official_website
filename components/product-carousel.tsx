@@ -110,7 +110,7 @@ export function ProductCarousel() {
                         <span className="text-xs sm:text-sm text-muted-foreground">({product.rating})</span> */}
                       </div>
                       <h3 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">
-                        {product.zh_name}
+                        【{String(product.course_id).padStart(3, '0')}】{product.zh_name}
                       </h3>
                       <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
                         {product.zh_description}

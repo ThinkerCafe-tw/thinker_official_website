@@ -108,7 +108,7 @@ export function ProductGrid() {
                     </Badge>
                   </div>
                   <h3 className="font-heading text-lg font-semibold mb-2 transition-colors duration-200 group-hover:text-primary ">
-                    {product.zh_name}
+                    【{String(product.course_id).padStart(3, '0')}】{product.zh_name}
                   </h3>
                   <p className="text-sm text-muted-foreground line-clamp-3">
                     {product.zh_description}

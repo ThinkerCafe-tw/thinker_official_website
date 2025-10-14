@@ -47,9 +47,9 @@ export default async function AboutPage() {
                 <h2 className="font-heading text-3xl font-bold lg:text-4xl mb-6 text-center lg:text-left">
                   {zh_title}
                 </h2>
-                <pre className="space-y-4 text-muted-foreground max-w-[720px]">
+                <div className="space-y-4 text-muted-foreground max-w-[720px] whitespace-pre-line">
                   {zh_description}
-                </pre>
+                </div>
               </div>
               <div className="lg:col-span-5">
                 <img
