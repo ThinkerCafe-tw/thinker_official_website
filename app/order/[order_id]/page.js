@@ -4,7 +4,7 @@ import { getProducts } from '@/lib/notion';
 import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
-import OrderForm from './OrderForm.js';
+import CreatedOrderForm from './CreatedOrderForm.js';
 
 export default async function OrderPage({ params }) {
   const { order_id } = await params;
@@ -43,13 +43,15 @@ export default async function OrderPage({ params }) {
   return (
     <Page>
       <Cover>
-        <Title>結帳</Title>
+        <Title>報名課程</Title>
       </Cover>
-      <OrderForm
-        order={order}
-        profile={profile}
-        course={course}
-      />
+      {order.state === 'created' && (
+        <CreatedOrderForm
+          order={order}
+          profile={profile}
+          course={course}
+        />
+      )}
     </Page>
   );
 }
