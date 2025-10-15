@@ -34,7 +34,7 @@ export default function CreatedOrderForm({ order, profile, course }) {
       return;
     }
 
-    router.refresh();
+    router.replace(`/order/${order.order_id}`);
   }
 
   return (
