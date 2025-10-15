@@ -136,6 +136,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      {/*
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
@@ -175,6 +176,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
