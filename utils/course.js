@@ -9,7 +9,3 @@ export function parseCourseVariantName(courseVariant) {
     single: '一對一',
   }[courseVariant] ?? '--';
 }
-
-export function parsePriceString(price) {
-  return price ? price.toLocaleString('zh-TW') : '--';
-}

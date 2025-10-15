@@ -30,11 +30,8 @@ import FormCard from '@/components/core/FormCard.js';
 import FormFooter from '@/components/core/FormFooter.js';
 import FormButton from '@/components/core/FormButton.js';
 import { createClient } from '@/utils/supabase/client.ts';
-import {
-  parseCourseName,
-  parseCourseVariantName,
-  parsePriceString,
-} from '@/utils/course.js';
+import { parseCourseName, parseCourseVariantName } from '@/utils/course.js';
+import parsePriceString from '@/utils/parsePriceString.js';
 
 export default function BuyCourseForm({ courses, defaultCourseId }) {
   const [state, setState] = useState('filling');
