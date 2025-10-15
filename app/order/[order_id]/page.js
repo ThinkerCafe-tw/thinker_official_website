@@ -5,7 +5,7 @@ import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
 import CreatedOrderForm from './CreatedOrderForm.js';
-import PayedOrderForm from './PayedOrderForm.js';
+import PayedOrMessagedOrderForm from './PayedOrMessagedOrderForm.js';
 import ConfirmedOrderForm from './ConfirmedOrderForm.js';
 
 export default async function OrderPage({ params }) {
@@ -55,7 +55,7 @@ export default async function OrderPage({ params }) {
         />
       )}
       {(order.state === 'payed' || order.state === 'messaged') && (
-        <PayedOrderForm
+        <PayedOrMessagedOrderForm
           order={order}
           profile={profile}
         />

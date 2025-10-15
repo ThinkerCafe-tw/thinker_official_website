@@ -10,7 +10,7 @@ import { createClient } from '@/utils/supabase/client.ts';
 import { parseStudentIdString } from '@/utils/profile.js';
 import { parseOrderIdString } from '@/utils/order.js';
 
-export default function PayedOrderForm({ order, profile }) {
+export default function PayedOrMessagedOrderForm({ order, profile }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
