@@ -88,7 +88,7 @@ export function Navigation() {
             <span className="font-heading text-xl font-bold hidden sm:block">
               Thinker Cafe
             </span>
-            <span className="font-heading text-lg font-bold sm:hidden">TC</span>
+            <span className="font-heading text-lg font-bold sm:hidden">Thinker Cafe</span>
           </Link>
 
           {/* Desktop Navigation */}
