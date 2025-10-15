@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "@/components/language-toggle";
 // import { ThemeToggle } from "@/components/theme-toggle"
-import { Menu, X, Coffee } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { createClient } from '@/utils/supabase/client.ts';
 
 export function Navigation() {
@@ -83,7 +83,7 @@ export function Navigation() {
             prefetch
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <Coffee className="h-5 w-5 text-primary-foreground" />
+              <img src="/logo.png" alt="Logo" className="w-full h-full" />
             </div>
             <span className="font-heading text-xl font-bold hidden sm:block">
               Thinker Cafe

@@ -31,10 +31,10 @@ export default async function AboutPage() {
             <h1
               className="font-heading text-4xl font-bold tracking-tight lg:text-6xl"
             >
-              用學習，讓 <span className="text-primary">AI</span> 為你所用
+              當<span className="text-primary">科技</span>回歸人性，智慧便有了溫度
             </h1>
             <p className="mt-6 text-lg text-muted-foreground lg:text-xl">
-              我們是一群對科技與教育充滿熱情的創作者，堅信 AI 不該是少數人的專利。
+              我們堅信，AI 不該是少數人的專利。透過創新與信任，我們致力於建立屬於這個時代的新平衡，讓每個人都能自由學習、持續成長。
             </p>
           </div>
         </div>
