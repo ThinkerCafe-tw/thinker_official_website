@@ -19,8 +19,6 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Thinker Cafe | 思考者咖啡",
-  description: "Modern coffee experience with innovative technology | 結合創新科技的現代咖啡體驗",
-  generator: "v0.app",
 }
 
 export default function RootLayout({
