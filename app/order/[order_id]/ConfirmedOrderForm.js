@@ -35,13 +35,7 @@ export default function ConfirmedOrderForm({ order, profile, course }) {
           type="button"
           onClick={() => router.push('/products')}
         >
-          探索更多課程
-        </FormButton>
-        <FormButton
-          type="button"
-          onClick={() => router.push('/')}
-        >
-          <span className="px-7">回首頁</span>
+          探索更多精彩課程
         </FormButton>
       </FormFooter>
     </div>
