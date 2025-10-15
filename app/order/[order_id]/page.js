@@ -54,7 +54,7 @@ export default async function OrderPage({ params }) {
           course={course}
         />
       )}
-      {order.state === 'payed' && (
+      {(order.state === 'payed' || order.state === 'messaged') && (
         <PayedOrderForm
           order={order}
           profile={profile}
