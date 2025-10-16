@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { NotionProduct } from "@/lib/notion";
+import { parseCourseName } from '@/utils/course.js';
 import Link from "next/link";
 
 export function ProductGrid() {
@@ -55,41 +56,41 @@ export function ProductGrid() {
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-2 mb-8 animate-fade-in">
+    <div className="space-y-5">
+      <div className="flex flex-wrap gap-2 animate-fade-in">
         {zh_categories.map((category, index) => (
           <Button
             key={category}
             variant={selectedCategory === category ? "default" : "outline"}
             size="sm"
             onClick={() => setSelectedCategory(category)}
-            className={`transition-all duration-200 ${
+            className={`transition-all duration-200 border-0 hover:from-orange-600 hover:to-pink-600 ${
               selectedCategory === category
-                ? " max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
-                : "hover:from-orange-600 hover:to-pink-600 hover:text-white text-gray-300"
+                ? "bg-gradient-to-r from-orange-500 to-pink-500 bg-gradient-animate text-white"
+                : "text-gray-300 hover:text-white"
             }`}
           >
             {category}
           </Button>
         ))}
       </div>
-      <div className="grid grid-cols-1 auto-rows-max gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 auto-rows-max gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product, index) => (
           <Link key={product.id} href={`/products/${product.id}`} prefetch>
             <Card
               key={product.id}
-              className={`h-full group p-4 overflow-hidden border border-gray-600 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}
+              className={`h-full group p-4 overflow-hidden border-0 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <CardContent className="p-0">
-                <div className="relative overflow-hidden">
+              <CardContent className="px-0 space-y-2">
+                <div className="relative overflow-hidden rounded-md">
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.zh_name}
-                    className="h-40 rounded-md w-full  object-cover transition-transform duration-300 group-hover:scale-110 "
+                    className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-110 "
                   />
                   {product.featured && (
-                    <Badge className="absolute top-3 left-3  animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate">
+                    <Badge className="absolute top-2 left-2 animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate">
                       精選
                     </Badge>
                   )}
@@ -98,17 +99,14 @@ export function ProductGrid() {
                   <span className="text-xs font-medium">{product.rating}</span>
                 </div> */}
                 </div>
-                <div className="px-4 pt-4">
-                  <div className="pb-4">
                     <Badge
                       variant="secondary"
                       className="text-xs transition-colors duration-200 border border-gray-500"
                     >
                       {product.zh_category}
                     </Badge>
-                  </div>
-                  <h3 className="font-heading text-lg font-semibold mb-2 transition-colors duration-200 group-hover:text-primary ">
-                    【{String(product.course_id).padStart(3, '0')}】{product.zh_name}
+                  <h3 className="font-heading text-lg font-semibold transition-colors duration-200">
+                    {parseCourseName(product)}
                   </h3>
                   <p className="text-sm text-muted-foreground line-clamp-3">
                     {product.zh_description}
@@ -120,7 +118,6 @@ export function ProductGrid() {
                     {language === "en" ? "Add" : "加入"}
                   </Button>
                 </div> */}
-                </div>
               </CardContent>
             </Card>
           </Link>
