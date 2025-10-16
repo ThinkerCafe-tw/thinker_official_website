@@ -47,7 +47,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       courseId: defaultCourseId,
-      courseVariant: 'group',
+      courseVariant: null,
     },
   });
   const selectedCourseId = form.watch('courseId'); 
@@ -113,7 +113,10 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
                   </FormLabel>
                   <Select
                     value={String(field.value)}
-                    onValueChange={value => field.onChange(Number(value))}
+                    onValueChange={value => {
+                      field.onChange(Number(value));
+                      form.setValue('courseVariant', null);
+                    }}
                   >
                     <FormControl>
                       <SelectTrigger className="w-full min-w-0">
@@ -149,6 +152,10 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
                       onValueChange={field.onChange}
                       className="grid grid-cols-2 gap-x-2 mt-2"
                     >
+                      {!selectedCourse && (
+                        <span>--</span>
+                      )}
+                      {selectedCourse && selectedCourse.group_price !== 0 && (
                       <FormItem className="flex items-start">
                         <FormControl>
                           <RadioGroupItem value="group" />
@@ -166,6 +173,8 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
                           )}
                         </FormLabel>
                       </FormItem>
+                      )}
+                      {selectedCourse && selectedCourse.single_price !== 0 && (
                       <FormItem className="flex items-start">
                         <FormControl>
                           <RadioGroupItem value="single" />
@@ -183,6 +192,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
                           )}
                         </FormLabel>
                       </FormItem>
+                      )}
                     </RadioGroup>
                   </FormControl>
                   <FormMessage />
