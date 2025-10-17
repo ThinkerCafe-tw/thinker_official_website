@@ -5,7 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import RevealItem from "@/components/cards-reveal-grid";
 import { BsLine } from "react-icons/bs";
 import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
+import Page from '@/components/core/Page.js';
+import Cover from '@/components/core/Cover.js';
 import BuyCourseButton from './BuyCourseButton.js';
+import { parseCourseName } from '@/utils/course.js';
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -33,44 +36,41 @@ export default async function ProductContentPage({
   };
 
   return (
-    <>
-      <section className="h-full w-full mb-16">
+    <Page>
+      <Cover fullScreenHeight className="flex flex-col justify-end items-start pb-8">
         <video
-          className="inset-0 h-screen w-full object-cover absolute"
+          className="absolute top-0 left-0 z-0 w-screen h-screen object-cover"
           src={heroMedia}
           autoPlay
           muted
           loop
           playsInline
         />
-        <div className="relative h-screen mx-auto px-26 flex items-end pb-16">
-          <div className="grid grid-cols-12 items-end w-full">
-            <div className="col-span-12 md:col-span-8 lg:col-span-9">
+            <div className="relative z-1 space-y-3 mb-8 lg:space-y-5">
               {(product.zh_category) && (
                 <Badge
                   variant="secondary"
-                  className="mb-2 animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate"
+                  className="animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate"
                 >
                   {product.zh_category}
                 </Badge>
               )}
-              <h1 className="font-heading text-3xl md:text-5xl font-bold tracking-tight text-shadow-lg text-shadow-black/50">
-                【{String(courseId).padStart(3, '0')}】{title}
+              <h1 className="font-bold text-3xl/[1.1] text-shadow-lg text-shadow-black/50 lg:text-5xl">
+                {parseCourseName(product)}
               </h1>
               {subtitle && (
-                <p className="mt-3 text-white-700 md:text-lg max-w-3xl text-shadow-lg text-shadow-black/50">
+                <p className="text-base/[1.25] text-white-700 text-shadow-lg text-shadow-black/50 lg:text-lg/[1.25]">
                   {subtitle}
                 </p>
               )}
             </div>
-            <div className="col-span-12 md:col-span-4 lg:col-span-3 mt-6 md:mt-0 flex md:justify-end">
-              <BuyCourseButton courseId={courseId} type="button" className="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center">
+              <BuyCourseButton
+                courseId={courseId}
+                className="relative z-1 w-auto text-base shadow-md shadow-black/50 lg:text-lg"
+              >
                 立即報名
               </BuyCourseButton>
-            </div>
-          </div>
-        </div>
-      </section>
+      </Cover>
       <section className="mb-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 gap-3 py-6 rounded-xl text-xl font-semibold text-center bg-white/20 shadow-xl lg:grid-cols-4 lg:divide-x lg:divide-white/25">
@@ -322,12 +322,12 @@ export default async function ProductContentPage({
       </section>
       <section className="pb-16">
         <div className="container mx-auto px-4 flex justify-center">
-          <BuyCourseButton courseId={courseId} type="button" className="w-full px-12 py-3 rounded-xl shadow-xl text-xl font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all md:w-auto bg-gradient-animate hover-lift hover-glow">
+          <BuyCourseButton courseId={courseId}>
             立即報名
           </BuyCourseButton>
         </div>
       </section>
-    </>
+    </Page>
   );
 }
 
