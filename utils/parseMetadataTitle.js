@@ -1,5 +1,3 @@
 export default function parseMetadataTitle(pageTitle) {
-  const siteTitle = 'Thinker Cafe';
-
-  return pageTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
+  return pageTitle ? `${pageTitle} | Thinker Cafe` : 'Thinker Cafe | 思考者咖啡';
 }

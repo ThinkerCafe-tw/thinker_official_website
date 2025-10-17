@@ -1,6 +1,5 @@
-export function parseCourseName(course) {
-  const { course_id, zh_name } = course;
-  return course ? `【${String(course_id).padStart(3, '0')}】${zh_name}` : '--';
+export function parseCourseName(course, fallbackString = '--') {
+  return course ? `【${String(course.course_id).padStart(3, '0')}】${course.zh_name}` : fallbackString;
 }
 
 export function parseCourseVariantName(courseVariant) {

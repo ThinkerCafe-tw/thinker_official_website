@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
   const product = await getProductById(id);
 
   return {
-    title: parseMetadataTitle(product?.zh_name),
+    title: parseMetadataTitle(parseCourseName(product, '')),
   }
 }
 
