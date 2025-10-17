@@ -3,12 +3,11 @@ import { notFound, useRouter } from "next/navigation";
 import { getProductById } from "@/lib/notion";
 import { Badge } from "@/components/ui/badge";
 import RevealItem from "@/components/cards-reveal-grid";
-import { BsLine } from "react-icons/bs";
-import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
 import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import BuyCourseButton from './BuyCourseButton.js';
 import Bar from './Bar.js';
+import Content from './Content.js';
 import { parseCourseName } from '@/utils/course.js';
 
 export const runtime = "nodejs";
@@ -30,11 +29,6 @@ export default async function ProductContentPage({
   const subtitle = product.zh_description;
   const heroMedia = product.content_video || product.image;
   const items = FIXED_SIX(product);
-  const contentTagIcons = {
-    '社群參與': <BsLine />,
-    '課後提問': <FaHand />,
-    '研習證書': <FaAward />,
-  };
 
   return (
     <Page>
@@ -72,48 +66,10 @@ export default async function ProductContentPage({
                 立即報名
               </BuyCourseButton>
       </Cover>
-      <div className="mt-5 space-y-5">
+      <div className="mt-8 space-y-8">
         <Bar product={product} />
+        <Content product={product} />
       </div>
-      <section className="mb-16">
-        <div className="container mx-auto px-10">
-          <div className="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-6">
-            <div className="md:col-span-2 lg:col-span-3">
-              <h2 className="mb-5 text-3xl font-semibold">你將會學到</h2>
-              <div className="whitespace-pre-line text-xl text-gray-300">
-                {product.you_will_learn}
-              </div>
-            </div>
-            <div className="md:col-span-1 lg:col-span-2">
-              <h2 className="mb-5 text-3xl font-semibold">技能提升</h2>
-              <div className="flex flex-wrap">
-                {product.skill_tags.map(tag => (
-                  <span key={tag} className="px-4 py-1 border border-slate-400 rounded-full mr-2 mb-2 bg-slate-500">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="md:col-span-3 lg:col-span-1">
-              <h2 className="mb-5 text-3xl font-semibold">包含內容</h2>
-              <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-1">
-                {product.content_tags.map(tag => (
-                  <div key={tag} className="flex items-center text-xl text-gray-300">
-                    {contentTagIcons[tag] || <FaRegCircleCheck />}
-                    <span className="ml-2">{tag}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="md:col-span-3 lg:col-span-4">
-              <h2 className="mb-5 text-3xl font-semibold">課程大綱</h2>
-              <div className="whitespace-pre-line text-xl text-gray-300">
-                {product.summery}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <section className="mb-16">
         <div className="container mx-auto px-4">
           <div
