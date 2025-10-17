@@ -13,7 +13,11 @@ import {
   type NotionOurTeam,
   type NotionOurMissionVision,
 } from "@/lib/notion";
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 
+export const metadata = {
+  title: parseMetadataTitle('團隊簡介'),
+};
 
 export default async function AboutPage() {
   const [values, team, storyList, missionVision] = await Promise.all([

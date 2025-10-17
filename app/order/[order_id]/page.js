@@ -7,6 +7,11 @@ import Title from '@/components/core/Title.js';
 import CreatedOrderForm from './CreatedOrderForm.js';
 import PayedOrMessagedOrderForm from './PayedOrMessagedOrderForm.js';
 import ConfirmedOrderForm from './ConfirmedOrderForm.js';
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
+
+export const metadata = {
+  title: parseMetadataTitle('報名課程'),
+};
 
 export default async function OrderPage({ params }) {
   const { order_id } = await params;

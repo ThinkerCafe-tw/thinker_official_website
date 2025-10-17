@@ -9,11 +9,21 @@ import Bar from './Bar.js';
 import Content from './Content.js';
 import HighlightGrid from './HighlightGrid.js';
 import { parseCourseName } from '@/utils/course.js';
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 
 export const runtime = "nodejs";
 export const revalidate = 60;
 
 type Item = { title?: string; description?: string; image?: string };
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const product = await getProductById(id);
+
+  return {
+    title: parseMetadataTitle(product?.zh_name),
+  }
+}
 
 export default async function ProductContentPage({
   params,

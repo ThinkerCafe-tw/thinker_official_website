@@ -1,4 +1,9 @@
 import { ContactForm } from "@/components/contact-form";
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
+
+export const metadata = {
+  title: parseMetadataTitle('聯絡我們'),
+};
 
 export default function ContactPage() {
   const faqs = [

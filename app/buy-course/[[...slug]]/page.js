@@ -5,6 +5,11 @@ import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
 import BuyCourseForm from './BuyCourseForm.js';
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
+
+export const metadata = {
+  title: parseMetadataTitle('報名課程'),
+};
 
 export default async function BuyCoursePage({ params }) {
   const { slug } = await params;
