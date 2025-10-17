@@ -70,14 +70,10 @@ export default async function ProductContentPage({
         <Bar product={product} />
         <Content product={product} />
         <HighlightGrid items={items} />
+        <BuyCourseButton courseId={courseId}>
+          立即報名
+        </BuyCourseButton>
       </div>
-      <section className="pb-16">
-        <div className="container mx-auto px-4 flex justify-center">
-          <BuyCourseButton courseId={courseId}>
-            立即報名
-          </BuyCourseButton>
-        </div>
-      </section>
     </Page>
   );
 }
