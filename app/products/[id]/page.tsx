@@ -8,6 +8,7 @@ import { FaHand, FaAward, FaRegCircleCheck } from "react-icons/fa6";
 import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import BuyCourseButton from './BuyCourseButton.js';
+import Bar from './Bar.js';
 import { parseCourseName } from '@/utils/course.js';
 
 export const runtime = "nodejs";
@@ -71,16 +72,9 @@ export default async function ProductContentPage({
                 立即報名
               </BuyCourseButton>
       </Cover>
-      <section className="mb-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 gap-3 py-6 rounded-xl text-xl font-semibold text-center bg-white/20 shadow-xl lg:grid-cols-4 lg:divide-x lg:divide-white/25">
-            <span>{product.bar_text_1}</span>
-            <span>{product.bar_text_2}</span>
-            <span>{product.bar_text_3}</span>
-            <span>{product.bar_text_4}</span>
-          </div>
-        </div>
-      </section>
+      <div className="mt-5 space-y-5">
+        <Bar product={product} />
+      </div>
       <section className="mb-16">
         <div className="container mx-auto px-10">
           <div className="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-6">
