@@ -34,7 +34,7 @@ export default function HighlightCard({ item, index }) {
     </div>
   );
   const cardImage = (
-    <div className="grow aspect-video rounded-lg overflow-hidden bg-white/40">
+    <div className="grow aspect-video rounded-lg overflow-hidden">
       {image && (
         <img
           src={image}
