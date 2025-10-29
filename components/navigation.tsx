@@ -64,6 +64,8 @@ export function Navigation() {
   ];
   if (user === null) {
     navItems.push({ href: "/signin", label: "Sign In", labelZh: "登入/註冊" });
+  } else {
+    navItems.push({ href: '/orders', label: 'My Courses', labelZh: '我的課程' });
   }
 
   return (
