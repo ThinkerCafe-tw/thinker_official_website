@@ -1,8 +1,8 @@
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
-export default function Cover({ fullSize, children }) {
+export default function Cover({ fullScreenHeight, className, children }) {
   return (
-    <div className={clsx('flex flex-col justify-center items-center gap-y-5', !fullSize && 'pt-37 pb-18', fullSize && 'h-screen')}>
+    <div className={cn(!fullScreenHeight && 'flex flex-col justify-center items-center gap-y-5 pt-37 pb-18', fullScreenHeight && 'h-screen', className)}>
       {children}
     </div>
   );

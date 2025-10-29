@@ -5,8 +5,13 @@ import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
 import CreatedOrderForm from './CreatedOrderForm.js';
-import PayedOrderForm from './PayedOrderForm.js';
+import PayedOrMessagedOrderForm from './PayedOrMessagedOrderForm.js';
 import ConfirmedOrderForm from './ConfirmedOrderForm.js';
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
+
+export const metadata = {
+  title: parseMetadataTitle('報名課程'),
+};
 
 export default async function OrderPage({ params }) {
   const { order_id } = await params;
@@ -54,8 +59,8 @@ export default async function OrderPage({ params }) {
           course={course}
         />
       )}
-      {order.state === 'payed' && (
-        <PayedOrderForm
+      {(order.state === 'payed' || order.state === 'messaged') && (
+        <PayedOrMessagedOrderForm
           order={order}
           profile={profile}
         />

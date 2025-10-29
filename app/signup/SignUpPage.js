@@ -20,6 +20,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
+import Subtitle from '@/components/core/Subtitle.js';
 import FormCard from '@/components/core/FormCard.js';
 import FormFooter from '@/components/core/FormFooter.js';
 import FormButton from '@/components/core/FormButton.js';
@@ -134,9 +135,9 @@ export default function SignUpPage() {
     <Page>
       <Cover>
         <Title>學員註冊</Title>
-        <p>
+        <Subtitle>
           已經是學員了嗎？<Link href={signInPath} className="text-orange-400">前往登入</Link>。
-        </p>
+        </Subtitle>
       </Cover>
       <Form {...form}>
         <form

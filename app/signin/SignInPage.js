@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import Page from '@/components/core/Page.js';
 import Cover from '@/components/core/Cover.js';
 import Title from '@/components/core/Title.js';
+import Subtitle from '@/components/core/Subtitle.js';
 import FormCard from '@/components/core/FormCard.js';
 import FormFooter from '@/components/core/FormFooter.js';
 import FormButton from '@/components/core/FormButton.js';
@@ -84,9 +85,9 @@ export default function SignInPage() {
     <Page>
       <Cover>
         <Title>學員登入</Title>
-        <p>
+        <Subtitle>
           還不是學員嗎？<Link href={signUpPath} className="text-orange-400">前往註冊</Link>。
-        </p>
+        </Subtitle>
       </Cover>
       <Form {...form}>
         <form

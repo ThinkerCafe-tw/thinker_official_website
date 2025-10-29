@@ -13,7 +13,11 @@ import {
   type NotionOurTeam,
   type NotionOurMissionVision,
 } from "@/lib/notion";
+import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 
+export const metadata = {
+  title: parseMetadataTitle('團隊簡介'),
+};
 
 export default async function AboutPage() {
   const [values, team, storyList, missionVision] = await Promise.all([
@@ -31,10 +35,10 @@ export default async function AboutPage() {
             <h1
               className="font-heading text-4xl font-bold tracking-tight lg:text-6xl"
             >
-              用學習，讓 <span className="text-primary">AI</span> 為你所用
+              當<span className="text-primary">科技</span>回歸人性，智慧便有了溫度
             </h1>
             <p className="mt-6 text-lg text-muted-foreground lg:text-xl">
-              我們是一群對科技與教育充滿熱情的創作者，堅信 AI 不該是少數人的專利。
+              我們堅信，AI 不該是少數人的專利。透過創新與信任，我們致力於建立屬於這個時代的新平衡，讓每個人都能自由學習、持續成長。
             </p>
           </div>
         </div>
@@ -136,6 +140,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      {/*
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
@@ -175,6 +180,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-16">
