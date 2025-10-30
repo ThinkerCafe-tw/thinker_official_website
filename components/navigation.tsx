@@ -81,7 +81,7 @@ export function Navigation() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 flex-shrink-0"
+            className="flex items-center gap-2 flex-shrink-0 text-foreground"
             prefetch
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
