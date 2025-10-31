@@ -64,6 +64,8 @@ export function Navigation() {
   ];
   if (user === null) {
     navItems.push({ href: "/signin", label: "Sign In", labelZh: "登入/註冊" });
+  } else {
+    navItems.push({ href: '/orders', label: 'My Courses', labelZh: '我的課程' });
   }
 
   return (
@@ -79,7 +81,7 @@ export function Navigation() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 flex-shrink-0"
+            className="flex items-center gap-2 flex-shrink-0 text-foreground"
             prefetch
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
