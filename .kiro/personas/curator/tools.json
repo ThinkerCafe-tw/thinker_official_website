@@ -242,6 +242,112 @@
         "一對一價格低於團班價格",
         "缺少必要的價格參數"
       ]
+    },
+
+    "update-svg-pricing": {
+      "id": "update-svg-pricing",
+      "name": "更新 SVG 定價圖",
+      "description": "根據參考課程的 SVG 模板，更新目標課程的定價圖（直接修改 HighlightCard.js）",
+      "sop_path": ".kiro/personas/curator/UPDATE_PRICING_IMAGE_SOP.md",
+      "inputs": {
+        "target_course_id": {
+          "type": "number",
+          "required": true,
+          "description": "要更新的目標課程 ID"
+        },
+        "reference_course_id": {
+          "type": "number",
+          "required": false,
+          "default": 5,
+          "description": "參考的課程 ID（預設為課程 5）"
+        }
+      },
+      "workflow": [
+        {
+          "step": 1,
+          "action": "從 memory.json 讀取目標課程的價格資料",
+          "read": ["memory.json"],
+          "extract": ["group_price", "group_price_early", "single_price", "single_price_early"]
+        },
+        {
+          "step": 2,
+          "action": "計算節省金額",
+          "calculate": {
+            "group_savings": "group_price - group_price_early",
+            "single_savings": "single_price - single_price_early"
+          }
+        },
+        {
+          "step": 3,
+          "action": "從 HighlightCard.js 讀取參考課程的 SVG 模板",
+          "read": ["app/products/[id]/HighlightCard.js"],
+          "note": "目前課程 5 使用 index === 0"
+        },
+        {
+          "step": 4,
+          "action": "從 memory.json 找到目標課程的 highlight index",
+          "mapping": {
+            "course_2": "index 5",
+            "course_3": "index 4",
+            "course_4": "index 3",
+            "course_5": "index 0",
+            "course_6": "index 2",
+            "course_7": "index 1"
+          },
+          "note": "需要透過 getProducts() API 確認實際順序"
+        },
+        {
+          "step": 5,
+          "action": "替換 SVG 模板中的價格數字",
+          "replace": {
+            "小團班價格": "group_price_early",
+            "一對一價格": "single_price_early",
+            "小團班節省": "group_savings",
+            "一對一節省": "single_savings"
+          }
+        },
+        {
+          "step": 6,
+          "action": "更新 HighlightCard.js，新增或修改對應 index 的 SVG",
+          "write": ["app/products/[id]/HighlightCard.js"],
+          "pattern": "const testSVG = index === {target_index} ? `<svg...>` : null;"
+        },
+        {
+          "step": 7,
+          "action": "本地測試",
+          "execute": ["pnpm dev"],
+          "verify": "訪問 http://localhost:3000/products/{course_id} 確認顯示正確"
+        },
+        {
+          "step": 8,
+          "action": "詢問是否上線",
+          "wait_for_confirmation": true
+        }
+      ],
+      "permissions": {
+        "read": ["memory.json", "app/products/[id]/HighlightCard.js"],
+        "write": ["app/products/[id]/HighlightCard.js"],
+        "execute": ["pnpm dev"]
+      },
+      "stop_conditions": [
+        "找不到目標課程資料",
+        "找不到參考 SVG 模板",
+        "無法確定目標課程的 highlight index",
+        "計算出的節省金額為負數"
+      ],
+      "output_example": {
+        "success": true,
+        "target_course_id": 4,
+        "target_index": 3,
+        "pricing": {
+          "group_early": 590,
+          "single_early": 990,
+          "group_savings": 890,
+          "single_savings": 1510
+        },
+        "svg_updated": true,
+        "local_test_url": "http://localhost:3000/products/4"
+      }
     }
   },
 

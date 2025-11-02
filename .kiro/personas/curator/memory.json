@@ -2128,5 +2128,37 @@
     },
     "total_images": 140,
     "avg_highlights_per_course": 5.7
+  },
+  "highlight_index_mapping": {
+    "note": "課程在 HighlightCard 中的 index 順序（由 getProducts() 排序決定）",
+    "last_verified": "2025-11-02",
+    "mapping": {
+      "2": {
+        "index": null,
+        "verified": false,
+        "note": "需確認"
+      },
+      "3": {
+        "index": null,
+        "verified": false,
+        "note": "需確認"
+      },
+      "4": {
+        "index": null,
+        "verified": false,
+        "note": "需確認"
+      },
+      "5": {
+        "index": 0,
+        "verified": true,
+        "note": "課程 5 (AI 溝通術) 目前使用 index === 0"
+      },
+      "6": {
+        "index": null,
+        "verified": false,
+        "note": "需確認"
+      }
+    },
+    "how_to_verify": "訪問網站查看課程顯示順序，或檢查 getProducts() 回傳的陣列順序"
   }
 }
