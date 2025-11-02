@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils';
 
-export default function HighlightCard({ item, index }) {
+export default function HighlightCard({ item, index, courseId }) {
   const { title, description, image } = item;
 
-  // 測試：index 0 寫死 SVG（極限填滿版本）
-  const testSVG = index === 0 ? `<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  // 課程 5 的定價圖 SVG（只在 courseId === 5 且 index === 0 時顯示）
+  const testSVG = (courseId === 5 && index === 0) ? `<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
   <rect width="1600" height="900" fill="#f8f9fa"/>
   <rect x="20" y="20" width="1560" height="200" fill="#FF6B6B" rx="20"/>
   <text x="800" y="150" font-family="Arial, sans-serif" font-size="130" font-weight="bold" fill="white" text-anchor="middle">早鳥優惠</text>

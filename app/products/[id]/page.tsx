@@ -79,7 +79,7 @@ export default async function ProductContentPage({
       <div className="mt-8 space-y-8">
         <Bar product={product} />
         <Content product={product} />
-        <HighlightGrid items={items} />
+        <HighlightGrid items={items} courseId={courseId} />
         <BuyCourseButton courseId={courseId}>
           立即報名
         </BuyCourseButton>
