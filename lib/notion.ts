@@ -6,14 +6,13 @@ export const notion = new Client({
 });
 
 
-// 使用函數延遲讀取環境變數，在實際使用時才讀取
-const getPRODUCTS_DATABASE_ID = () => process.env.NOTION_PRODUCTS_DATABASE_ID || "";
-const getCONTACTS_DATABASE_ID = () => process.env.NOTION_CONTACTS_DATABASE_ID || "";
-const getOURSTORY_DATABASE_ID = () => process.env.NOTION_OURSTORY_DATABASE_ID || "";
-const getOURVALUE_DATABASE_ID = () => process.env.NOTION_OURVALUE_DATABASE_ID || "";
-const getOURTEAM_DATABASE_ID = () => process.env.NOTION_OURTEAM_DATABASE_ID || "";
-const getOURMISSIONVISION_DATABASE_ID = () => process.env.NOTION_OURMISSIONVISION_DATABASE_ID || "";
-const getNOTION_API_KEY = () => process.env.NOTION_TOKEN || "";
+const PRODUCTS_DATABASE_ID = process.env.NOTION_PRODUCTS_DATABASE_ID || "";
+const CONTACTS_DATABASE_ID = process.env.NOTION_CONTACTS_DATABASE_ID || "";
+const OURSTORY_DATABASE_ID = process.env.NOTION_OURSTORY_DATABASE_ID || "";
+const OURVALUE_DATABASE_ID = process.env.NOTION_OURVALUE_DATABASE_ID || "";
+const OURTEAM_DATABASE_ID = process.env.NOTION_OURTEAM_DATABASE_ID || "";
+const OURMISSIONVISION_DATABASE_ID = process.env.NOTION_OURMISSIONVISION_DATABASE_ID || "";
+const NOTION_API_KEY = process.env.NOTION_TOKEN || "";
 const NOTION_VERSION = "2022-06-28"; 
 
 type QueryParams = {
@@ -24,7 +23,6 @@ type QueryParams = {
 };
 
 async function queryDatabase(databaseId: string, params: QueryParams = {}) {
-  const NOTION_API_KEY = getNOTION_API_KEY();
   const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
     method: "POST",
     headers: {
@@ -142,7 +140,6 @@ export interface NotionContactSubmission {
 
 
 export async function getProducts(): Promise<NotionProduct[]> {
-  const PRODUCTS_DATABASE_ID = getPRODUCTS_DATABASE_ID();
   if (!PRODUCTS_DATABASE_ID) throw new Error("Missing Notion Products Database ID");
   try {
     const data = await queryDatabase(PRODUCTS_DATABASE_ID, {
@@ -183,7 +180,6 @@ export async function getProducts(): Promise<NotionProduct[]> {
 
 export async function getProductById(pageId: string): Promise<NotionProductContent | null> {
   if (!pageId) throw new Error("Missing Notion Products Page ID");
-  const NOTION_API_KEY = getNOTION_API_KEY();
   const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
     headers: {
       Authorization: `Bearer ${NOTION_API_KEY}`,
