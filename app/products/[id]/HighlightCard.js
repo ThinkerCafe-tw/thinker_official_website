@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function HighlightCard({ item, index, courseId }) {
   const { title, description, image } = item;
@@ -128,7 +129,7 @@ export default function HighlightCard({ item, index, courseId }) {
   );
   const isSVG = finalImage && finalImage.trim().startsWith('<svg');
   const cardImage = (
-    <div className="grow aspect-video rounded-lg overflow-hidden">
+    <div className="grow aspect-video rounded-lg overflow-hidden relative">
       {finalImage && (
         isSVG ? (
           <div
@@ -136,10 +137,13 @@ export default function HighlightCard({ item, index, courseId }) {
             className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
           />
         ) : (
-          <img
+          <Image
             src={finalImage}
-            alt={title}
-            className="w-full h-full object-cover"
+            alt={title || 'Course highlight'}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+            loading="lazy"
           />
         )
       )}

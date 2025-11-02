@@ -1,5 +1,5 @@
 export const runtime = "nodejs";
-export const revalidate = 0;
+export const revalidate = 3600;
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CountUp } from "@/components/count-number";
@@ -14,6 +14,7 @@ import {
   type NotionOurMissionVision,
 } from "@/lib/notion";
 import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
+import Image from "next/image";
 
 export const metadata = {
   title: parseMetadataTitle('團隊簡介'),
@@ -56,11 +57,16 @@ export default async function AboutPage() {
                 </div>
               </div>
               <div className="lg:col-span-5">
-                <img
-                  src={image}
-                  alt={zh_title}
-                  className="w-full max-w-[520px] mx-auto rounded-xl shadow-2xl h-auto object-cover"
-                />
+                <div className="relative w-full max-w-[520px] mx-auto rounded-xl shadow-2xl aspect-[4/3]">
+                  <Image
+                    src={image}
+                    alt={zh_title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 520px"
+                    className="object-cover rounded-xl"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -88,10 +94,13 @@ export default async function AboutPage() {
                       <div
                         className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 hover:bg-primary/10"
                       >
-                        <img
+                        <Image
                           src={v.image}
                           alt={v.zh_title }
-                          className="h-10 w-10 text-accent hover:text-primary"
+                          width={40}
+                          height={40}
+                          className="text-accent hover:text-primary"
+                          loading="lazy"
                         />
                       </div>
                       <h3 className="font-heading text-xl font-semibold mb-3">
@@ -121,10 +130,13 @@ export default async function AboutPage() {
                         className="mb-6"
                       >
                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20 mb-4">
-                           <img
+                           <Image
                              src={mv.image}
                              alt={mv.zh_title}
-                             className="h-12 w-12 text-accent hover:text-primary"
+                             width={48}
+                             height={48}
+                             className="text-accent hover:text-primary"
+                             loading="lazy"
                            />
                          </div>
                       </div>
@@ -198,11 +210,14 @@ export default async function AboutPage() {
                 className="border-0 bg-card/50 backdrop-blur text-center"
               >
                 <CardContent className="p-6">
-                  <div className="mb-4">
-                    <img
+                  <div className="relative mx-auto h-20 w-20 mb-4">
+                    <Image
                       src={m.image || "/coffee-shop-founder-headshot.png"}
                       alt={m.zh_name || "Team member"}
-                      className="mx-auto h-20 w-20 rounded-full object-cover"
+                      fill
+                      sizes="80px"
+                      className="rounded-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <h3 className="font-heading text-lg font-semibold">

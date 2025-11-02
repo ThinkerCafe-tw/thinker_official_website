@@ -5,6 +5,7 @@ import FormButton from '@/components/core/FormButton.js';
 import { parseOrderIdString, parseOrderStateName } from '@/utils/order.js';
 import { parseCourseName, parseCourseVariantName } from '@/utils/course.js';
 import parsePriceString from '@/utils/parsePriceString.js';
+import Image from 'next/image';
 
 export default function OrderCard({ order, course }) {
   const router = useRouter();
@@ -12,11 +13,16 @@ export default function OrderCard({ order, course }) {
   return (
     <FormCard singleColumn>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:items-start lg:grid-cols-4 lg:items-stretch">
-        <img
-          src={course.image}
-          alt=""
-          className="aspect-video object-cover rounded-md md:row-span-2 lg:row-span-1"
-        />
+        <div className="relative aspect-video rounded-md overflow-hidden md:row-span-2 lg:row-span-1">
+          <Image
+            src={course.image}
+            alt={parseCourseName(course)}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover"
+            loading="lazy"
+          />
+        </div>
         <div className="space-y-3 lg:col-span-2 lg:space-y-4">
           <h2 className="text-2xl/[1.2] font-bold">
             {parseCourseName(course)}

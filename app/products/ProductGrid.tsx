@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import type { NotionProduct } from "@/lib/notion";
 import { parseCourseName } from '@/utils/course.js';
 import Link from "next/link";
+import Image from "next/image";
 
 export function ProductGrid() {
   const [language, setLanguage] = useState<"en" | "zh">("en");
@@ -83,14 +84,17 @@ export function ProductGrid() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardContent className="px-0 space-y-2">
-                <div className="relative overflow-hidden rounded-md">
-                  <img
+                <div className="relative overflow-hidden rounded-md h-40">
+                  <Image
                     src={product.image || "/placeholder.svg"}
                     alt={product.zh_name}
-                    className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-110 "
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    loading="lazy"
                   />
                   {product.featured && (
-                    <Badge className="absolute top-2 left-2 animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate">
+                    <Badge className="absolute top-2 left-2 animate-glow bg-gradient-to-r from-orange-400 to-pink-500 text-black bg-gradient-animate z-10">
                       精選
                     </Badge>
                   )}
