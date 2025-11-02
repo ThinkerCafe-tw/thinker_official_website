@@ -39,6 +39,46 @@ Website API (自動同步)
 - 價格欄位：`group_price`, `group_price_early`, `single_price`, `single_price_early`
 - 圖片欄位：`main_image`, `content_highlight1_image`, `content_highlight2_image`, `content_highlight3_image`, `content_video`
 
+### 🔒 強制規範：讀取 JSON 的標準方式
+
+**唯一允許的方法**：使用 `jq` 命令行工具
+
+```bash
+# 讀取課程資料
+jq '.courses[] | select(.course_id == 4)' .kiro/personas/curator/memory.json
+
+# 讀取多個課程
+jq '.courses[] | select(.course_id == 4 or .course_id == 5)' .kiro/personas/curator/memory.json
+
+# 提取特定欄位
+jq '.courses[] | select(.course_id == 4) | {course_id, pricing}' .kiro/personas/curator/memory.json
+
+# 讀取 index mapping
+jq '.highlight_index_mapping.mapping["4"]' .kiro/personas/curator/memory.json
+```
+
+**禁止使用**：
+- ❌ `python -c "import json..."`
+- ❌ `node -e "require(...)"`
+- ❌ `pnpm tsx -e "import..."`
+- ❌ Read 工具直接讀取（檔案太大會失敗）
+
+**原因**：
+1. `jq` 是專門處理 JSON 的工具，速度快且語法標準
+2. 避免不同語言的語法差異導致錯誤
+3. memory.json 檔案太大（500KB+），Read 工具會失敗
+4. 統一方法便於除錯和維護
+
+**範例**：
+```bash
+# ✅ 正確：使用 jq
+COURSE_DATA=$(jq -c '.courses[] | select(.course_id == 4)' .kiro/personas/curator/memory.json)
+echo $COURSE_DATA | jq '.pricing'
+
+# ❌ 錯誤：使用 python
+python3 -c "import json; ..."  # 不允許！
+```
+
 ## 🛠️ 可用工具
 
 詳細定義在 `.kiro/personas/curator/tools.json`
@@ -99,50 +139,62 @@ Website API (自動同步)
 - 「第X課」+ 「highlight1」+ 「價格」+ 「svg」
 - 「第X課」+ 「參照第Y課」+ 「svg」
 
-**自動執行流程**（使用 `update-svg-pricing` 工具）：
-1. 從 `memory.json` 讀取目標課程價格（group_price_early, single_price_early, group_price, single_price）
-2. 計算節省金額（原價 - 早鳥價）
-3. 從 `memory.json` 的 `highlight_index_mapping` 確認目標課程的 index
-4. 從 `HighlightCard.js` 複製參考課程的 SVG 模板（預設為課程 5, index === 0）
-5. 替換 SVG 中的價格數字和節省金額
-6. 更新 `HighlightCard.js`，新增或修改對應 index 的 testSVG
-7. 啟動本地測試（pnpm dev）
-8. 回報完成，詢問是否上線
+**強制執行步驟**（不可偏離）：
+
+**步驟 1：執行腳本**
+```bash
+.kiro/tools/curator/update-svg-pricing.sh <課程ID> [參考課程ID]
+```
+範例：`.kiro/tools/curator/update-svg-pricing.sh 4 5`
+
+腳本會：
+- 使用 `jq` 讀取 memory.json（唯一允許的方式）
+- 計算節省金額
+- 檢查 index mapping（若為 null 會報錯並提示如何確認）
+- 生成新的 SVG 代碼
+- 輸出結果到 `/tmp/curator-svg-update-result.json`
+
+**步驟 2：讀取腳本輸出**
+```bash
+cat /tmp/curator-svg-update-result.json
+```
+
+**步驟 3：更新 HighlightCard.js**
+使用 Edit 工具，根據腳本輸出的 `svg_code` 更新檔案
+
+**步驟 4：本地測試**
+```bash
+pnpm dev
+# 訪問 http://localhost:3000/products/<課程ID>
+```
+
+**步驟 5：詢問是否上線**
+等待 Cruz 確認
 
 **不做的事**：
-❌ 分析定價是否合理
-❌ 提供多個方案選項
+❌ 使用 python/node/tsx 讀取 JSON（必須用 jq）
+❌ 直接讀取 memory.json（必須透過腳本）
+❌ 自己計算價格（腳本會處理）
+❌ 猜測 index（腳本會檢查，若為 null 會報錯）
 ❌ 自動上線（等待確認）
 
-**停止條件**：
-- 找不到目標課程資料
-- 找不到參考 SVG 模板
-- index 對照表中沒有該課程
-- 計算出的節省金額為負數
+**停止條件**（腳本會檢查）：
+- 找不到目標課程資料（exit code 1）
+- index 為 null（exit code 1 + 提示如何確認）
+- 計算出的節省金額為負數（exit code 1）
 
 **範例指令**：
 ```
 Hi Curator, 幫我把第四課的highlight1課程價格參照第五課改成svg
 ```
 
-**預期輸出**：
-```json
-{
-  "success": true,
-  "target_course_id": 4,
-  "target_index": 3,
-  "pricing": {
-    "group_early": 590,
-    "single_early": 990,
-    "group_savings": 890,
-    "single_savings": 1510
-  },
-  "svg_updated": true,
-  "file_modified": "app/products/[id]/HighlightCard.js",
-  "local_test_url": "http://localhost:3000/products/4",
-  "next_step": "請確認本地測試無誤後，告知是否上線"
-}
-```
+**預期執行流程**：
+1. 執行 `.kiro/tools/curator/update-svg-pricing.sh 4 5`
+2. 若成功：讀取 `/tmp/curator-svg-update-result.json`
+3. 若失敗（index = null）：回報錯誤訊息，等待 Cruz 補完 index mapping
+4. 使用 Edit 工具更新 HighlightCard.js
+5. 執行 `pnpm dev` 測試
+6. 詢問是否上線
 
 ## 🎨 定價圖片設計規範
 

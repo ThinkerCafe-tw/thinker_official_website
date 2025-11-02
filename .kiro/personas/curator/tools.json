@@ -247,8 +247,9 @@
     "update-svg-pricing": {
       "id": "update-svg-pricing",
       "name": "更新 SVG 定價圖",
-      "description": "根據參考課程的 SVG 模板，更新目標課程的定價圖（直接修改 HighlightCard.js）",
+      "description": "執行 update-svg-pricing.sh 腳本，生成 SVG 定價圖代碼",
       "sop_path": ".kiro/personas/curator/UPDATE_PRICING_IMAGE_SOP.md",
+      "script_path": ".kiro/tools/curator/update-svg-pricing.sh",
       "inputs": {
         "target_course_id": {
           "type": "number",
@@ -262,91 +263,61 @@
           "description": "參考的課程 ID（預設為課程 5）"
         }
       },
-      "workflow": [
+      "execution_steps": [
         {
           "step": 1,
-          "action": "從 memory.json 讀取目標課程的價格資料",
-          "read": ["memory.json"],
-          "extract": ["group_price", "group_price_early", "single_price", "single_price_early"]
+          "command": ".kiro/tools/curator/update-svg-pricing.sh {target_course_id} {reference_course_id}",
+          "description": "執行腳本生成 SVG 代碼"
         },
         {
           "step": 2,
-          "action": "計算節省金額",
-          "calculate": {
-            "group_savings": "group_price - group_price_early",
-            "single_savings": "single_price - single_price_early"
-          }
+          "command": "cat /tmp/curator-svg-update-result.json",
+          "description": "讀取腳本輸出結果"
         },
         {
           "step": 3,
-          "action": "從 HighlightCard.js 讀取參考課程的 SVG 模板",
-          "read": ["app/products/[id]/HighlightCard.js"],
-          "note": "目前課程 5 使用 index === 0"
+          "action": "使用 Edit 工具更新 HighlightCard.js",
+          "description": "根據腳本輸出的 svg_code 更新檔案"
         },
         {
           "step": 4,
-          "action": "從 memory.json 找到目標課程的 highlight index",
-          "mapping": {
-            "course_2": "index 5",
-            "course_3": "index 4",
-            "course_4": "index 3",
-            "course_5": "index 0",
-            "course_6": "index 2",
-            "course_7": "index 1"
-          },
-          "note": "需要透過 getProducts() API 確認實際順序"
+          "command": "pnpm dev",
+          "description": "啟動本地測試伺服器",
+          "verify": "訪問 http://localhost:3000/products/{target_course_id}"
         },
         {
           "step": 5,
-          "action": "替換 SVG 模板中的價格數字",
-          "replace": {
-            "小團班價格": "group_price_early",
-            "一對一價格": "single_price_early",
-            "小團班節省": "group_savings",
-            "一對一節省": "single_savings"
-          }
-        },
-        {
-          "step": 6,
-          "action": "更新 HighlightCard.js，新增或修改對應 index 的 SVG",
-          "write": ["app/products/[id]/HighlightCard.js"],
-          "pattern": "const testSVG = index === {target_index} ? `<svg...>` : null;"
-        },
-        {
-          "step": 7,
-          "action": "本地測試",
-          "execute": ["pnpm dev"],
-          "verify": "訪問 http://localhost:3000/products/{course_id} 確認顯示正確"
-        },
-        {
-          "step": 8,
           "action": "詢問是否上線",
           "wait_for_confirmation": true
         }
       ],
-      "permissions": {
-        "read": ["memory.json", "app/products/[id]/HighlightCard.js"],
-        "write": ["app/products/[id]/HighlightCard.js"],
-        "execute": ["pnpm dev"]
+      "script_features": {
+        "json_reader": "使用 jq 讀取 memory.json（唯一允許的方式）",
+        "validation": [
+          "檢查課程是否存在",
+          "檢查 index mapping 是否為 null",
+          "檢查節省金額是否為負數"
+        ],
+        "output": "/tmp/curator-svg-update-result.json"
       },
       "stop_conditions": [
-        "找不到目標課程資料",
-        "找不到參考 SVG 模板",
-        "無法確定目標課程的 highlight index",
-        "計算出的節省金額為負數"
+        "腳本 exit code 1（課程不存在）",
+        "腳本 exit code 1（index 為 null，會提示如何確認）",
+        "腳本 exit code 1（節省金額為負數）"
       ],
-      "output_example": {
-        "success": true,
-        "target_course_id": 4,
-        "target_index": 3,
+      "output_format": {
+        "success": "boolean",
+        "target_course_id": "number",
+        "target_index": "number",
+        "course_name": "string",
         "pricing": {
-          "group_early": 590,
-          "single_early": 990,
-          "group_savings": 890,
-          "single_savings": 1510
+          "group_early": "number",
+          "single_early": "number",
+          "group_savings": "number",
+          "single_savings": "number"
         },
-        "svg_updated": true,
-        "local_test_url": "http://localhost:3000/products/4"
+        "svg_code": "string",
+        "next_steps": ["string"]
       }
     }
   },
