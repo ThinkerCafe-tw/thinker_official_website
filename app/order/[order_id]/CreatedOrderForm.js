@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { TriangleAlert, LoaderCircle, Copy, Check, Mail } from 'lucide-react';
 import FormCard from '@/components/core/FormCard.js';
@@ -26,8 +26,31 @@ export default function CreatedOrderForm({ order, profile, course }) {
   const [accountLast5, setAccountLast5] = useState('');
   const [transferTime, setTransferTime] = useState('');
 
+  // Countdown timer state (client-side only to avoid hydration error)
+  const [remainingHours, setRemainingHours] = useState(null);
+  const [remainingMinutes, setRemainingMinutes] = useState(null);
+
   const router = useRouter();
   const { toast } = useToast();
+
+  // Calculate countdown on client side only
+  useEffect(() => {
+    const createdAt = new Date(order.created_at);
+    const expiresAt = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
+
+    const updateCountdown = () => {
+      const now = new Date();
+      const hours = Math.max(0, Math.floor((expiresAt - now) / (1000 * 60 * 60)));
+      const minutes = Math.max(0, Math.floor(((expiresAt - now) % (1000 * 60 * 60)) / (1000 * 60)));
+      setRemainingHours(hours);
+      setRemainingMinutes(minutes);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, [order.created_at]);
 
   // 複製銀行代碼
   const copyBankCode = async () => {
@@ -101,13 +124,6 @@ export default function CreatedOrderForm({ order, profile, course }) {
     router.replace(`/order/${order.order_id}`);
     router.refresh();
   }
-
-  // 計算繳費期限（建立時間 + 24小時）
-  const createdAt = new Date(order.created_at);
-  const expiresAt = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
-  const now = new Date();
-  const remainingHours = Math.max(0, Math.floor((expiresAt - now) / (1000 * 60 * 60)));
-  const remainingMinutes = Math.max(0, Math.floor(((expiresAt - now) % (1000 * 60 * 60)) / (1000 * 60)));
 
   return (
     <div className="max-w-3xl mx-auto space-y-5">
@@ -254,12 +270,13 @@ export default function CreatedOrderForm({ order, profile, course }) {
           <div className="flex items-start gap-2 text-orange-500">
             <TriangleAlert size={20} className="mt-0.5 flex-shrink-0" />
             <div className="space-y-2 text-sm">
-              <p className="font-bold">
-                ⏰ 繳費期限倒數：{remainingHours} 小時 {remainingMinutes} 分鐘
-              </p>
+              {remainingHours !== null && remainingMinutes !== null && (
+                <p className="font-bold">
+                  ⏰ 繳費期限倒數：{remainingHours} 小時 {remainingMinutes} 分鐘
+                </p>
+              )}
               <p>
-                請務必於 {expiresAt.toLocaleDateString('zh-TW')} {expiresAt.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })} 前完成付款。
-                若超過期限，此報名將自動取消。
+                請務必於 24 小時內完成付款。若超過期限，此報名將自動取消。
               </p>
             </div>
           </div>
