@@ -2130,35 +2130,35 @@
     "avg_highlights_per_course": 5.7
   },
   "highlight_index_mapping": {
-    "note": "課程在 HighlightCard 中的 index 順序（由 getProducts() 排序決定）",
+    "note": "所有課程的 content_highlight1 都對應 HighlightCard 的 index 0",
     "last_verified": "2025-11-02",
+    "explanation": "FIXED_SIX 函數固定生成 6 個 highlight，index 0 = content_highlight1，依此類推",
     "mapping": {
       "2": {
-        "index": null,
-        "verified": false,
-        "note": "需確認"
+        "index": 0,
+        "verified": true,
+        "note": "content_highlight1 = 定價圖"
       },
       "3": {
-        "index": null,
-        "verified": false,
-        "note": "需確認"
+        "index": 0,
+        "verified": true,
+        "note": "content_highlight1 = 定價圖"
       },
       "4": {
-        "index": null,
-        "verified": false,
-        "note": "需確認"
+        "index": 0,
+        "verified": true,
+        "note": "content_highlight1 = 定價圖"
       },
       "5": {
         "index": 0,
         "verified": true,
-        "note": "課程 5 (AI 溝通術) 目前使用 index === 0"
+        "note": "content_highlight1 = 定價圖（已上線）"
       },
       "6": {
-        "index": null,
-        "verified": false,
-        "note": "需確認"
+        "index": 0,
+        "verified": true,
+        "note": "content_highlight1 = 定價圖"
       }
-    },
-    "how_to_verify": "訪問網站查看課程顯示順序，或檢查 getProducts() 回傳的陣列順序"
+    }
   }
 }

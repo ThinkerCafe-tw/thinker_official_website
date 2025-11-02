@@ -101,10 +101,16 @@ GROUP_SAVINGS_FORMATTED=$(printf "%'d" $GROUP_SAVINGS)
 SINGLE_SAVINGS_FORMATTED=$(printf "%'d" $SINGLE_SAVINGS)
 
 NEW_SVG="$SVG_TEMPLATE"
-NEW_SVG="${NEW_SVG//590/$GROUP_EARLY}"
-NEW_SVG="${NEW_SVG//990/$SINGLE_EARLY}"
-NEW_SVG="${NEW_SVG//省 890 元/省 $GROUP_SAVINGS_FORMATTED 元}"
-NEW_SVG="${NEW_SVG//省 1,510 元/省 $SINGLE_SAVINGS_FORMATTED 元}"
+
+# 替換小團班價格（只替換價格數字，不替換 y 座標）
+NEW_SVG=$(echo "$NEW_SVG" | sed "s/>590</>$GROUP_EARLY</g")
+
+# 替換一對一價格
+NEW_SVG=$(echo "$NEW_SVG" | sed "s/>990</>$SINGLE_EARLY</g")
+
+# 替換節省金額
+NEW_SVG=$(echo "$NEW_SVG" | sed "s/>省 890 元</>省 $GROUP_SAVINGS_FORMATTED 元</g")
+NEW_SVG=$(echo "$NEW_SVG" | sed "s/>省 1,510 元</>省 $SINGLE_SAVINGS_FORMATTED 元</g")
 
 echo "  ✅ 價格已替換"
 echo ""
