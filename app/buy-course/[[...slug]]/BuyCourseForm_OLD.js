@@ -32,14 +32,12 @@ import FormButton from '@/components/core/FormButton.js';
 import { createClient } from '@/utils/supabase/client.ts';
 import { parseCourseName, parseCourseVariantName } from '@/utils/course.js';
 import parsePriceString from '@/utils/parsePriceString.js';
-import { useToast } from '@/hooks/use-toast';
 
 export default function BuyCourseForm({ courses, defaultCourseId }) {
   const [state, setState] = useState('filling');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-  const { toast } = useToast();
 
   const formSchema = z.object({
     courseId: z.number({ message: '請選擇課程名稱' }).int().positive(),
@@ -52,8 +50,8 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
       courseVariant: null,
     },
   });
-  const selectedCourseId = form.watch('courseId');
-  const selectedCourseVariant = form.watch('courseVariant');
+  const selectedCourseId = form.watch('courseId'); 
+  const selectedCourseVariant = form.watch('courseVariant'); 
   const selectedCourse = courses.find(({ course_id }) => course_id === selectedCourseId);
   const total = selectedCourse ? {
     group: selectedCourse.group_price,
@@ -75,8 +73,6 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
 
     const { courseId, courseVariant } = values;
     const supabase = createClient();
-
-    // 1. 建立訂單
     const { data, error } = await supabase
       .from('orders')
       .insert({
@@ -93,36 +89,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
       return;
     }
 
-    const orderId = data[0].order_id;
-
-    // 2. 發送繳費提醒 Email（非同步，不等待結果）
-    try {
-      fetch('/api/email/send-payment-reminder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId }),
-      }).then(res => {
-        if (res.ok) {
-          console.log('✅ Payment reminder email sent for order:', orderId);
-        } else {
-          console.error('❌ Failed to send payment reminder email');
-        }
-      }).catch(err => {
-        console.error('❌ Error sending email:', err);
-      });
-
-      // 顯示成功訊息
-      toast({
-        title: "報名成功！",
-        description: "繳費資訊已寄送至您的信箱",
-      });
-    } catch (emailError) {
-      // Email 發送失敗不影響訂單建立
-      console.error('Email sending error:', emailError);
-    }
-
-    // 3. 導向繳費頁面
-    router.replace(`/order/${orderId}`);
+    router.replace(`/order/${data[0].order_id}`);
     router.refresh();
   }
 
