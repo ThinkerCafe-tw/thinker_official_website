@@ -244,6 +244,74 @@
       ]
     },
 
+    "verify-index": {
+      "id": "verify-index",
+      "name": "驗證課程 Index",
+      "description": "驗證課程在 HighlightCard 中的 index 對照表",
+      "script_path": ".kiro/scripts/curator/verify-index.ts",
+      "command": "pnpm tsx .kiro/scripts/curator/verify-index.ts",
+      "inputs": {
+        "course_id": {
+          "type": "number | '--all'",
+          "required": true,
+          "description": "要驗證的課程 ID，或使用 --all 驗證所有課程"
+        }
+      },
+      "examples": [
+        "pnpm tsx .kiro/scripts/curator/verify-index.ts 4",
+        "pnpm tsx .kiro/scripts/curator/verify-index.ts --all"
+      ],
+      "when_to_use": [
+        "當 memory.json 中的 index 為 null 時",
+        "當新增課程後需要初始化 index 時",
+        "當懷疑 index 對照表不準確時",
+        "當 update-svg-pricing 失敗提示需要驗證 index 時"
+      ],
+      "output": {
+        "success": "✅ 課程 X: index 設定為 Y",
+        "failure": "⚠️  課程 X: 未發布或不存在",
+        "table": "顯示完整的 Index 對照表"
+      },
+      "important_note": "所有課程的 content_highlight1 都對應 index 0，這是因為 FIXED_SIX 函數為每個課程生成 6 個 highlight"
+    },
+
+    "diagnose-memory": {
+      "id": "diagnose-memory",
+      "name": "記憶健康診斷",
+      "description": "檢查 memory.json 的完整性，產生健康報告",
+      "script_path": ".kiro/scripts/curator/diagnose-memory.ts",
+      "command": "pnpm tsx .kiro/scripts/curator/diagnose-memory.ts",
+      "inputs": {},
+      "examples": [
+        "pnpm tsx .kiro/scripts/curator/diagnose-memory.ts"
+      ],
+      "when_to_use": [
+        "Curator 啟動時自動執行",
+        "懷疑記憶檔案有問題時",
+        "執行重要操作前確認系統健康時"
+      ],
+      "checks": [
+        "檔案存在性",
+        "JSON 格式正確性",
+        "必要欄位完整性",
+        "Index mapping 驗證狀態",
+        "定價合理性",
+        "記憶更新時間"
+      ],
+      "output": {
+        "categories": ["File Access", "JSON Parsing", "Schema", "Courses", "Index Mapping", "Pricing", "Freshness"],
+        "status_levels": {
+          "healthy": "✅ 正常",
+          "warning": "⚠️  警告（可繼續工作但建議修復）",
+          "error": "❌ 錯誤（必須修復才能工作）"
+        }
+      },
+      "exit_codes": {
+        "0": "所有檢查通過或只有警告",
+        "1": "發現錯誤"
+      }
+    },
+
     "update-svg-pricing": {
       "id": "update-svg-pricing",
       "name": "更新 SVG 定價圖",

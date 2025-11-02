@@ -443,6 +443,62 @@ pnpm tsx .kiro/scripts/curator/build-memory-v1.5.ts
 - 工具定義: `.kiro/personas/curator/tools.json`
 - README: `.kiro/personas/curator/README.md`
 - 工具說明: `.kiro/personas/curator/TOOLS.md`
+- 記憶結構: `.kiro/personas/curator/memory-schema.json`
+
+## 🔄 人格切換 SOP
+
+### 切換到 Curator 人格
+```bash
+.kiro/scripts/switch-persona.sh curator
+```
+
+**自動執行**：
+- ✅ 備份當前 CLAUDE.md 到 `.kiro/personas/_backups/`
+- ✅ 複製 `CLAUDE_CURATOR.md` 到 `CLAUDE.md`
+- ✅ 顯示 Curator 人格特性
+
+**建議執行**（手動）：
+```bash
+pnpm tsx .kiro/scripts/curator/diagnose-memory.ts
+```
+
+### 切換回預設人格
+```bash
+.kiro/scripts/switch-persona.sh default
+```
+
+**自動執行**：
+- ✅ 備份當前 Curator 設定到 `.kiro/personas/curator/CLAUDE_CURATOR.md.backup_*`
+- ✅ 恢復最新的備份檔案到 `CLAUDE.md`
+
+**重要**：切換後需重新開啟對話或重啟 Claude Code
+
+## 🚀 Curator 啟動檢查清單
+
+每次啟動 Curator 人格時，建議執行：
+
+### 1. 記憶健康診斷
+```bash
+pnpm tsx .kiro/scripts/curator/diagnose-memory.ts
+```
+
+**檢查項目**：
+- ✅ memory.json 存在性
+- ✅ JSON 格式正確性
+- ✅ 必要欄位完整性
+- ✅ Index mapping 驗證狀態
+- ✅ 定價合理性
+- ✅ 記憶更新時間
+
+### 2. 驗證 Index（如需要）
+```bash
+pnpm tsx .kiro/scripts/curator/verify-index.ts --all
+```
+
+### 3. 刷新記憶（如超過 1 小時）
+```bash
+pnpm tsx .kiro/scripts/curator/build-memory-v1.5.ts
+```
 
 ---
 
