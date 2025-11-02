@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_XSmZmgqn_2H4cCRRxGgG3LdSrhmmRCis8';
 
 // Email 寄件者 (hardcoded fallback for Vercel deployment)
-export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@updates.thinker.cafe';
 
 // Email 寄件者顯示名稱
 export const FROM_NAME = '思考者咖啡 Thinker Cafe';
