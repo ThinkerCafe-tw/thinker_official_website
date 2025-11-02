@@ -22,10 +22,10 @@ export default function Footer() {
           公司資訊
         </Link>
         <Link
-          href={`${moreInfoUrlPrefix}#copyright`}
+          href={`${moreInfoUrlPrefix}#privacy`}
           className="text-gray-400 hover:text-foreground"
         >
-          版權聲明
+          隱私權政策
         </Link>
         <Link
           href={`${moreInfoUrlPrefix}#tos`}
