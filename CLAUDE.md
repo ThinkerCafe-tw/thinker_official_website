@@ -10,6 +10,31 @@
 - 確保所有平台的內容一致性
 - 優化課程的視覺呈現
 
+## 🚀 快速決策樹
+
+當 Cruz 說話時，立即判斷：
+
+### 1. 包含「svg」+ 課程編號？
+→ **模式 C（SVG 更新）**
+→ 直接執行一步到位流程
+→ ❌ 不執行腳本（腳本還不完善）
+→ ✅ 直接讀取價格 + 替換模板
+
+### 2. 明確說「改價格為 XXX」？
+→ **模式 A（執行指令）**
+→ 按 SOP 執行
+
+### 3. 問「怎麼樣」「如何」等開放問題？
+→ **模式 B（分析建議）**
+→ 使用工具分析
+
+### ⚡ 模式 C 關鍵記憶點
+- **檔案位置**：`app/products/[id]/HighlightCard.js`（不是 src/components！）
+- **讀取 JSON**：必須用 `jq`，禁止用 python/node/tsx
+- **參考模板**：第五課（courseId === 5 && index === 0）
+- **千分位規則**：價格 >= 1000 要加逗號（如：1,280）
+- **測試前準備**：先殺掉現有的 dev server
+
 ## 🧠 核心記憶
 
 ### 系統架構
@@ -132,69 +157,112 @@ python3 -c "import json; ..."  # 不允許！
 4. 等待 Cruz 決定方案
 5. 執行選定的方案
 
-### 模式 C：SVG 定價圖快速更新 ⭐ NEW
+### 模式 C：SVG 定價圖快速更新 ⭐ 一步到位版
 
 **觸發條件**（關鍵字組合）：
 - 「把第X課」+ 「改成svg」
-- 「第X課」+ 「highlight1」+ 「價格」+ 「svg」
-- 「第X課」+ 「參照第Y課」+ 「svg」
+- 「第X課」+ 「svg」
+- 「第X課」+ 「highlight1」+ 「價格」
 
-**強制執行步驟**（不可偏離）：
+**一步到位執行流程**（無猶豫）：
 
-**步驟 1：執行腳本**
+#### 步驟 1：讀取目標課程價格（必須用 jq）
 ```bash
-.kiro/tools/curator/update-svg-pricing.sh <課程ID> [參考課程ID]
-```
-範例：`.kiro/tools/curator/update-svg-pricing.sh 4 5`
+# 讀取課程資料
+COURSE_DATA=$(jq -c '.courses[] | select(.course_id == X)' .kiro/personas/curator/memory.json)
 
-腳本會：
-- 使用 `jq` 讀取 memory.json（唯一允許的方式）
-- 計算節省金額
-- 檢查 index mapping（若為 null 會報錯並提示如何確認）
-- 生成新的 SVG 代碼
-- 輸出結果到 `/tmp/curator-svg-update-result.json`
+# 提取價格欄位
+GROUP_EARLY=$(echo $COURSE_DATA | jq -r '.pricing.group_price_early')
+SINGLE_EARLY=$(echo $COURSE_DATA | jq -r '.pricing.single_price_early')
+GROUP_PRICE=$(echo $COURSE_DATA | jq -r '.pricing.group_price')
+SINGLE_PRICE=$(echo $COURSE_DATA | jq -r '.pricing.single_price')
 
-**步驟 2：讀取腳本輸出**
-```bash
-cat /tmp/curator-svg-update-result.json
+# 計算節省金額
+GROUP_SAVE=$((GROUP_PRICE - GROUP_EARLY))
+SINGLE_SAVE=$((SINGLE_PRICE - SINGLE_EARLY))
 ```
 
-**步驟 3：更新 HighlightCard.js**
-使用 Edit 工具，根據腳本輸出的 `svg_code` 更新檔案
+#### 步驟 2：格式化數字（千分位）
+**重要規則**：價格 >= 1000 必須加千分位逗號
 
-**步驟 4：本地測試**
 ```bash
+# Bash 內建格式化（macOS 可用）
+printf "%'d\n" 1280  # 輸出：1,280
+printf "%'d\n" 520   # 輸出：520（不到千位不加）
+```
+
+**範例**：
+- ✅ 正確：1,280 / 3,200 / 省 1,300 元
+- ❌ 錯誤：1280 / 3200 / 省 1300 元
+
+#### 步驟 3：讀取參考 SVG 模板
+```bash
+# 從第五課讀取 SVG 模板（作為參考）
+grep -A 20 "courseId === 5 && index === 0" app/products/\[id\]/HighlightCard.js
+```
+
+**注意**：檔案路徑是 `app/products/[id]/HighlightCard.js`（不是 src/components！）
+
+#### 步驟 4：替換價格並更新檔案
+使用 Edit 工具，在第五課 SVG 前面新增目標課程的 SVG：
+
+```javascript
+// 課程 X 的定價圖 SVG
+const svgX = (courseId === X && index === 0) ? `<svg...>
+  // 替換以下數字：
+  // - 小團班價格：<text>GROUP_EARLY</text>
+  // - 一對一價格：<text>SINGLE_EARLY</text>
+  // - 節省金額：<text>省 GROUP_SAVE 元</text> 和 <text>省 SINGLE_SAVE 元</text>
+</svg>` : null;
+
+// 課程 5 的定價圖 SVG（保留）
+const svg5 = ...
+
+// 合併所有 SVG
+const testSVG = svgX || svg5;
+```
+
+#### 步驟 5：本地測試
+```bash
+# 先關閉所有現有的 dev server
+lsof -ti:3000,3001,3002 | xargs kill -9 2>/dev/null || true
+
+# 等待端口釋放
+sleep 2
+
+# 啟動新的 dev server（背景執行）
 pnpm dev
-# 訪問 http://localhost:3000/products/<課程ID>
+
+# 等待啟動完成
+sleep 5
 ```
 
-**步驟 5：詢問是否上線**
-等待 Cruz 確認
+測試網址：`http://localhost:3000/products/X`
 
-**不做的事**：
-❌ 使用 python/node/tsx 讀取 JSON（必須用 jq）
-❌ 直接讀取 memory.json（必須透過腳本）
-❌ 自己計算價格（腳本會處理）
-❌ 猜測 index（腳本會檢查，若為 null 會報錯）
-❌ 自動上線（等待確認）
+#### 步驟 6：等待確認上線
+顯示測試網址，等待 Cruz 確認
 
-**停止條件**（腳本會檢查）：
-- 找不到目標課程資料（exit code 1）
-- index 為 null（exit code 1 + 提示如何確認）
-- 計算出的節省金額為負數（exit code 1）
+---
+
+**Fallback 策略**（當腳本失敗時）：
+如果執行 `.kiro/tools/curator/update-svg-pricing.sh` 失敗：
+1. 不要猶豫，直接執行上述一步到位流程
+2. 手動讀取價格 + 替換模板
+3. 腳本只是輔助工具，不是必需品
 
 **範例指令**：
 ```
-Hi Curator, 幫我把第四課的highlight1課程價格參照第五課改成svg
+Hi Curator, 第四課改成svg
 ```
 
-**預期執行流程**：
-1. 執行 `.kiro/tools/curator/update-svg-pricing.sh 4 5`
-2. 若成功：讀取 `/tmp/curator-svg-update-result.json`
-3. 若失敗（index = null）：回報錯誤訊息，等待 Cruz 補完 index mapping
-4. 使用 Edit 工具更新 HighlightCard.js
-5. 執行 `pnpm dev` 測試
-6. 詢問是否上線
+**預期執行**：
+直接執行步驟 1-6，不詢問、不分析，一氣呵成
+
+---
+
+**千分位格式化參考**：
+- 第四課：1,280 / 3,200 / 省 520 元 / 省 1,300 元
+- 第五課：590 / 990 / 省 890 元 / 省 1,510 元
 
 ## 🎨 定價圖片設計規範
 
