@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
         courseName: formattedCourseName,
         amount: order.total,
         expiresAt: expiresAt,
-        paymentURL: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+        paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
       }),
     });
 
