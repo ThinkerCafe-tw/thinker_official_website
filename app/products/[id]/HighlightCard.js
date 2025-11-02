@@ -10,16 +10,16 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="800" y="150" font-family="Arial, sans-serif" font-size="130" font-weight="bold" fill="white" text-anchor="middle">早鳥優惠</text>
   <rect x="30" y="250" width="760" height="630" fill="white" stroke="#dee2e6" stroke-width="4" rx="24"/>
   <text x="410" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">小團班</text>
-  <text x="410" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">1,680</text>
+  <text x="410" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">1,280</text>
   <text x="410" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="210" y="760" width="400" height="95" fill="#28a745" rx="12"/>
-  <text x="410" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 720 元</text>
+  <text x="410" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 608 元</text>
   <rect x="810" y="250" width="760" height="630" fill="white" stroke="#dee2e6" stroke-width="4" rx="24"/>
   <text x="1190" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">一對一</text>
-  <text x="1190" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">4,200</text>
+  <text x="1190" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">3,200</text>
   <text x="1190" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="970" y="760" width="440" height="95" fill="#28a745" rx="12"/>
-  <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 1,800 元</text>
+  <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 688 元</text>
 </svg>` : null;
 
   // 課程 3 的定價圖 SVG
@@ -29,16 +29,16 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="800" y="150" font-family="Arial, sans-serif" font-size="130" font-weight="bold" fill="white" text-anchor="middle">早鳥優惠</text>
   <rect x="30" y="250" width="760" height="630" fill="white" stroke="#dee2e6" stroke-width="4" rx="24"/>
   <text x="410" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">小團班</text>
-  <text x="410" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">1,680</text>
+  <text x="410" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">1,280</text>
   <text x="410" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="210" y="760" width="400" height="95" fill="#28a745" rx="12"/>
-  <text x="410" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 720 元</text>
+  <text x="410" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 608 元</text>
   <rect x="810" y="250" width="760" height="630" fill="white" stroke="#dee2e6" stroke-width="4" rx="24"/>
   <text x="1190" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">一對一</text>
-  <text x="1190" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">1,680</text>
+  <text x="1190" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">3,200</text>
   <text x="1190" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="970" y="760" width="440" height="95" fill="#28a745" rx="12"/>
-  <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 4,320 元</text>
+  <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 688 元</text>
 </svg>` : null;
 
   // 課程 4 的定價圖 SVG（只在 courseId === 4 且 index === 0 時顯示）
@@ -51,13 +51,13 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="410" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">1,280</text>
   <text x="410" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="210" y="760" width="400" height="95" fill="#28a745" rx="12"/>
-  <text x="410" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 520 元</text>
+  <text x="410" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 608 元</text>
   <rect x="810" y="250" width="760" height="630" fill="white" stroke="#dee2e6" stroke-width="4" rx="24"/>
   <text x="1190" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">一對一</text>
   <text x="1190" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">3,200</text>
   <text x="1190" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="970" y="760" width="440" height="95" fill="#28a745" rx="12"/>
-  <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 1,300 元</text>
+  <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 688 元</text>
 </svg>` : null;
 
   // 課程 5 的定價圖 SVG（只在 courseId === 5 且 index === 0 時顯示）
@@ -89,7 +89,7 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="800" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">10,000</text>
   <text x="800" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="580" y="760" width="440" height="95" fill="#28a745" rx="12"/>
-  <text x="800" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 35,000 元</text>
+  <text x="800" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 8,888 元</text>
 </svg>` : null;
 
   const testSVG = svg2 || svg3 || svg4 || svg5 || svg6;
