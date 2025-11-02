@@ -1,0 +1,304 @@
+{
+  "version": "1.0.0",
+  "persona": "curator",
+  "description": "Curator 可用的工具集",
+  "tools": {
+    "analyze-pricing": {
+      "id": "analyze-pricing",
+      "name": "定價分析",
+      "description": "分析當前課程定價，並提出調整建議",
+      "script_path": ".kiro/tools/curator/analyze-pricing.sh",
+      "prompt_template": ".kiro/tools/curator/prompts/analyze-pricing.md",
+      "inputs": {
+        "course_id": {
+          "type": "number",
+          "required": true,
+          "description": "課程 ID"
+        }
+      },
+      "outputs": {
+        "format": "json",
+        "schema": {
+          "course_id": "number",
+          "current_pricing": {
+            "single_price": "number",
+            "group_price": "number",
+            "early_bird_single": "number",
+            "early_bird_group": "number"
+          },
+          "analysis": {
+            "perceived_value": "string",
+            "price_positioning": "string",
+            "issues": ["string"]
+          },
+          "recommendations": [
+            {
+              "option": "string",
+              "pricing": "object",
+              "rationale": "string",
+              "positioning": "string"
+            }
+          ]
+        }
+      },
+      "permissions": {
+        "read": ["memory.json", "Notion API"],
+        "write": [],
+        "execute": ["pnpm tsx"]
+      }
+    },
+
+    "analyze-course-images": {
+      "id": "analyze-course-images",
+      "name": "課程圖片分析",
+      "description": "分析課程所有圖片的視覺內容",
+      "script_path": ".kiro/tools/curator/analyze-course-images.sh",
+      "prompt_template": ".kiro/tools/curator/prompts/analyze-course-images.md",
+      "inputs": {
+        "course_id": {
+          "type": "number",
+          "required": true,
+          "description": "課程 ID"
+        }
+      },
+      "outputs": {
+        "format": "json",
+        "schema": {
+          "course_id": "number",
+          "total_images": "number",
+          "images": [
+            {
+              "type": "string",
+              "analysis": {
+                "dominant_colors": ["string"],
+                "theme": "string",
+                "mood": "string",
+                "key_elements": ["string"],
+                "content_type": "string",
+                "confidence": "number"
+              }
+            }
+          ]
+        }
+      },
+      "permissions": {
+        "read": ["memory.json", "/tmp/curator_images/*"],
+        "write": [],
+        "execute": ["pnpm tsx", "curl"]
+      }
+    },
+
+    "check-pricing-consistency": {
+      "id": "check-pricing-consistency",
+      "name": "定價一致性檢查",
+      "description": "檢查 Notion、網站、行銷材料的定價是否一致",
+      "script_path": ".kiro/tools/curator/check-pricing-consistency.sh",
+      "prompt_template": ".kiro/tools/curator/prompts/check-pricing-consistency.md",
+      "inputs": {
+        "course_id": {
+          "type": "number",
+          "required": false,
+          "description": "指定課程 ID，留空則檢查所有課程"
+        }
+      },
+      "outputs": {
+        "format": "json",
+        "schema": {
+          "checked_at": "string",
+          "total_courses": "number",
+          "inconsistencies": [
+            {
+              "course_id": "number",
+              "course_title": "string",
+              "notion_price": "object",
+              "website_price": "object",
+              "status": "string",
+              "needs_update": "boolean"
+            }
+          ]
+        }
+      },
+      "permissions": {
+        "read": ["memory.json", "Notion API", "網站 API"],
+        "write": [],
+        "execute": ["pnpm tsx", "curl"]
+      }
+    },
+
+    "suggest-positioning": {
+      "id": "suggest-positioning",
+      "name": "課程定位建議",
+      "description": "基於課程內容、圖片、描述，建議課程定位策略",
+      "script_path": ".kiro/tools/curator/suggest-positioning.sh",
+      "prompt_template": ".kiro/tools/curator/prompts/suggest-positioning.md",
+      "inputs": {
+        "course_id": {
+          "type": "number",
+          "required": true
+        }
+      },
+      "outputs": {
+        "format": "json",
+        "schema": {
+          "course_id": "number",
+          "current_state": {
+            "pricing": "object",
+            "description": "string",
+            "visual_theme": "string"
+          },
+          "positioning_options": [
+            {
+              "strategy": "string",
+              "rationale": "string",
+              "pricing_suggestion": "object",
+              "description_changes": "string",
+              "target_audience": "string",
+              "expected_impact": "string"
+            }
+          ]
+        }
+      },
+      "permissions": {
+        "read": ["memory.json"],
+        "write": [],
+        "execute": ["analyze-pricing", "analyze-course-images"]
+      }
+    },
+
+    "generate-pricing-report": {
+      "id": "generate-pricing-report",
+      "name": "定價報告生成",
+      "description": "生成完整的定價分析報告",
+      "script_path": ".kiro/tools/curator/generate-pricing-report.sh",
+      "prompt_template": ".kiro/tools/curator/prompts/generate-pricing-report.md",
+      "inputs": {
+        "include_all_courses": {
+          "type": "boolean",
+          "required": false,
+          "default": true
+        }
+      },
+      "outputs": {
+        "format": "markdown",
+        "path": ".kiro/personas/curator/reports/pricing-report-{timestamp}.md"
+      },
+      "permissions": {
+        "read": ["memory.json"],
+        "write": [".kiro/personas/curator/reports/"],
+        "execute": ["analyze-pricing", "check-pricing-consistency", "suggest-positioning"]
+      }
+    },
+
+    "update-course-pricing": {
+      "id": "update-course-pricing",
+      "name": "更新課程價格",
+      "description": "執行完整的價格更新流程：更新 Notion 資料 + 生成並上傳定價圖片 + 刷新 Memory",
+      "sop_path": ".kiro/personas/curator/CHANGE_PRICE_SOP.md",
+      "script_path": ".kiro/tools/curator/update-course-pricing.sh",
+      "inputs": {
+        "course_id": {
+          "type": "number",
+          "required": true,
+          "description": "課程 ID"
+        },
+        "group_price": {
+          "type": "number",
+          "required": true,
+          "description": "小班制定價"
+        },
+        "group_price_early": {
+          "type": "number",
+          "required": true,
+          "description": "小班制早鳥價"
+        },
+        "single_price": {
+          "type": "number",
+          "required": true,
+          "description": "一對一定價"
+        },
+        "single_price_early": {
+          "type": "number",
+          "required": true,
+          "description": "一對一早鳥價"
+        }
+      },
+      "outputs": {
+        "format": "json",
+        "schema": {
+          "success": "boolean",
+          "course_id": "number",
+          "updated_fields": ["string"],
+          "image_uploaded": "boolean",
+          "verification_url": "string"
+        }
+      },
+      "permissions": {
+        "read": ["memory.json", "Notion API"],
+        "write": ["Notion API", "memory.json"],
+        "execute": ["pnpm tsx", "qlmanage", "upload-to-notion.ts", "build-memory-v1.5.ts"]
+      },
+      "stop_conditions": [
+        "新價格比舊價格低 90% 以上",
+        "一對一價格低於團班價格",
+        "缺少必要的價格參數"
+      ]
+    }
+  },
+
+  "workflows": {
+    "pricing-audit": {
+      "name": "定價稽核工作流",
+      "description": "完整的定價稽核流程",
+      "steps": [
+        {
+          "step": 1,
+          "tool": "check-pricing-consistency",
+          "description": "檢查定價一致性"
+        },
+        {
+          "step": 2,
+          "tool": "analyze-pricing",
+          "description": "分析每個課程的定價",
+          "iterate": "all_courses"
+        },
+        {
+          "step": 3,
+          "tool": "suggest-positioning",
+          "description": "提出定位建議",
+          "iterate": "courses_with_issues"
+        },
+        {
+          "step": 4,
+          "tool": "generate-pricing-report",
+          "description": "生成完整報告"
+        }
+      ],
+      "schedule": "on_demand",
+      "estimated_duration": "5-10 minutes"
+    },
+
+    "course-health-check": {
+      "name": "課程健康檢查",
+      "description": "檢查單一課程的所有面向",
+      "steps": [
+        {
+          "step": 1,
+          "tool": "analyze-course-images",
+          "description": "分析視覺內容"
+        },
+        {
+          "step": 2,
+          "tool": "analyze-pricing",
+          "description": "分析定價"
+        },
+        {
+          "step": 3,
+          "tool": "suggest-positioning",
+          "description": "綜合建議"
+        }
+      ],
+      "schedule": "on_demand",
+      "estimated_duration": "2-3 minutes"
+    }
+  }
+}
