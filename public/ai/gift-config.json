@@ -5,7 +5,7 @@
       "title": "🎁 AI 發財提示詞禮包",
       "subtitle": "感謝你在 Reels 留下「有趣」！",
       "description": "普發1萬的11門課廣告禮包",
-      "expires": "2025-01-31",
+      "expires": "false",
       "source": "fb-ad-jan"
     },
     "gifts": ["efficiency", "content", "decision"],
