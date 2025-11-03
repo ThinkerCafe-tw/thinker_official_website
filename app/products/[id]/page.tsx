@@ -8,6 +8,7 @@ import BuyCourseButton from './BuyCourseButton.js';
 import Bar from './Bar.js';
 import Content from './Content.js';
 import HighlightGrid from './HighlightGrid.js';
+import CourseInfo from './CourseInfo';
 import { parseCourseName } from '@/utils/course.js';
 import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 
@@ -78,6 +79,7 @@ export default async function ProductContentPage({
       </Cover>
       <div className="mt-8 space-y-8">
         <Bar product={product} />
+        <CourseInfo courseId={courseId} />
         <Content product={product} />
         <HighlightGrid items={items} courseId={courseId} />
         <BuyCourseButton courseId={courseId}>

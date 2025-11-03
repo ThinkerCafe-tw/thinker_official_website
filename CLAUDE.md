@@ -10,31 +10,6 @@
 - 確保所有平台的內容一致性
 - 優化課程的視覺呈現
 
-## 🚀 快速決策樹
-
-當 Cruz 說話時，立即判斷：
-
-### 1. 包含「svg」+ 課程編號？
-→ **模式 C（SVG 更新）**
-→ 直接執行一步到位流程
-→ ❌ 不執行腳本（腳本還不完善）
-→ ✅ 直接讀取價格 + 替換模板
-
-### 2. 明確說「改價格為 XXX」？
-→ **模式 A（執行指令）**
-→ 按 SOP 執行
-
-### 3. 問「怎麼樣」「如何」等開放問題？
-→ **模式 B（分析建議）**
-→ 使用工具分析
-
-### ⚡ 模式 C 關鍵記憶點
-- **檔案位置**：`app/products/[id]/HighlightCard.js`（不是 src/components！）
-- **讀取 JSON**：必須用 `jq`，禁止用 python/node/tsx
-- **參考模板**：第五課（courseId === 5 && index === 0）
-- **千分位規則**：價格 >= 1000 要加逗號（如：1,280）
-- **測試前準備**：先殺掉現有的 dev server
-
 ## 🧠 核心記憶
 
 ### 系統架構
@@ -63,46 +38,6 @@ Website API (自動同步)
 - Database ID: `26405e9de12180ff9e11e4b93209d16b`
 - 價格欄位：`group_price`, `group_price_early`, `single_price`, `single_price_early`
 - 圖片欄位：`main_image`, `content_highlight1_image`, `content_highlight2_image`, `content_highlight3_image`, `content_video`
-
-### 🔒 強制規範：讀取 JSON 的標準方式
-
-**唯一允許的方法**：使用 `jq` 命令行工具
-
-```bash
-# 讀取課程資料
-jq '.courses[] | select(.course_id == 4)' .kiro/personas/curator/memory.json
-
-# 讀取多個課程
-jq '.courses[] | select(.course_id == 4 or .course_id == 5)' .kiro/personas/curator/memory.json
-
-# 提取特定欄位
-jq '.courses[] | select(.course_id == 4) | {course_id, pricing}' .kiro/personas/curator/memory.json
-
-# 讀取 index mapping
-jq '.highlight_index_mapping.mapping["4"]' .kiro/personas/curator/memory.json
-```
-
-**禁止使用**：
-- ❌ `python -c "import json..."`
-- ❌ `node -e "require(...)"`
-- ❌ `pnpm tsx -e "import..."`
-- ❌ Read 工具直接讀取（檔案太大會失敗）
-
-**原因**：
-1. `jq` 是專門處理 JSON 的工具，速度快且語法標準
-2. 避免不同語言的語法差異導致錯誤
-3. memory.json 檔案太大（500KB+），Read 工具會失敗
-4. 統一方法便於除錯和維護
-
-**範例**：
-```bash
-# ✅ 正確：使用 jq
-COURSE_DATA=$(jq -c '.courses[] | select(.course_id == 4)' .kiro/personas/curator/memory.json)
-echo $COURSE_DATA | jq '.pricing'
-
-# ❌ 錯誤：使用 python
-python3 -c "import json; ..."  # 不允許！
-```
 
 ## 🛠️ 可用工具
 
@@ -156,193 +91,6 @@ python3 -c "import json; ..."  # 不允許！
 3. 使用 `suggest-positioning` 提供定位建議
 4. 等待 Cruz 決定方案
 5. 執行選定的方案
-
-### 模式 C：SVG 定價圖快速更新 ⭐ 一步到位版
-
-**觸發條件**（關鍵字組合）：
-- 「把第X課」+ 「改成svg」
-- 「第X課」+ 「svg」
-- 「第X課」+ 「highlight1」+ 「價格」
-
-**一步到位執行流程**（無猶豫）：
-
-#### 步驟 1：讀取目標課程價格（必須用 jq）
-```bash
-# 讀取課程資料
-COURSE_DATA=$(jq -c '.courses[] | select(.course_id == X)' .kiro/personas/curator/memory.json)
-
-# 提取價格欄位
-GROUP_EARLY=$(echo $COURSE_DATA | jq -r '.pricing.group_price_early')
-SINGLE_EARLY=$(echo $COURSE_DATA | jq -r '.pricing.single_price_early')
-GROUP_PRICE=$(echo $COURSE_DATA | jq -r '.pricing.group_price')
-SINGLE_PRICE=$(echo $COURSE_DATA | jq -r '.pricing.single_price')
-
-# 計算節省金額
-GROUP_SAVE=$((GROUP_PRICE - GROUP_EARLY))
-SINGLE_SAVE=$((SINGLE_PRICE - SINGLE_EARLY))
-```
-
-#### 步驟 2：格式化數字（千分位）
-**重要規則**：價格 >= 1000 必須加千分位逗號
-
-```bash
-# Bash 內建格式化（macOS 可用）
-printf "%'d\n" 1280  # 輸出：1,280
-printf "%'d\n" 520   # 輸出：520（不到千位不加）
-```
-
-**範例**：
-- ✅ 正確：1,280 / 3,200 / 省 1,300 元
-- ❌ 錯誤：1280 / 3200 / 省 1300 元
-
-#### 步驟 3：讀取參考 SVG 模板
-```bash
-# 從第五課讀取 SVG 模板（作為參考）
-grep -A 20 "courseId === 5 && index === 0" app/products/\[id\]/HighlightCard.js
-```
-
-**注意**：檔案路徑是 `app/products/[id]/HighlightCard.js`（不是 src/components！）
-
-#### 步驟 4：替換價格並更新檔案
-使用 Edit 工具，在第五課 SVG 前面新增目標課程的 SVG：
-
-```javascript
-// 課程 X 的定價圖 SVG
-const svgX = (courseId === X && index === 0) ? `<svg...>
-  // 替換以下數字：
-  // - 小團班價格：<text>GROUP_EARLY</text>
-  // - 一對一價格：<text>SINGLE_EARLY</text>
-  // - 節省金額：<text>省 GROUP_SAVE 元</text> 和 <text>省 SINGLE_SAVE 元</text>
-</svg>` : null;
-
-// 課程 5 的定價圖 SVG（保留）
-const svg5 = ...
-
-// 合併所有 SVG
-const testSVG = svgX || svg5;
-```
-
-#### 步驟 5：本地測試
-```bash
-# 先關閉所有現有的 dev server
-lsof -ti:3000,3001,3002 | xargs kill -9 2>/dev/null || true
-
-# 等待端口釋放
-sleep 2
-
-# 啟動新的 dev server（背景執行）
-pnpm dev
-
-# 等待啟動完成
-sleep 5
-```
-
-測試網址：`http://localhost:3000/products/X`
-
-#### 步驟 6：等待確認上線
-顯示測試網址，等待 Cruz 確認
-
----
-
-**Fallback 策略**（當腳本失敗時）：
-如果執行 `.kiro/tools/curator/update-svg-pricing.sh` 失敗：
-1. 不要猶豫，直接執行上述一步到位流程
-2. 手動讀取價格 + 替換模板
-3. 腳本只是輔助工具，不是必需品
-
-**範例指令**：
-```
-Hi Curator, 第四課改成svg
-```
-
-**預期執行**：
-直接執行步驟 1-6，不詢問、不分析，一氣呵成
-
----
-
-**千分位格式化參考**：
-- 第二課：1,680 / 4,200 / 省 720 元 / 省 1,800 元
-- 第三課：1,680 / 1,680 / 省 720 元 / 省 4,320 元
-- 第四課：1,280 / 3,200 / 省 520 元 / 省 1,300 元
-- 第五課：590 / 990 / 省 890 元 / 省 1,510 元
-- 第六課：10,000（單欄）/ 省 35,000 元
-
-### 模式 D：批量 SVG 更新 ⭐ 新增 2025-11-02
-
-**觸發條件**：
-- Cruz 說「把其他在線上的課程都改 svg」
-- 需要批量更新多個課程
-
-**批量執行流程**（效率優先）：
-
-#### 步驟 1：一次性讀取所有課程資料
-```bash
-# 批量查詢所有已發布課程
-jq '.courses[] | select(.course_id > 0) | {course_id, zh_name, pricing}' .kiro/personas/curator/memory.json
-```
-
-**關鍵優化**：
-- ✅ 一次查詢所有課程（不要逐一查詢）
-- ✅ 使用 `select()` 過濾條件
-- ✅ 只提取需要的欄位
-
-#### 步驟 2：批量生成所有 SVG
-使用單一 Edit 操作，在檔案開頭新增所有課程的 SVG：
-
-```javascript
-// 課程 2 的定價圖 SVG
-const svg2 = (courseId === 2 && index === 0) ? `<svg>...</svg>` : null;
-
-// 課程 3 的定價圖 SVG
-const svg3 = (courseId === 3 && index === 0) ? `<svg>...</svg>` : null;
-
-// ...其他課程
-
-// 統一合併
-const testSVG = svg2 || svg3 || svg4 || svg5 || svg6;
-```
-
-**關鍵優化**：
-- ✅ 單次 Edit 完成所有更新
-- ✅ 避免多次讀寫檔案
-- ✅ 使用 `||` 運算子統一處理
-
-#### 步驟 3：快速批量測試
-```bash
-# 快速驗證關鍵資訊（不需完整讀取 HTML）
-curl -s URL | grep -o '<text[^>]*>省 [0-9,]* 元</text>'
-```
-
-**預期輸出**：
-```
-省 720 元
-省 1,800 元
-```
-
-#### 步驟 4：異常資料處理
-如果發現價格異常（如：優惠價 > 原價）：
-1. 分析其他課程的定價模式
-2. 推測合理價格
-3. 執行修正 + 標記 ⚠️
-4. 通知 Cruz 檢查 Notion 原始資料
-
-**範例**（課程 3 異常處理）：
-```
-發現：group_price_early (4800) > group_price (2400) ❌
-推測：應為 group_price_early = 1680（與其他課程一致）
-執行：使用推測價格 + 標記異常 ⚠️
-通知：「建議 Cruz 檢查 Notion 中課程 3 的價格設定」
-```
-
----
-
-**效率提升**：
-- 執行時間：10 分鐘（5 堂課程）
-- Edit 操作：2 次（優化前需 5+ 次）
-- 測試時間：< 2 分鐘
-- 下次預估：< 5 分鐘（效率提升 50%）
-
-**記錄位置**：`.kiro/personas/curator/sessions/20251102_223628_batch_svg_update.md`
 
 ## 🎨 定價圖片設計規範
 
@@ -443,62 +191,6 @@ pnpm tsx .kiro/scripts/curator/build-memory-v1.5.ts
 - 工具定義: `.kiro/personas/curator/tools.json`
 - README: `.kiro/personas/curator/README.md`
 - 工具說明: `.kiro/personas/curator/TOOLS.md`
-- 記憶結構: `.kiro/personas/curator/memory-schema.json`
-
-## 🔄 人格切換 SOP
-
-### 切換到 Curator 人格
-```bash
-.kiro/scripts/switch-persona.sh curator
-```
-
-**自動執行**：
-- ✅ 備份當前 CLAUDE.md 到 `.kiro/personas/_backups/`
-- ✅ 複製 `CLAUDE_CURATOR.md` 到 `CLAUDE.md`
-- ✅ 顯示 Curator 人格特性
-
-**建議執行**（手動）：
-```bash
-pnpm tsx .kiro/scripts/curator/diagnose-memory.ts
-```
-
-### 切換回預設人格
-```bash
-.kiro/scripts/switch-persona.sh default
-```
-
-**自動執行**：
-- ✅ 備份當前 Curator 設定到 `.kiro/personas/curator/CLAUDE_CURATOR.md.backup_*`
-- ✅ 恢復最新的備份檔案到 `CLAUDE.md`
-
-**重要**：切換後需重新開啟對話或重啟 Claude Code
-
-## 🚀 Curator 啟動檢查清單
-
-每次啟動 Curator 人格時，建議執行：
-
-### 1. 記憶健康診斷
-```bash
-pnpm tsx .kiro/scripts/curator/diagnose-memory.ts
-```
-
-**檢查項目**：
-- ✅ memory.json 存在性
-- ✅ JSON 格式正確性
-- ✅ 必要欄位完整性
-- ✅ Index mapping 驗證狀態
-- ✅ 定價合理性
-- ✅ 記憶更新時間
-
-### 2. 驗證 Index（如需要）
-```bash
-pnpm tsx .kiro/scripts/curator/verify-index.ts --all
-```
-
-### 3. 刷新記憶（如超過 1 小時）
-```bash
-pnpm tsx .kiro/scripts/curator/build-memory-v1.5.ts
-```
 
 ---
 
@@ -509,3 +201,44 @@ pnpm tsx .kiro/scripts/curator/build-memory-v1.5.ts
 ---
 
 💡 **提示**：使用 `.kiro/scripts/switch-persona.sh default` 可切換回預設模式
+
+---
+
+## 📌 當前任務狀態（2025-11-03）
+
+### 🎯 任務：改版第六課（AI 全能實戰營）頁面
+
+**背景**：
+- 第六課 = AI 全能實戰營（實體課程）
+- 定價：10,000 元（顧問建議原價標示：20,768，基於 7 門課計算）
+- 課程時間：11/29, 12/6, 12/13 (六) 09:30-16:30
+- 地點：新北市板橋區民權路 83 號 1F
+- 報名截止：11/24 (一)
+- 限額：12 人
+- 注意：Notion 中 single_price = 45000，但行銷頁面要顯示計算後的 20,768
+
+**顧問行銷建議**：
+1. Bar 區塊顯示 4 個重點：📅 日期 | 📍 地點 | 👥 人數 | ⏰ 截止
+2. 新增 CourseInfo 區塊顯示完整課程資訊（時間、地點、交通、截止）
+
+**目前進度**：
+✅ 檢查第六課 Notion 資料現況
+⏸️ 從 Vercel 拉取 .env（需要 `vercel link --yes`）
+⏸️ 使用 Notion API 讀取第六課完整資料
+⏸️ 規劃需要新增的 Notion 欄位
+⏸️ 更新 Bar 區塊內容（4 個重點資訊）
+⏸️ 建立 CourseInfo 組件（課程資訊區塊）
+⏸️ 更新 page.tsx（插入 CourseInfo）
+⏸️ 本地測試
+
+**重要資訊**：
+- Notion Page ID: 28805e9d-e121-807a-a596-f976e32ae474
+- Database ID: 26405e9de12180ff9e11e4b93209d16b
+- 目前 memory.json 中第六課的 bar_text, you_will_learn, summery, content_tags, skill_tags 都是 null
+- Notion 實際頁面有很多內容，需要重新 fetch
+
+**下一步**：
+1. 執行 `vercel link --yes` 連結專案
+2. 執行 `vercel env pull .env.local` 拉取環境變數
+3. 使用 Notion API 讀取完整資料
+4. 開始實作前端組件

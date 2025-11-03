@@ -98,6 +98,11 @@ export function ProductGrid() {
                       精選
                     </Badge>
                   )}
+                  {product.course_id !== 6 && (
+                    <Badge className="absolute top-2 right-2 bg-gray-600/90 text-white z-10">
+                      即將開放
+                    </Badge>
+                  )}
                   {/* <div className="absolute top-3 right-3 flex items-center gap-1 bg-background/80 backdrop-blur px-2 py-1 rounded-full transition-all duration-200 hover:bg-background/90">
                   <Star className="h-3 w-3 fill-primary text-primary" />
                   <span className="text-xs font-medium">{product.rating}</span>
