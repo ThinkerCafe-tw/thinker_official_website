@@ -41,6 +41,9 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
   const router = useRouter();
   const { toast } = useToast();
 
+  // 只顯示已開放的課程（目前只有第六課）
+  const availableCourses = courses.filter(course => course.course_id === 6);
+
   const formSchema = z.object({
     courseId: z.number({ message: '請選擇課程名稱' }).int().positive(),
     courseVariant: z.enum(['group', 'single'], { message: '請選擇上課方式' }),
@@ -54,7 +57,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
   });
   const selectedCourseId = form.watch('courseId');
   const selectedCourseVariant = form.watch('courseVariant');
-  const selectedCourse = courses.find(({ course_id }) => course_id === selectedCourseId);
+  const selectedCourse = availableCourses.find(({ course_id }) => course_id === selectedCourseId);
   const total = selectedCourse ? {
     group: selectedCourse.group_price,
     single: selectedCourse.single_price,
@@ -157,7 +160,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {courses.map(course => (
+                      {availableCourses.map(course => (
                         <SelectItem key={course.course_id} value={String(course.course_id)}>
                           {parseCourseName(course)}
                         </SelectItem>
