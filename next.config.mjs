@@ -15,6 +15,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/ai/gift',
+        destination: '/ai/gift.html',
+      },
+    ];
+  },
 }
 
 export default nextConfig
