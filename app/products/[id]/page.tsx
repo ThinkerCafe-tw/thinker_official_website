@@ -9,8 +9,10 @@ import Bar from './Bar.js';
 import Content from './Content.js';
 import HighlightGrid from './HighlightGrid.js';
 import CourseInfo from './CourseInfo';
+import FAQ from '@/components/course/FAQ';
 import { parseCourseName } from '@/utils/course.js';
 import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
+import { universalFAQ, course6FAQ } from '@/data/faq';
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -86,6 +88,9 @@ export default async function ProductContentPage({
   const heroMedia = product.content_video || product.image;
   const items = FIXED_SIX(product);
 
+  // 根據課程 ID 選擇 FAQ
+  const faqItems = courseId === 6 ? course6FAQ : universalFAQ;
+
   // Course Schema for SEO
   const courseSchema = {
     "@context": "https://schema.org",
@@ -117,12 +122,31 @@ export default async function ProductContentPage({
     "availableLanguage": ["zh-TW"]
   };
 
+  // FAQPage Schema for SEO
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
+
   return (
     <Page>
       {/* Course Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      {/* FAQPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <Cover fullScreenHeight className="flex flex-col justify-end items-start pb-8">
         <video
@@ -163,6 +187,7 @@ export default async function ProductContentPage({
         <CourseInfo courseId={courseId} />
         <Content product={product} />
         <HighlightGrid items={items} courseId={courseId} />
+        <FAQ items={faqItems} />
         <BuyCourseButton courseId={courseId}>
           立即報名
         </BuyCourseButton>
