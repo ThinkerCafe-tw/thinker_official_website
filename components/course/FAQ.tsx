@@ -43,8 +43,8 @@ export default function FAQ({ items, title = "常見問題" }: FAQProps) {
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-200 ${
-                openIndex === index ? 'max-h-96' : 'max-h-0'
+              className={`overflow-hidden transition-all duration-300 ${
+                openIndex === index ? 'max-h-[2000px]' : 'max-h-0'
               }`}
             >
               <div className="px-6 py-4 bg-gray-50 text-gray-700 whitespace-pre-line">
