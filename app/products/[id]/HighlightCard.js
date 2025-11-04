@@ -80,13 +80,13 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="1190" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 1,510 元</text>
 </svg>` : null;
 
-  // 課程 6 的定價圖 SVG（只有一對一方案，居中單欄版）
+  // 課程 6 的定價圖 SVG（小班制手把手教學，居中單欄版）
   const svg6 = (courseId === 6 && index === 0) ? `<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
   <rect width="1600" height="900" fill="#f8f9fa"/>
   <rect x="20" y="20" width="1560" height="200" fill="#FF6B6B" rx="20"/>
   <text x="800" y="150" font-family="Arial, sans-serif" font-size="130" font-weight="bold" fill="white" text-anchor="middle">限時優惠</text>
   <rect x="420" y="250" width="760" height="630" fill="white" stroke="#dee2e6" stroke-width="4" rx="24"/>
-  <text x="800" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">一對一</text>
+  <text x="800" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">小班制手把手教學</text>
   <text x="800" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">10,000</text>
   <text x="800" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="580" y="760" width="440" height="95" fill="#28a745" rx="12"/>
