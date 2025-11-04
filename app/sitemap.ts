@@ -5,25 +5,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 靜態頁面（總是返回）
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: 'https://thinkcafe.tw',
+      url: 'https://www.thinker.cafe',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: 'https://thinkcafe.tw/products',
+      url: 'https://www.thinker.cafe/products',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: 'https://thinkcafe.tw/about',
+      url: 'https://www.thinker.cafe/about',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
-      url: 'https://thinkcafe.tw/contact',
+      url: 'https://www.thinker.cafe/contact',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.log(`[Sitemap] Found ${publishedProducts.length} published products`)
 
     const productPages: MetadataRoute.Sitemap = publishedProducts.map((product: any) => ({
-      url: `https://thinkcafe.tw/products/${product.course_id}`,
+      url: `https://www.thinker.cafe/products/${product.course_id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
@@ -51,19 +51,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[Sitemap] Error generating sitemap:', error)
 
     // 如果 Notion API 失敗，至少返回靜態頁面
-    return [
-      {
-        url: 'https://thinkcafe.tw',
-        lastModified: new Date(),
-        changeFrequency: 'daily',
-        priority: 1,
-      },
-      {
-        url: 'https://thinkcafe.tw/products',
-        lastModified: new Date(),
-        changeFrequency: 'daily',
-        priority: 0.9,
-      },
-    ]
+    return staticPages
   }
 }

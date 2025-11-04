@@ -28,11 +28,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Thinker Cafe | AI 時代的實戰課程",
     description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！",
-    url: "https://thinkcafe.tw",
+    url: "https://www.thinker.cafe",
     siteName: "Thinker Cafe",
     images: [
       {
-        url: "https://thinkcafe.tw/logo.png", // 暫時使用 logo，之後需要準備 1200x630 的 OG 圖片
+        url: "https://www.thinker.cafe/og-image.png",
         width: 1200,
         height: 630,
         alt: "Thinker Cafe - AI 實戰課程"
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Thinker Cafe | AI 時代的實戰課程",
     description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！",
-    images: ["https://thinkcafe.tw/logo.png"]
+    images: ["https://www.thinker.cafe/og-image.png"]
   },
   robots: {
     index: true,
@@ -71,8 +71,8 @@ export default function RootLayout({
     "@type": "Organization",
     "name": "Thinker Cafe",
     "alternateName": "思考者咖啡",
-    "url": "https://thinkcafe.tw",
-    "logo": "https://thinkcafe.tw/logo.png",
+    "url": "https://www.thinker.cafe",
+    "logo": "https://www.thinker.cafe/logo.png",
     "description": "AI 時代的實戰課程平台，提供 ChatGPT、Midjourney 等 AI 工具專業培訓",
     "foundingDate": "2024",
     "address": {

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/', '/_next/'],
     },
-    sitemap: 'https://thinkcafe.tw/sitemap.xml',
+    sitemap: 'https://www.thinker.cafe/sitemap.xml',
   }
 }

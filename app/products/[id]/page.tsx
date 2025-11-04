@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
 
   const title = parseCourseName(product, '');
   const description = product.zh_description || `${title} - Thinker Cafe AI 實戰課程。立即報名學習最新的 AI 工具與技術！`;
-  const imageUrl = product.main_image || product.image || 'https://thinkcafe.tw/logo.png';
+  const imageUrl = product.main_image || product.image || 'https://www.thinker.cafe/og-image.png';
 
   return {
     title: parseMetadataTitle(title),
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: title,
       description: description,
-      url: `https://thinkcafe.tw/products/${id}`,
+      url: `https://www.thinker.cafe/products/${id}`,
       siteName: "Thinker Cafe",
       images: [
         {
@@ -95,7 +95,7 @@ export default async function ProductContentPage({
     "provider": {
       "@type": "Organization",
       "name": "Thinker Cafe",
-      "sameAs": "https://thinkcafe.tw"
+      "sameAs": "https://www.thinker.cafe"
     },
     "image": product.main_image || product.image,
     "offers": {
@@ -104,7 +104,7 @@ export default async function ProductContentPage({
       "price": product.single_price || product.group_price,
       "priceCurrency": "TWD",
       "availability": "https://schema.org/InStock",
-      "url": `https://thinkcafe.tw/products/${id}`,
+      "url": `https://www.thinker.cafe/products/${id}`,
       "validFrom": new Date().toISOString()
     },
     "courseCode": product.course_id,
