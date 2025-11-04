@@ -81,7 +81,7 @@ export default function CourseInfo({ courseId }: { courseId: number }) {
           <div className="text-base font-medium">{courseDetails.location.name}</div>
           <div className="text-sm text-white/70">{courseDetails.location.address}</div>
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(courseDetails.location.address)}`}
+            href="https://maps.app.goo.gl/mtD5mkZfEFLRD41Y6"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-sm text-orange-400 hover:text-orange-300 transition-colors"
