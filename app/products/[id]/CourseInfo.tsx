@@ -139,10 +139,12 @@ export default function CourseInfo({ courseId }: { courseId: number }) {
           <div className="text-sm text-white/70 space-y-1">
             <p className="font-medium text-white/90">課程包含：</p>
             <ul className="list-disc list-inside space-y-0.5 text-xs">
+              <li>📱 100% 手機友善教學（不需要筆電）</li>
               <li>實體教材與講義</li>
               <li>課後錄影回放（30 天觀看期限）</li>
               <li>專屬 LINE 社群支援</li>
               <li>課程研習證書</li>
+              <li>個人 AI 工具包網頁</li>
             </ul>
           </div>
         </div>
