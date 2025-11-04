@@ -1,6 +1,9 @@
 import { MetadataRoute } from 'next'
 import { getProducts } from '@/lib/notion'
 
+// Enable ISR with 1 hour revalidation
+export const revalidate = 3600
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 靜態頁面（總是返回）
   const staticPages: MetadataRoute.Sitemap = [
@@ -31,7 +34,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   try {
-    const products = await getProducts()
+    console.log('[Sitemap] Starting to fetch products from Notion...')
+    const products = await Promise.race([
+      getProducts(),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Notion API timeout')), 8000)
+      )
+    ]) as any[]
     console.log(`[Sitemap] Fetched ${products.length} products from Notion`)
 
     // 動態課程頁面
@@ -49,8 +58,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [...staticPages, ...productPages]
   } catch (error) {
     console.error('[Sitemap] Error generating sitemap:', error)
+    console.error('[Sitemap] Error details:', error instanceof Error ? error.message : String(error))
 
     // 如果 Notion API 失敗，至少返回靜態頁面
+    console.log('[Sitemap] Falling back to static pages only')
     return staticPages
   }
 }
