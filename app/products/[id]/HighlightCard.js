@@ -90,7 +90,7 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="800" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">10,000</text>
   <text x="800" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
   <rect x="580" y="760" width="440" height="95" fill="#28a745" rx="12"/>
-  <text x="800" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 8,888 元</text>
+  <text x="800" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 10,768 元</text>
 </svg>` : null;
 
   const testSVG = svg2 || svg3 || svg4 || svg5 || svg6;
