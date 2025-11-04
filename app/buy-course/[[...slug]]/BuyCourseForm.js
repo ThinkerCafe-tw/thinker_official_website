@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,10 +34,13 @@ import { parseCourseName, parseCourseVariantName } from '@/utils/course.js';
 import parsePriceString from '@/utils/parsePriceString.js';
 import { useToast } from '@/hooks/use-toast';
 
+const REWARD_STORAGE_KEY = 'explorer_discount';
+
 export default function BuyCourseForm({ courses, defaultCourseId }) {
   const [state, setState] = useState('filling');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [explorerDiscount, setExplorerDiscount] = useState(0);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -67,6 +70,25 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
     single: selectedCourse.single_price_early,
   }[selectedCourseVariant] : 0;
 
+  // 讀取探索者折扣
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(REWARD_STORAGE_KEY);
+      if (saved) {
+        const reward = JSON.parse(saved);
+        // 檢查是否是第六課的折扣
+        if (reward.courseId === 6 && reward.amount) {
+          setExplorerDiscount(reward.amount);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to read explorer discount:', e);
+    }
+  }, []);
+
+  // 計算最終價格（早鳥價或一般價 - 探索者折扣）
+  const finalTotal = Math.max(0, (totalEarly || total) - explorerDiscount);
+
   async function onSubmit(values) {
     if (state === 'filling') {
       setState('verifying');
@@ -85,7 +107,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
       .insert({
         course_id: courseId,
         course_variant: courseVariant,
-        total: totalEarly || total,
+        total: finalTotal,
       })
       .select();
 
@@ -99,34 +121,23 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
     const orderId = data[0].order_id;
 
     // 2. 發送繳費提醒 Email（非同步，不等待結果）
-    try {
-      fetch('/api/email/send-payment-reminder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId }),
-      }).then(res => {
-        if (res.ok) {
-          console.log('✅ Payment reminder email sent for order:', orderId);
-        } else {
-          console.error('❌ Failed to send payment reminder email');
-        }
-      }).catch(err => {
-        console.error('❌ Error sending email:', err);
-      });
+    fetch('/api/email/send-payment-reminder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId }),
+    }).catch(err => {
+      console.error('Failed to send payment reminder email:', err);
+    });
 
-      // 顯示成功訊息
-      toast({
-        title: "報名成功！",
-        description: "繳費資訊已寄送至您的信箱",
-      });
-    } catch (emailError) {
-      // Email 發送失敗不影響訂單建立
-      console.error('Email sending error:', emailError);
-    }
+    // 顯示成功訊息
+    toast({
+      title: "報名成功！",
+      description: "繳費資訊已寄送至您的信箱",
+    });
 
     // 3. 導向繳費頁面
-    router.replace(`/order/${orderId}`);
-    router.refresh();
+    setLoading(false);
+    router.push(`/order/${orderId}`);
   }
 
   return (
@@ -137,6 +148,14 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
       >
         {state === 'filling' && (
         <FormCard title="步驟 1. 選擇欲報名課程">
+          {explorerDiscount > 0 && (
+            <div className="mb-4 p-3 bg-green-500/10 border border-green-400/30 rounded-lg">
+              <p className="text-sm text-green-400 flex items-center gap-2">
+                <span>🎉</span>
+                <span>已套用探索者折扣：<span className="font-bold font-mono">-NT$ {parsePriceString(explorerDiscount)}</span></span>
+              </p>
+            </div>
+          )}
           <div>
             <FormField
               control={form.control}
@@ -243,7 +262,19 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
             <p>
               課程名稱：{parseCourseName(selectedCourse)}<br />
               上課方式：{parseCourseVariantName(selectedCourseVariant)}<br />
-              課程費用：新台幣 <span className="font-mono">{parsePriceString(totalEarly || total)}</span> 元<br />
+              {explorerDiscount > 0 ? (
+                <>
+                  原價：新台幣 <span className="font-mono line-through text-gray-500">{parsePriceString(totalEarly || total)}</span> 元<br />
+                  探索者折扣：<span className="font-mono text-green-600">-{parsePriceString(explorerDiscount)}</span> 元<br />
+                  <span className="font-bold text-orange-400">
+                    實付金額：新台幣 <span className="font-mono">{parsePriceString(finalTotal)}</span> 元
+                  </span>
+                </>
+              ) : (
+                <>
+                  課程費用：新台幣 <span className="font-mono">{parsePriceString(totalEarly || total)}</span> 元<br />
+                </>
+              )}
             </p>
           </FormCard>
         )}

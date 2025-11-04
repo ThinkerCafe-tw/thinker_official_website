@@ -10,6 +10,11 @@ import Content from './Content.js';
 import HighlightGrid from './HighlightGrid.js';
 import CourseInfo from './CourseInfo';
 import FAQ from '@/components/course/FAQ';
+import RoleSelector from '@/components/course/RoleSelector';
+import CourseProgressTracker from '@/components/course/CourseProgressTracker';
+import ScrollBottomDetector from '@/components/course/ScrollBottomDetector';
+import ExplorerReward from '@/components/course/ExplorerReward';
+import PreparationChecklist from '@/components/course/PreparationChecklist';
 import { parseCourseName } from '@/utils/course.js';
 import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 import { universalFAQ, course6FAQ } from '@/data/faq';
@@ -182,13 +187,18 @@ export default async function ProductContentPage({
                 立即報名
               </BuyCourseButton>
       </Cover>
+      {courseId === 6 && <CourseProgressTracker courseId={courseId} />}
       <div className="mt-8 space-y-8">
         <Bar product={product} />
+        {courseId === 6 && <RoleSelector />}
         <CourseInfo courseId={courseId} />
-        <Content product={product} />
+        <Content product={product} courseId={courseId} />
+        {courseId === 6 && <PreparationChecklist courseId={courseId} />}
         <HighlightGrid items={items} courseId={courseId} />
         <FAQ items={faqItems} />
-        <BuyCourseButton courseId={courseId}>
+        {courseId === 6 && <ScrollBottomDetector />}
+        {courseId === 6 && <ExplorerReward courseId={courseId} />}
+        <BuyCourseButton courseId={courseId} id="registration">
           立即報名
         </BuyCourseButton>
       </div>

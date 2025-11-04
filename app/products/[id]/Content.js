@@ -1,4 +1,5 @@
 import { FaCheck } from 'react-icons/fa6';
+import SyllabusAccordion from '@/components/course/SyllabusAccordion';
 
 // 將文字內容轉換為結構化 HTML
 function formatText(text) {
@@ -47,7 +48,7 @@ function formatText(text) {
   });
 }
 
-export default function Content({ product }) {
+export default function Content({ product, courseId }) {
   return (
     <div className="grid grid-cols-1 gap-x-5 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
       <div className="md:col-span-2 md:row-span-2 lg:col-span-2 lg:row-span-1">
@@ -79,9 +80,13 @@ export default function Content({ product }) {
       </div>
       <div className="md:col-span-3 lg:col-span-4">
         <h2 className="mb-3 text-2xl font-semibold">課程大綱</h2>
-        <div className="text-lg max-w-4xl">
-          {formatText(product.summery)}
-        </div>
+        {courseId === 6 ? (
+          <SyllabusAccordion syllabus={product.summery} />
+        ) : (
+          <div className="text-lg max-w-4xl">
+            {formatText(product.summery)}
+          </div>
+        )}
       </div>
     </div>
   );
