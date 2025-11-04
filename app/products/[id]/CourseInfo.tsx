@@ -141,7 +141,7 @@ export default function CourseInfo({ courseId }: { courseId: number }) {
             <ul className="list-disc list-inside space-y-0.5 text-xs">
               <li>實體教材與講義</li>
               <li>課後錄影回放（30 天觀看期限）</li>
-              <li>專屬 Slack 社群支援</li>
+              <li>專屬 LINE 社群支援</li>
               <li>課程研習證書</li>
             </ul>
           </div>
