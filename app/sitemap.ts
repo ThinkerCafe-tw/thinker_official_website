@@ -45,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.log(`[Sitemap] Fetched ${products.length} products from Notion`)
 
     // 動態課程頁面
-    const publishedProducts = products.filter((p: any) => p.is_published)
+    const publishedProducts = products.filter((p: any) => p.published)
     console.log(`[Sitemap] Found ${publishedProducts.length} published products`)
 
     const productPages: MetadataRoute.Sitemap = publishedProducts.map((product: any) => ({

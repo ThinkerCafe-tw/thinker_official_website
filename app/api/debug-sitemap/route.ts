@@ -13,7 +13,7 @@ export async function GET() {
 
     console.log(`[Debug] Fetched ${products.length} products in ${elapsed}ms`)
 
-    const publishedProducts = products.filter((p: any) => p.is_published)
+    const publishedProducts = products.filter((p: any) => p.published)
 
     return NextResponse.json({
       success: true,
@@ -24,7 +24,7 @@ export async function GET() {
       sampleProduct: publishedProducts[0] ? {
         course_id: publishedProducts[0].course_id,
         zh_name: publishedProducts[0].zh_name,
-        is_published: publishedProducts[0].is_published
+        published: publishedProducts[0].published
       } : null
     })
   } catch (error) {
