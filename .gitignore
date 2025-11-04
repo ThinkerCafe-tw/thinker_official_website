@@ -30,3 +30,7 @@ next-env.d.ts
 .DS_Store
 *.swp
 .env*.local
+
+# macOS Icon files
+Icon
+Icon?
