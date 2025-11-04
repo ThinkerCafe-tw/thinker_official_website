@@ -21,8 +21,53 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const product = await getProductById(id);
 
+  if (!product) {
+    return {
+      title: "課程未找到 | Thinker Cafe",
+    }
+  }
+
+  const title = parseCourseName(product, '');
+  const description = product.zh_description || `${title} - Thinker Cafe AI 實戰課程。立即報名學習最新的 AI 工具與技術！`;
+  const imageUrl = product.main_image || product.image || 'https://thinkcafe.tw/logo.png';
+
   return {
-    title: parseMetadataTitle(parseCourseName(product, '')),
+    title: parseMetadataTitle(title),
+    description: description,
+    keywords: [
+      title,
+      "AI 課程",
+      "AI 實戰",
+      product.zh_category || "AI 工具",
+      "Thinker Cafe",
+      ...(product.content_tags || [])
+    ],
+    openGraph: {
+      title: title,
+      description: description,
+      url: `https://thinkcafe.tw/products/${id}`,
+      siteName: "Thinker Cafe",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title
+        }
+      ],
+      locale: "zh_TW",
+      type: "website"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+      images: [imageUrl]
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   }
 }
 

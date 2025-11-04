@@ -21,7 +21,43 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Thinker Cafe | 思考者咖啡",
+  title: "Thinker Cafe | 思考者咖啡 - AI 時代的實戰課程",
+  description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！提供 ChatGPT、Midjourney 等 AI 工具實戰課程，適合行銷人員、產品經理、創業者。",
+  keywords: ["AI 課程", "ChatGPT 教學", "AI 實戰", "台灣 AI 課程", "人工智慧課程", "AI 工具", "Midjourney"],
+  authors: [{ name: "Thinker Cafe" }],
+  openGraph: {
+    title: "Thinker Cafe | AI 時代的實戰課程",
+    description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！",
+    url: "https://thinkcafe.tw",
+    siteName: "Thinker Cafe",
+    images: [
+      {
+        url: "https://thinkcafe.tw/logo.png", // 暫時使用 logo，之後需要準備 1200x630 的 OG 圖片
+        width: 1200,
+        height: 630,
+        alt: "Thinker Cafe - AI 實戰課程"
+      }
+    ],
+    locale: "zh_TW",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thinker Cafe | AI 時代的實戰課程",
+    description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！",
+    images: ["https://thinkcafe.tw/logo.png"]
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default function RootLayout({
@@ -30,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`} suppressHydrationWarning>
+    <html lang="zh-TW" className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`} suppressHydrationWarning>
       <body className="font-sans">
         <GoogleAnalytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>

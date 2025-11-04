@@ -23,8 +23,9 @@ if [ -z "$PERSONA" ]; then
   echo -e "${RED}❌ 錯誤：缺少人格參數${NC}"
   echo ""
   echo "使用方式："
-  echo "  $0 curator    # 切換到 Curator 人格"
-  echo "  $0 default    # 切換回預設人格"
+  echo "  $0 curator              # 切換到 Curator 人格（課程內容管理）"
+  echo "  $0 pricing-strategist   # 切換到 Pricing Strategist 人格（定價策略）"
+  echo "  $0 default              # 切換回預設人格"
   echo ""
   exit 1
 fi
@@ -127,12 +128,53 @@ case "$PERSONA" in
     echo ""
     ;;
 
+  pricing-strategist)
+    PERSONA_FILE="$PERSONA_DIR/pricing-strategist/CLAUDE_PRICING_STRATEGIST.md"
+
+    if [ ! -f "$PERSONA_FILE" ]; then
+      echo -e "${RED}❌ 錯誤：找不到 Pricing Strategist 人格檔案${NC}"
+      echo "   預期位置：$PERSONA_FILE"
+      exit 1
+    fi
+
+    # 備份當前 CLAUDE.md（如果存在且不是 Pricing Strategist）
+    if [ -f "$CLAUDE_MD" ] && ! grep -q "Pricing Strategist 人格定義" "$CLAUDE_MD"; then
+      BACKUP_FILE="$BACKUP_DIR/CLAUDE.md.backup_$TIMESTAMP"
+      echo -e "${YELLOW}💾 備份當前 CLAUDE.md...${NC}"
+      cp "$CLAUDE_MD" "$BACKUP_FILE"
+      echo -e "${GREEN}✅ 備份完成：${NC}$BACKUP_FILE"
+      echo ""
+    fi
+
+    # 複製 Pricing Strategist 人格到 CLAUDE.md
+    echo -e "${BLUE}📝 切換到 Pricing Strategist 人格...${NC}"
+    cp "$PERSONA_FILE" "$CLAUDE_MD"
+
+    echo ""
+    echo -e "${GREEN}✅ 人格切換完成！${NC}"
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo -e "${BLUE}📋 Pricing Strategist (Viona) 人格特性：${NC}"
+    echo "   • 課程定價診斷與分析"
+    echo "   • 設計定價策略方案"
+    echo "   • 市場定位分析"
+    echo "   • 數據驅動的商業建議"
+    echo ""
+    echo -e "${YELLOW}💡 啟動指令：${NC}"
+    echo "   在新對話中輸入：進行完整的定價診斷與策略規劃"
+    echo ""
+    echo -e "${YELLOW}📚 快速參考：${NC}"
+    echo "   cat .kiro/personas/pricing-strategist/QUICKSTART.md"
+    echo ""
+    ;;
+
   *)
     echo -e "${RED}❌ 錯誤：不支援的人格「$PERSONA」${NC}"
     echo ""
     echo "目前支援的人格："
-    echo "  • curator - Curator 人格（課程內容管理）"
-    echo "  • default - 預設人格"
+    echo "  • curator              - Curator 人格（課程內容管理）"
+    echo "  • pricing-strategist   - Pricing Strategist 人格（定價策略）"
+    echo "  • default              - 預設人格"
     echo ""
     exit 1
     ;;
