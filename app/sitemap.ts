@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next'
 import { getProducts } from '@/lib/notion'
 
-// Enable ISR with 1 hour revalidation
-export const revalidate = 3600
+// Force dynamic rendering (no static generation)
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 靜態頁面（總是返回）
