@@ -89,8 +89,7 @@ export default function HighlightCard({ item, index, courseId }) {
   <text x="800" y="380" font-family="Arial, sans-serif" font-size="85" font-weight="bold" fill="#495057" text-anchor="middle">小班制手把手教學</text>
   <text x="800" y="590" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FF6B6B" text-anchor="middle">10,000</text>
   <text x="800" y="670" font-family="Arial, sans-serif" font-size="60" fill="#FF6B6B" text-anchor="middle">TWD</text>
-  <rect x="580" y="760" width="440" height="95" fill="#28a745" rx="12"/>
-  <text x="800" y="820" font-family="Arial, sans-serif" font-size="54" font-weight="bold" fill="white" text-anchor="middle">省 10,768 元</text>
+  <text x="800" y="790" font-family="Arial, sans-serif" font-size="42" fill="#666" text-anchor="middle">報名截止：11/24 (一) 23:59</text>
 </svg>` : null;
 
   const testSVG = svg2 || svg3 || svg4 || svg5 || svg6;

@@ -194,7 +194,7 @@ export default async function ProductContentPage({
         <CourseInfo courseId={courseId} />
         <Content product={product} courseId={courseId} />
         {courseId === 6 && <PreparationChecklist courseId={courseId} />}
-        <HighlightGrid items={items} courseId={courseId} />
+        {courseId !== 6 && <HighlightGrid items={items} courseId={courseId} />}
         <FAQ items={faqItems} />
         {courseId === 6 && <ScrollBottomDetector />}
         {courseId === 6 && <ExplorerReward courseId={courseId} />}
