@@ -86,8 +86,44 @@ export default async function ProductContentPage({
   const heroMedia = product.content_video || product.image;
   const items = FIXED_SIX(product);
 
+  // Course Schema for SEO
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": parseCourseName(product, ''),
+    "description": product.zh_description || `${title} - Thinker Cafe AI 實戰課程`,
+    "provider": {
+      "@type": "Organization",
+      "name": "Thinker Cafe",
+      "sameAs": "https://thinkcafe.tw"
+    },
+    "image": product.main_image || product.image,
+    "offers": {
+      "@type": "Offer",
+      "category": "教育課程",
+      "price": product.single_price || product.group_price,
+      "priceCurrency": "TWD",
+      "availability": "https://schema.org/InStock",
+      "url": `https://thinkcafe.tw/products/${id}`,
+      "validFrom": new Date().toISOString()
+    },
+    "courseCode": product.course_id,
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": product.course_mode || "線上+實體",
+      "courseWorkload": product.duration || "數週課程"
+    },
+    "inLanguage": "zh-TW",
+    "availableLanguage": ["zh-TW"]
+  };
+
   return (
     <Page>
+      {/* Course Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
       <Cover fullScreenHeight className="flex flex-col justify-end items-start pb-8">
         <video
           className="absolute top-0 left-0 z-0 w-screen h-screen object-cover"

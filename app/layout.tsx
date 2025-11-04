@@ -65,8 +65,41 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Organization Schema for SEO
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Thinker Cafe",
+    "alternateName": "思考者咖啡",
+    "url": "https://thinkcafe.tw",
+    "logo": "https://thinkcafe.tw/logo.png",
+    "description": "AI 時代的實戰課程平台，提供 ChatGPT、Midjourney 等 AI 工具專業培訓",
+    "foundingDate": "2024",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "TW",
+      "addressRegion": "台灣"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "contact@thinkcafe.tw"
+    },
+    "sameAs": [
+      // 社交媒體連結（如有的話可以添加）
+      // "https://www.facebook.com/thinkercafe",
+      // "https://www.instagram.com/thinkercafe"
+    ]
+  };
+
   return (
     <html lang="zh-TW" className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className="font-sans">
         <GoogleAnalytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
