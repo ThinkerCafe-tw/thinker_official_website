@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // 2. 查詢用戶資料（從 profiles 和 auth）
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('*')
+      .select('*, line_user_id, full_name')
       .eq('user_id', order.user_id)
       .single();
 
@@ -110,10 +110,32 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Payment reminder email sent:', data);
 
+    // 如果用戶有 LINE ID，同時發送 LINE 通知
+    let lineNotificationSent = false;
+    if (profile.line_user_id) {
+      try {
+        const { sendPaymentReminder } = await import('@/lib/line/notify');
+        await sendPaymentReminder(profile.line_user_id, {
+          studentName: profile.full_name || '學員',
+          orderID: String(orderId),
+          courseName: formattedCourseName,
+          amount: order.total,
+          expiresAt: expiresAt,
+          paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+        });
+        console.log('✅ Payment reminder LINE notification sent');
+        lineNotificationSent = true;
+      } catch (lineError) {
+        console.error('⚠️  Failed to send LINE notification (email still sent):', lineError);
+        // 不影響 email 發送的成功，只記錄錯誤
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Email sent successfully',
       emailId: data?.id,
+      lineNotificationSent,
     });
   } catch (error) {
     console.error('Error sending payment reminder:', error);
