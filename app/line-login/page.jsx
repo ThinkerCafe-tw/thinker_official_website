@@ -28,11 +28,16 @@ export default function LineLoginPage() {
 
       setStatus('initializing');
 
+      console.log('🔧 LIFF ID:', process.env.NEXT_PUBLIC_LIFF_ID);
+      console.log('🔧 當前 URL:', window.location.href);
+
       // 初始化 LIFF
       await liff.init({
         liffId: process.env.NEXT_PUBLIC_LIFF_ID,
         withLoginOnExternalBrowser: true,
       });
+
+      console.log('✅ LIFF 初始化成功');
 
       // 檢查是否已登入
       if (!liff.isLoggedIn()) {
@@ -95,9 +100,10 @@ export default function LineLoginPage() {
       }, 1000);
 
     } catch (err) {
-      console.error('LINE Login 錯誤:', err);
+      console.error('❌ LINE Login 錯誤:', err);
+      console.error('❌ 錯誤詳情:', JSON.stringify(err, null, 2));
       setStatus('error');
-      setError(err.message);
+      setError(err.message || JSON.stringify(err));
     }
   }
 
