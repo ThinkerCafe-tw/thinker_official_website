@@ -48,9 +48,26 @@ export default function LineLoginPage() {
 
       // 取得 LINE Profile
       setStatus('verifying');
-      const profile = await liff.getProfile();
-      const accessToken = liff.getAccessToken();
-      const idToken = liff.getIDToken();
+      let profile, accessToken, idToken;
+
+      try {
+        profile = await liff.getProfile();
+        accessToken = liff.getAccessToken();
+        idToken = liff.getIDToken();
+      } catch (profileError) {
+        console.error('❌ 取得 Profile 失敗:', profileError);
+
+        // 如果是 token 撤銷錯誤，重新登入
+        if (profileError.message && profileError.message.includes('revoked')) {
+          console.log('🔄 Access token 已撤銷，重新登入...');
+          liff.logout();
+          setStatus('logging_in');
+          liff.login();
+          return;
+        }
+
+        throw profileError;
+      }
 
       console.log('LINE Profile:', profile);
 
