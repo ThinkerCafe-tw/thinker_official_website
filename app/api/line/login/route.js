@@ -105,7 +105,7 @@ export async function POST(request) {
     const virtualEmail = `${lineUserId}@line.thinker.cafe`;
     const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
 
-    console.log('🚀 VERSION_CHECK_20251105_1630_FULL_ERROR: 準備建立用戶');
+    console.log('🚀 VERSION_CHECK_20251105_1700_USE_TRIGGER: 準備建立用戶');
     console.log('準備建立用戶:', {
       email: virtualEmail,
       lineUserId,
@@ -135,7 +135,7 @@ export async function POST(request) {
           details: signUpError.message,
           code: signUpError.code,
           supabaseError: signUpError,  // 返回完整的 Supabase 錯誤
-          version: 'v20251105_1630_FULL_ERROR'
+          version: 'v20251105_1700_USE_TRIGGER'
         },
         { status: 500 }
       );
@@ -143,33 +143,10 @@ export async function POST(request) {
 
     console.log('auth.users 建立成功:', newUser.user.id);
 
-    // 建立 profile（手動插入，因為 Trigger 可能不支援 LINE 欄位）
-    const { error: profileInsertError } = await supabase
-      .from('profiles')
-      .insert({
-        user_id: newUser.user.id,
-        full_name: displayName,
-        line_user_id: lineUserId,
-        line_display_name: displayName,
-        line_picture_url: pictureUrl,
-        auth_provider: 'line',
-        migrated_from_email: false,
-        agree_tos: true, // LINE 登入預設同意條款
-      });
-
-    if (profileInsertError) {
-      console.error('建立 profile 錯誤:', profileInsertError);
-
-      // 如果 profile 建立失敗，刪除剛建立的 auth.users
-      await supabase.auth.admin.deleteUser(newUser.user.id);
-
-      return NextResponse.json(
-        { error: 'Failed to create profile', details: profileInsertError.message },
-        { status: 500 }
-      );
-    }
-
-    console.log('profile 建立成功');
+    // ✅ 不需要手動建立 profile！
+    // Database trigger (handle_new_user) 會自動建立 profile
+    // Trigger 會自動處理 LINE 用戶的 phone_number = NULL
+    console.log('✅ Database trigger 會自動建立 profile');
 
     // 為新用戶建立 Session
     const { data: sessionData, error: sessionError } = await supabase.auth.admin.createSession({
