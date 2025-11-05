@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
+import { createClient, createAdminClient } from '@/utils/supabase/server';
 
 /**
  * LINE Login API
@@ -36,7 +36,8 @@ export async function POST(request) {
     // 2. LIFF App 只能在特定的 Endpoint URL 運行（www.thinker.cafe/line-login）
     // 3. LINE 平台已經確保 LIFF ID 與 Endpoint URL 的綁定關係
 
-    const supabase = await createClient();
+    // 使用 Admin Client 執行需要提升權限的操作
+    const supabase = await createAdminClient();
 
     // 2. 檢查 line_user_id 是否已存在
     const { data: existingProfile, error: profileError } = await supabase
@@ -104,13 +105,11 @@ export async function POST(request) {
     const virtualEmail = `${lineUserId}@line.thinker.cafe`;
     const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
 
-    console.log('🚀 VERSION_CHECK_20251105_1430: 準備建立用戶');
+    console.log('🚀 VERSION_CHECK_20251105_1600_ADMIN_CLIENT: 準備建立用戶');
     console.log('準備建立用戶:', {
       email: virtualEmail,
       lineUserId,
       displayName,
-      serviceRoleKeyPreview: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 20) + '...',
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL
     });
 
     // 使用 Supabase Admin API 建立用戶（跳過 email 驗證）
@@ -135,13 +134,7 @@ export async function POST(request) {
           error: 'Failed to create user',
           details: signUpError.message,
           code: signUpError.code,
-          fullError: JSON.stringify(signUpError),
-          debugInfo: {
-            version: 'v20251105_1445',
-            serviceRoleKeyExists: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-            serviceRoleKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY?.length,
-            serviceRoleKeyPrefix: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 30)
-          }
+          version: 'v20251105_1600_ADMIN_CLIENT'
         },
         { status: 500 }
       );
