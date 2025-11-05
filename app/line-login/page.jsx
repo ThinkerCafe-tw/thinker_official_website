@@ -105,9 +105,16 @@ export default function LineLoginPage() {
 
     } catch (err) {
       console.error('❌ LINE Login 錯誤:', err);
-      console.error('❌ 錯誤詳情:', JSON.stringify(err, null, 2));
+      console.error('❌ 錯誤訊息:', err.message);
+      console.error('❌ 完整錯誤:', err);
       setStatus('error');
-      setError(err.message || JSON.stringify(err));
+
+      // 顯示更詳細的錯誤訊息
+      let errorMsg = err.message || '未知錯誤';
+      if (err.response) {
+        errorMsg += ` (HTTP ${err.response.status})`;
+      }
+      setError(errorMsg);
     }
   }
 

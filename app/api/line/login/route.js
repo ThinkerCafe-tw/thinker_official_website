@@ -104,6 +104,12 @@ export async function POST(request) {
     const virtualEmail = `${lineUserId}@line.thinker.cafe`;
     const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
 
+    console.log('準備建立用戶:', {
+      email: virtualEmail,
+      lineUserId,
+      displayName
+    });
+
     // 使用 Supabase Admin API 建立用戶（跳過 email 驗證）
     const { data: newUser, error: signUpError } = await supabase.auth.admin.createUser({
       email: virtualEmail,
@@ -119,8 +125,15 @@ export async function POST(request) {
 
     if (signUpError) {
       console.error('建立 auth.users 錯誤:', signUpError);
+      console.error('錯誤詳情:', JSON.stringify(signUpError, null, 2));
       return NextResponse.json(
-        { error: 'Failed to create user', details: signUpError.message },
+        {
+          success: false,
+          error: 'Failed to create user',
+          details: signUpError.message,
+          code: signUpError.code,
+          fullError: JSON.stringify(signUpError)
+        },
         { status: 500 }
       );
     }
