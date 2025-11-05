@@ -21,17 +21,27 @@ export async function POST(request) {
       `https://api.line.me/oauth2/v2.1/verify?access_token=${accessToken}`
     );
 
+    console.log('LINE API verify response status:', response.status);
+
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('LINE API verify failed:', errorText);
       return NextResponse.json(
-        { error: 'Invalid access token', valid: false },
+        { error: 'Invalid access token', valid: false, details: errorText },
         { status: 401 }
       );
     }
 
     const data = await response.json();
+    console.log('LINE API verify data:', data);
+    console.log('Expected channel ID:', process.env.LINE_CHANNEL_ID);
 
     // 驗證 token 是否屬於我們的 LINE Channel
     if (data.client_id !== process.env.LINE_CHANNEL_ID) {
+      console.error('Channel ID mismatch:', {
+        received: data.client_id,
+        expected: process.env.LINE_CHANNEL_ID
+      });
       return NextResponse.json(
         { error: 'Token does not belong to this channel', valid: false },
         { status: 401 }
