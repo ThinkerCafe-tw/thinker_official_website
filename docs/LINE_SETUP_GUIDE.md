@@ -81,8 +81,10 @@ vercel env pull .env.local
 
 3. **Webhook settings** 區塊：
    ```
-   Webhook URL: https://thinker.cafe/api/line/webhook
+   Webhook URL: https://www.thinker.cafe/api/line/webhook
    ```
+
+   ⚠️ **重要**：必須使用 `www.thinker.cafe`，不能用 `thinker.cafe`（會 redirect 導致 307 錯誤）
 
 4. 點擊 **Update**
 
@@ -113,7 +115,7 @@ vercel env pull .env.local
 #### 方法 A：測試 Webhook 連線
 
 ```bash
-curl https://thinker.cafe/api/line/webhook
+curl https://www.thinker.cafe/api/line/webhook
 ```
 
 應該看到：
@@ -123,6 +125,8 @@ curl https://thinker.cafe/api/line/webhook
   "message": "LINE Webhook endpoint is ready"
 }
 ```
+
+⚠️ 注意：必須使用 `www.thinker.cafe`
 
 #### 方法 B：測試繳費提醒通知
 
@@ -156,8 +160,8 @@ curl -X POST https://thinker.cafe/api/email/send-payment-reminder \
 **症狀**：LINE Console 顯示 "Webhook verification failed"
 
 **解決方法**：
-1. 檢查 Vercel 部署是否成功
-2. 檢查 URL 是否正確：`https://thinker.cafe/api/line/webhook`
+1. 確認使用正確的 URL：`https://www.thinker.cafe/api/line/webhook`（必須有 `www`）
+2. 檢查 Vercel 部署是否成功
 3. 檢查環境變數是否已設定
 4. 查看 Vercel Logs：
    ```bash
