@@ -135,7 +135,13 @@ export async function POST(request) {
           error: 'Failed to create user',
           details: signUpError.message,
           code: signUpError.code,
-          fullError: JSON.stringify(signUpError)
+          fullError: JSON.stringify(signUpError),
+          debugInfo: {
+            version: 'v20251105_1445',
+            serviceRoleKeyExists: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+            serviceRoleKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY?.length,
+            serviceRoleKeyPrefix: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 30)
+          }
         },
         { status: 500 }
       );
