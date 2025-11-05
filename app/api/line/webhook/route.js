@@ -123,8 +123,40 @@ async function handleFollow(event) {
 
   console.log(`New follower: ${userId}`);
 
-  // TODO: 發送歡迎訊息
-  // TODO: 記錄到資料庫
+  // 更新資料庫：標記用戶已加好友
+  try {
+    const { createClient } = await import('@/utils/supabase/server');
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({
+        line_is_friend: true,
+        line_friend_added_at: new Date().toISOString(),
+      })
+      .eq('line_user_id', userId);
+
+    if (error) {
+      console.error('Failed to update friend status:', error);
+    } else {
+      console.log(`✅ Updated friend status for ${userId}`);
+    }
+  } catch (dbError) {
+    console.error('Database error:', dbError);
+  }
+
+  // 發送歡迎訊息
+  try {
+    const { createLineClient } = await import('@/lib/line/client');
+    const client = createLineClient();
+
+    await client.replyMessage(replyToken, {
+      type: 'text',
+      text: '歡迎加入思考者咖啡！\n\n您現在可以收到課程報名與繳費的即時通知了 🎉\n\n如有任何問題，歡迎隨時詢問我們！',
+    });
+  } catch (replyError) {
+    console.error('Failed to send welcome message:', replyError);
+  }
 }
 
 /**
@@ -136,7 +168,26 @@ async function handleUnfollow(event) {
 
   console.log(`User unfollowed: ${userId}`);
 
-  // TODO: 更新資料庫狀態
+  // 更新資料庫：標記用戶取消好友
+  try {
+    const { createClient } = await import('@/utils/supabase/server');
+    const supabase = await createClient();
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        line_is_friend: false,
+      })
+      .eq('line_user_id', userId);
+
+    if (error) {
+      console.error('Failed to update unfollow status:', error);
+    } else {
+      console.log(`✅ Updated unfollow status for ${userId}`);
+    }
+  } catch (dbError) {
+    console.error('Database error:', dbError);
+  }
 }
 
 /**
