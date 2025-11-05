@@ -71,18 +71,21 @@ export default function LineLoginPage() {
 
       if (!response.ok) {
         console.error('❌ API 回應狀態:', response.status, response.statusText);
+        let errorMsg = '登入失敗';
         try {
           const errorData = await response.json();
           console.error('❌ API 錯誤內容:', JSON.stringify(errorData, null, 2));
-          const errorMsg = errorData.error || '登入失敗';
+          errorMsg = errorData.error || '登入失敗';
           const details = errorData.details || errorData.code || errorData.fullError || '';
-          throw new Error(errorMsg + (details ? '\n詳情: ' + details : ''));
+          if (details) {
+            errorMsg += '\n詳情: ' + details;
+          }
         } catch (jsonError) {
-          console.error('❌ 無法解析錯誤回應:', jsonError);
-          const text = await response.text();
-          console.error('❌ 原始回應內容:', text);
-          throw new Error(`API 錯誤 (${response.status}): ${text || '無回應內容'}`);
+          // 如果無法解析為 JSON，嘗試讀取原始文字（但 Response 只能讀取一次）
+          console.error('❌ 無法解析 JSON 回應:', jsonError.message);
+          errorMsg = `API 錯誤 (${response.status})`;
         }
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
