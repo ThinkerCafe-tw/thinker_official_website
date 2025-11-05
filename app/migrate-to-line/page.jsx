@@ -202,16 +202,16 @@ export default function MigrateToLinePage() {
           <FormCard singleColumn>
             <div className="space-y-4">
               <div>
-                <p className="font-semibold text-gray-900 mb-2">為什麼要綁定 LINE？</p>
-                <ul className="text-sm text-gray-700 space-y-2 list-disc list-inside">
+                <p className="font-semibold text-white mb-2">為什麼要綁定 LINE？</p>
+                <ul className="text-sm text-gray-200 space-y-2 list-disc list-inside">
                   <li>一鍵快速登入，無需記住密碼</li>
                   <li>接收課程通知與重要訊息</li>
                   <li>更安全的帳號保護</li>
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-900 mb-2">綁定後會發生什麼？</p>
-                <ul className="text-sm text-gray-700 space-y-2 list-disc list-inside">
+                <p className="font-semibold text-white mb-2">綁定後會發生什麼？</p>
+                <ul className="text-sm text-gray-200 space-y-2 list-disc list-inside">
                   <li>您的 Email 帳號將與 LINE 帳號綁定</li>
                   <li>未來可以使用 LINE 登入</li>
                   <li>原有的課程與資料完全保留</li>
