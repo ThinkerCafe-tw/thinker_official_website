@@ -49,7 +49,7 @@ export async function POST(request) {
       }
     );
 
-    console.log('🔧 VERSION: v20251105_1720_DIRECT_IMPORT');
+    console.log('🔧 VERSION: v20251105_1730_USE_SIGNIN');
     console.log('✅ Admin client created');
     console.log('✅ Has auth:', !!supabase.auth);
     console.log('✅ Has auth.admin:', !!supabase.auth.admin);
@@ -89,9 +89,20 @@ export async function POST(request) {
         console.warn('更新 profile 失敗:', updateError);
       }
 
-      // 使用 Admin API 建立 Session
-      const { data: sessionData, error: sessionError } = await supabase.auth.admin.createSession({
-        user_id: existingProfile.user_id,
+      // 為現有用戶建立 Session
+      // 使用虛擬 email 登入（因為我們知道這個用戶是 LINE 登入的）
+      const virtualEmail = `${lineUserId}@line.thinker.cafe`;
+
+      // 使用 Admin API 更新用戶密碼（這樣才能用密碼登入）
+      const tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      await supabase.auth.admin.updateUserById(existingProfile.user_id, {
+        password: tempPassword
+      });
+
+      // 使用密碼登入來建立 session
+      const { data: sessionData, error: sessionError } = await supabase.auth.signInWithPassword({
+        email: virtualEmail,
+        password: tempPassword,
       });
 
       if (sessionError) {
@@ -122,7 +133,7 @@ export async function POST(request) {
     const virtualEmail = `${lineUserId}@line.thinker.cafe`;
     const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
 
-    console.log('🚀 VERSION_CHECK_20251105_1700_USE_TRIGGER: 準備建立用戶');
+    console.log('🚀 VERSION_CHECK_20251105_1730_USE_SIGNIN: 準備建立用戶');
     console.log('準備建立用戶:', {
       email: virtualEmail,
       lineUserId,
@@ -152,7 +163,7 @@ export async function POST(request) {
           details: signUpError.message,
           code: signUpError.code,
           supabaseError: signUpError,  // 返回完整的 Supabase 錯誤
-          version: 'v20251105_1700_USE_TRIGGER'
+          version: 'v20251105_1730_USE_SIGNIN'
         },
         { status: 500 }
       );
@@ -166,8 +177,10 @@ export async function POST(request) {
     console.log('✅ Database trigger 會自動建立 profile');
 
     // 為新用戶建立 Session
-    const { data: sessionData, error: sessionError } = await supabase.auth.admin.createSession({
-      user_id: newUser.user.id,
+    // 使用剛才建立用戶時的密碼登入
+    const { data: sessionData, error: sessionError } = await supabase.auth.signInWithPassword({
+      email: virtualEmail,
+      password: randomPassword,
     });
 
     if (sessionError) {
