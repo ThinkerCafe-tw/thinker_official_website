@@ -37,7 +37,15 @@ export async function POST(request) {
     // 3. LINE 平台已經確保 LIFF ID 與 Endpoint URL 的綁定關係
 
     // 使用 Admin Client 執行需要提升權限的操作
+    console.log('🔑 SERVICE_ROLE_KEY exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+    console.log('🔑 SERVICE_ROLE_KEY length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length);
+
     const supabase = await createAdminClient();
+
+    console.log('✅ Admin client created');
+    console.log('✅ Has auth:', !!supabase.auth);
+    console.log('✅ Has auth.admin:', !!supabase.auth.admin);
+    console.log('✅ Has createSession:', !!supabase.auth.admin?.createSession);
 
     // 2. 檢查 line_user_id 是否已存在
     const { data: existingProfile, error: profileError } = await supabase

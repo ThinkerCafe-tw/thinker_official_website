@@ -36,9 +36,10 @@ export async function createClient() {
  * Note: This client does NOT use cookies since admin operations don't need session management
  */
 export async function createAdminClient() {
-  const { createClient } = await import('@supabase/supabase-js')
+  // Use static import to ensure proper type definitions
+  const { createClient: createSupabaseClient } = await import('@supabase/supabase-js')
 
-  return createClient(
+  const client = createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
@@ -48,4 +49,11 @@ export async function createAdminClient() {
       }
     }
   )
+
+  // Verify admin API is available
+  if (!client.auth.admin) {
+    throw new Error('Admin API not available. Check SERVICE_ROLE_KEY.')
+  }
+
+  return client
 }
