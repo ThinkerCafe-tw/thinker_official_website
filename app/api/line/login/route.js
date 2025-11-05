@@ -191,9 +191,15 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error('LINE Login API 錯誤:', error);
+    console.error('❌ LINE Login API 錯誤:', error);
+    console.error('❌ 錯誤堆疊:', error.stack);
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      {
+        success: false,
+        error: 'Internal server error',
+        details: error.message,
+        stack: error.stack
+      },
       { status: 500 }
     );
   }

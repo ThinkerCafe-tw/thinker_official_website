@@ -182,6 +182,9 @@ export default async function ProductContentPage({
             </div>
               <BuyCourseButton
                 courseId={courseId}
+                courseName={product.zh_name}
+                courseCategory={product.zh_category}
+                coursePrice={product.group_price || product.single_price}
                 className="relative z-1 w-auto text-base shadow-md shadow-black/50 lg:text-lg"
               >
                 立即報名

@@ -25,21 +25,24 @@ export default function HomePage() {
               AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
-              <Link href="/products">
-                <Button
-                  size="lg"
-                  className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
-                  onClick={() => {
-                    trackEvent('click_explore_courses', {
-                      source: 'hero_section',
-                      location: 'homepage_top'
-                    });
-                  }}
-                >
-                  <ArrowRight className="mr-2 h-4 w-4" />
-                  探索課程
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
+                onClick={(e) => {
+                  e.preventDefault();
+                  trackEvent('click_explore_courses', {
+                    source: 'hero_section',
+                    location: 'homepage_top'
+                  });
+                  // 延遲導航，確保事件發送完成
+                  setTimeout(() => {
+                    window.location.href = '/products';
+                  }, 100);
+                }}
+              >
+                <ArrowRight className="mr-2 h-4 w-4" />
+                探索課程
+              </Button>
               {/* <Button
                 size="lg"
                 variant="outline"
@@ -173,20 +176,23 @@ export default function HomePage() {
               <p className="mt-3 sm:mt-4 text-gray-400 text-sm sm:text-base">
                 立即報名 Thinker Cafe 的課程，開啟你的 AI 學習之旅。
               </p>
-              <Link href="/products">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
-                  onClick={() => {
-                    trackEvent('click_explore_courses', {
-                      source: 'cta_bottom',
-                      location: 'homepage_bottom'
-                    });
-                  }}
-                >
-                  上課去！
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
+                onClick={(e) => {
+                  e.preventDefault();
+                  trackEvent('click_explore_courses', {
+                    source: 'cta_bottom',
+                    location: 'homepage_bottom'
+                  });
+                  // 延遲導航，確保事件發送完成
+                  setTimeout(() => {
+                    window.location.href = '/products';
+                  }, 100);
+                }}
+              >
+                上課去！
+              </Button>
             </div>
           </div>
         </section>

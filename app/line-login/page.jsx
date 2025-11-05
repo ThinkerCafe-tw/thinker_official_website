@@ -70,15 +70,29 @@ export default function LineLoginPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || '登入失敗');
+        console.error('❌ API 回應狀態:', response.status, response.statusText);
+        try {
+          const errorData = await response.json();
+          console.error('❌ API 錯誤內容:', JSON.stringify(errorData, null, 2));
+          const errorMsg = errorData.error || '登入失敗';
+          const details = errorData.details || errorData.code || errorData.fullError || '';
+          throw new Error(errorMsg + (details ? '\n詳情: ' + details : ''));
+        } catch (jsonError) {
+          console.error('❌ 無法解析錯誤回應:', jsonError);
+          const text = await response.text();
+          console.error('❌ 原始回應內容:', text);
+          throw new Error(`API 錯誤 (${response.status}): ${text || '無回應內容'}`);
+        }
       }
 
       const data = await response.json();
       console.log('登入 API 回應:', data);
 
       if (!data.success) {
-        throw new Error(data.error + (data.details ? ': ' + data.details : ''));
+        console.error('API 返回失敗:', data);
+        const errorMsg = data.error || '登入失敗';
+        const details = data.details || data.code || data.fullError || '';
+        throw new Error(errorMsg + (details ? '\n詳情: ' + details : ''));
       }
 
       // 如果 API 返回 session，設置到 Supabase Client
