@@ -37,9 +37,10 @@ CREATE INDEX IF NOT EXISTS idx_profiles_auth_provider ON profiles(auth_provider)
 -- ========================================
 
 -- 將現有用戶標記為 email 登入方式
+-- (所有現有用戶都預設為 email 登入)
 UPDATE profiles
 SET auth_provider = 'email'
-WHERE auth_provider IS NULL AND email IS NOT NULL;
+WHERE auth_provider IS NULL;
 
 -- ========================================
 -- 5. RLS (Row Level Security) 政策調整
