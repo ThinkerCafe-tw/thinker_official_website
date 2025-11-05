@@ -36,6 +36,23 @@ export default function CourseInfo({ courseId }: { courseId: number }) {
 
   return (
     <div className="space-y-6 p-6 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm shadow-xl border border-white/20">
+      {/* 價格卡片 */}
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 border-2 border-orange-400/40">
+        <div className="text-center space-y-3">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-3xl">💰</span>
+            <h3 className="text-xl font-bold text-orange-300">限時特價</h3>
+          </div>
+          <div className="text-5xl font-black text-white">
+            NT$ 10,000
+          </div>
+          <div className="text-sm text-white/80 space-y-1">
+            <p>✨ 搭配政府普發現金，剛好可以全額支付</p>
+            <p className="text-orange-300 font-semibold">⏰ 報名截止：11/24 (一) 23:59</p>
+          </div>
+        </div>
+      </div>
+
       {/* 標題 */}
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500">
