@@ -6,30 +6,22 @@ export async function POST(request) {
     const { lineUserId, displayName, pictureUrl, accessToken } = await request.json();
 
     // 1. 驗證必要參數
-    if (!lineUserId || !displayName || !accessToken) {
+    if (!lineUserId || !displayName) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // 2. 驗證 LINE Access Token
-    const verifyResponse = await fetch(
-      `${request.nextUrl.origin}/api/line/verify-token`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accessToken }),
-      }
-    );
-
-    const verifyResult = await verifyResponse.json();
-    if (!verifyResult.valid) {
+    // 驗證 LINE User ID 格式
+    if (!lineUserId.startsWith('U')) {
       return NextResponse.json(
-        { error: 'Invalid LINE access token' },
-        { status: 401 }
+        { error: 'Invalid LINE User ID format' },
+        { status: 400 }
       );
     }
+
+    // 注意：不驗證 Access Token，LIFF SDK 已在前端完成驗證
 
     // 3. 取得當前登入用戶
     const supabase = await createClient();

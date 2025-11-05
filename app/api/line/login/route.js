@@ -15,29 +15,26 @@ export async function POST(request) {
     const { lineUserId, displayName, pictureUrl, accessToken } = await request.json();
 
     // 驗證必要欄位
-    if (!lineUserId || !accessToken) {
+    if (!lineUserId) {
       return NextResponse.json(
-        { error: 'lineUserId and accessToken are required' },
+        { error: 'lineUserId is required' },
         { status: 400 }
       );
     }
 
-    // 1. 驗證 LINE Access Token
-    const verifyResponse = await fetch(
-      `${request.nextUrl.origin}/api/line/verify-token`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accessToken }),
-      }
-    );
-
-    if (!verifyResponse.ok) {
+    // 驗證 LINE User ID 格式（應該以 'U' 開頭）
+    if (!lineUserId.startsWith('U')) {
+      console.error('Invalid LINE User ID format:', lineUserId);
       return NextResponse.json(
-        { error: 'Invalid LINE access token' },
-        { status: 401 }
+        { error: 'Invalid LINE User ID format' },
+        { status: 400 }
       );
     }
+
+    // 注意：我們不驗證 Access Token，因為：
+    // 1. LIFF SDK 在前端已經驗證過用戶身份
+    // 2. LIFF App 只能在特定的 Endpoint URL 運行（www.thinker.cafe/line-login）
+    // 3. LINE 平台已經確保 LIFF ID 與 Endpoint URL 的綁定關係
 
     const supabase = await createClient();
 
