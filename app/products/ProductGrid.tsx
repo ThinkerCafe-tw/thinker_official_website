@@ -8,6 +8,7 @@ import type { NotionProduct } from "@/lib/notion";
 import { parseCourseName } from '@/utils/course.js';
 import Link from "next/link";
 import Image from "next/image";
+import { trackViewCourse } from "@/lib/analytics";
 
 export function ProductGrid() {
   const [language, setLanguage] = useState<"en" | "zh">("en");
@@ -77,7 +78,19 @@ export function ProductGrid() {
       </div>
       <div className="grid grid-cols-1 auto-rows-max gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product, index) => (
-          <Link key={product.id} href={`/products/${product.id}`} prefetch>
+          <Link
+            key={product.id}
+            href={`/products/${product.id}`}
+            prefetch
+            onClick={() => {
+              trackViewCourse({
+                id: product.course_id.toString(),
+                name: product.zh_name,
+                category: product.zh_category,
+                price: product.group_price || product.single_price || 0
+              });
+            }}
+          >
             <Card
               key={product.id}
               className={`h-full group p-4 overflow-hidden border-0 bg-card/50 backdrop-blur hover:shadow-3xl transition-all duration-300 hover-lift animate-fade-in`}

@@ -33,6 +33,7 @@ import { createClient } from '@/utils/supabase/client.ts';
 import { parseCourseName, parseCourseVariantName } from '@/utils/course.js';
 import parsePriceString from '@/utils/parsePriceString.js';
 import { useToast } from '@/hooks/use-toast';
+import { trackBeginCheckout, trackPurchase } from '@/lib/analytics';
 
 const REWARD_STORAGE_KEY = 'explorer_discount';
 
@@ -101,6 +102,15 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
     const { courseId, courseVariant } = values;
     const supabase = createClient();
 
+    // 追蹤開始結帳
+    trackBeginCheckout({
+      id: courseId.toString(),
+      name: selectedCourse?.zh_name || '課程',
+      category: selectedCourse?.zh_category || '分類',
+      variant: courseVariant,
+      price: finalTotal
+    });
+
     // 1. 建立訂單
     const { data, error } = await supabase
       .from('orders')
@@ -119,6 +129,16 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
     }
 
     const orderId = data[0].order_id;
+
+    // 追蹤訂單建立成功（等同於購買完成）
+    trackPurchase({
+      orderId,
+      courseId: courseId.toString(),
+      courseName: selectedCourse?.zh_name || '課程',
+      category: selectedCourse?.zh_category || '分類',
+      variant: courseVariant,
+      total: finalTotal
+    });
 
     // 2. 發送繳費提醒 Email（非同步，不等待結果）
     fetch('/api/email/send-payment-reminder', {

@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 發財提示詞禮包 | ThinkerCafe</title>
     <meta name="robots" content="noindex, nofollow">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9WV2YC6165"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-9WV2YC6165');
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -430,10 +440,6 @@
                 <div id="verify-error" class="error hidden">密語錯誤，請檢查私訊內容</div>
                 
                 <button class="btn" onclick="verifyAccess()">進入禮包</button>
-                
-                <div class="hint" style="margin-top: 30px;">
-                    💡 提示：通關密語為 <strong>CRUZ2025</strong>
-                </div>
             </div>
         </div>
 
@@ -613,15 +619,27 @@
                 <p class="subtitle">完整禮包 PDF 已發送到你的信箱<br>接下來，要不要升級你的 AI 協作能力？</p>
 
                 <div class="cta-box">
-                    <h3>🚀 人生駭客手冊：AI 時代生存指南</h3>
-                    <p>從痛點到自動化，從思考到執行<br>11 門課程，打造你的 AI 作業系統</p>
-                    
+                    <h3>🚀 AI 自媒體工作流實戰營</h3>
+                    <p>📱 100% 手機課程，帶走三樣成果<br>一週社群素材 + 自動化私訊機制 + 專屬 AI 工具包</p>
+
                     <div class="price">
-                        <span class="original-price">NT$ 9,800</span><br>
-                        早鳥優惠 NT$ 4,980
+                        限時優惠 NT$ 10,000
                     </div>
-                    
-                    <a href="https://thinkercafe.com/courses" class="btn btn-cta">立即查看課程</a>
+
+                    <div style="color: white; margin: 15px 0; font-size: 0.95em;">
+                        ⏰ 11/29, 12/6, 12/13 (六) | 📍 府中站 5 分鐘 | 👥 限額 12 人
+                    </div>
+
+                    <a href="https://www.thinker.cafe/products/28805e9d-e121-807a-a596-f976e32ae474" class="btn btn-cta">立即報名</a>
+
+                    <div style="color: rgba(255,255,255,0.8); margin-top: 15px; font-size: 0.85em;">
+                        ⚠️ 報名截止：11/24 (一) 23:59
+                    </div>
+
+                    <!-- 即時人數提示（5人以上才顯示） -->
+                    <div id="enrollment-count" class="hidden" style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 0.9em;">
+                        🔥 已有 <span id="current-enrollment">0</span> 位學員報名
+                    </div>
                 </div>
 
                 <div class="hint">
@@ -638,18 +656,52 @@
         let userEmail = '';
         let completedPrompts = 0;
 
-        // ===== 驗證通關密語 =====
+        // ===== 根據 URL 參數自動進入對應禮包 =====
+        function autoSelectGiftFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const giftParam = urlParams.get('gift'); // 例如: ?gift=efficiency
+
+            // 有效的禮包類型
+            const validGifts = ['efficiency', 'content', 'decision'];
+
+            if (giftParam && validGifts.includes(giftParam)) {
+                // 隱藏驗證頁面，直接進入對應禮包
+                document.getElementById('verify-page').classList.add('hidden');
+                selectGift(giftParam);
+
+                // 追蹤事件
+                trackEvent('auto_select_gift', { gift_type: giftParam, source: 'url_param' });
+            }
+            // 如果沒有參數或參數無效，保留驗證頁面（讓用戶手動選擇）
+        }
+
+        // ===== 驗證通關密語（備用方案，也支援密碼）=====
         function verifyAccess() {
-            const code = document.getElementById('access-code').value.trim().toUpperCase();
+            const code = document.getElementById('access-code').value.trim();
             const errorDiv = document.getElementById('verify-error');
-            
-            if (code === 'CRUZ2025') {
+
+            // 密碼對應表（備用）
+            const PASSWORD_MAPPING = {
+                '簡單': 'select',
+                '效率': 'efficiency',
+                '內容': 'content',
+                '決策': 'decision',
+                'CRUZ2025': 'select'
+            };
+
+            const giftType = PASSWORD_MAPPING[code] || PASSWORD_MAPPING[code.toUpperCase()];
+
+            if (giftType) {
                 errorDiv.classList.add('hidden');
                 document.getElementById('verify-page').classList.add('hidden');
-                document.getElementById('select-page').classList.remove('hidden');
-                
-                // 追蹤事件
-                trackEvent('access_verified', { code: code });
+
+                if (giftType === 'select') {
+                    document.getElementById('select-page').classList.remove('hidden');
+                } else {
+                    selectGift(giftType);
+                }
+
+                trackEvent('access_verified', { code: code, gift_type: giftType });
             } else {
                 errorDiv.classList.remove('hidden');
             }
@@ -1134,12 +1186,40 @@ ${competitor}
             // fetch('/api/track', { method: 'POST', body: JSON.stringify({ event: eventName, data }) });
         }
 
+        // ===== 查詢即時報名人數 =====
+        async function fetchEnrollmentCount() {
+            try {
+                // 課程 ID: 28805e9d-e121-807a-a596-f976e32ae474
+                const response = await fetch('https://www.thinker.cafe/api/enrollment-count?course_id=28805e9d-e121-807a-a596-f976e32ae474');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const count = data.count || 0;
+
+                    // 只有 5 人以上才顯示
+                    if (count >= 5) {
+                        document.getElementById('current-enrollment').textContent = count;
+                        document.getElementById('enrollment-count').classList.remove('hidden');
+                    }
+                }
+            } catch (error) {
+                console.log('無法取得報名人數:', error);
+                // 失敗時不顯示，不影響使用者體驗
+            }
+        }
+
         // ===== 頁面載入完成 =====
         window.addEventListener('load', function() {
-            trackEvent('page_loaded', { 
+            // 檢查 URL 參數，自動進入對應禮包
+            autoSelectGiftFromURL();
+
+            trackEvent('page_loaded', {
                 timestamp: new Date().toISOString(),
                 referrer: document.referrer
             });
+
+            // 查詢報名人數
+            fetchEnrollmentCount();
         });
 
         // ===== 離開頁面追蹤 =====

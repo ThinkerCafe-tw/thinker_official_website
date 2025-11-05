@@ -198,7 +198,13 @@ export default async function ProductContentPage({
         <FAQ items={faqItems} />
         {courseId === 6 && <ScrollBottomDetector />}
         {courseId === 6 && <ExplorerReward courseId={courseId} />}
-        <BuyCourseButton courseId={courseId} id="registration">
+        <BuyCourseButton
+          courseId={courseId}
+          courseName={product.zh_name}
+          courseCategory={product.zh_category}
+          coursePrice={product.group_price || product.single_price}
+          id="registration"
+        >
           立即報名
         </BuyCourseButton>
       </div>

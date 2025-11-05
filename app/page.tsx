@@ -1,3 +1,5 @@
+'use client';
+
 import { ProductCarousel } from "@/components/product-carousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,6 +7,7 @@ import { ArrowRight, Users, Route, Sparkles } from "lucide-react";
 import { ScrollRevealSection } from "@/components/scroll-reveal-section";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import Link from "next/link";
+import { trackEvent } from "@/lib/analytics";
 
 export default function HomePage() {
   return (
@@ -26,6 +29,12 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   className="max-w-6xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate flex justify-self-center"
+                  onClick={() => {
+                    trackEvent('click_explore_courses', {
+                      source: 'hero_section',
+                      location: 'homepage_top'
+                    });
+                  }}
                 >
                   <ArrowRight className="mr-2 h-4 w-4" />
                   探索課程
@@ -168,6 +177,12 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 hover-lift hover-glow bg-gradient-animate mt-6"
+                  onClick={() => {
+                    trackEvent('click_explore_courses', {
+                      source: 'cta_bottom',
+                      location: 'homepage_bottom'
+                    });
+                  }}
                 >
                   上課去！
                 </Button>
