@@ -75,7 +75,11 @@ export default function LineLoginPage() {
       }
 
       const data = await response.json();
-      console.log('登入成功:', data);
+      console.log('登入 API 回應:', data);
+
+      if (!data.success) {
+        throw new Error(data.error + (data.details ? ': ' + data.details : ''));
+      }
 
       // 如果 API 返回 session，設置到 Supabase Client
       if (data.session) {
