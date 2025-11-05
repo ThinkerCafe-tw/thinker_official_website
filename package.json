@@ -15,6 +15,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@google-analytics/data": "^5.2.1",
     "@hookform/resolvers": "^3.10.0",
     "@line/bot-sdk": "^10.4.0",
     "@line/liff": "^2.27.2",

@@ -104,10 +104,13 @@ export async function POST(request) {
     const virtualEmail = `${lineUserId}@line.thinker.cafe`;
     const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
 
+    console.log('🚀 VERSION_CHECK_20251105_1430: 準備建立用戶');
     console.log('準備建立用戶:', {
       email: virtualEmail,
       lineUserId,
-      displayName
+      displayName,
+      serviceRoleKeyPreview: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 20) + '...',
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL
     });
 
     // 使用 Supabase Admin API 建立用戶（跳過 email 驗證）
