@@ -105,7 +105,7 @@ export async function POST(request) {
     const virtualEmail = `${lineUserId}@line.thinker.cafe`;
     const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
 
-    console.log('🚀 VERSION_CHECK_20251105_1600_ADMIN_CLIENT: 準備建立用戶');
+    console.log('🚀 VERSION_CHECK_20251105_1620_ADMIN_NO_COOKIES: 準備建立用戶');
     console.log('準備建立用戶:', {
       email: virtualEmail,
       lineUserId,
@@ -134,7 +134,7 @@ export async function POST(request) {
           error: 'Failed to create user',
           details: signUpError.message,
           code: signUpError.code,
-          version: 'v20251105_1600_ADMIN_CLIENT'
+          version: 'v20251105_1620_ADMIN_NO_COOKIES'
         },
         { status: 500 }
       );
