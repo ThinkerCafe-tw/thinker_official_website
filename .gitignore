@@ -34,3 +34,10 @@ next-env.d.ts
 # macOS Icon files
 Icon
 Icon?
+
+# Google Cloud Service Account credentials
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!next.json
