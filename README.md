@@ -1,7 +1,9 @@
 # Thinker Cafe — Next.js + Tailwind + React (pnpm)
 
-A modern, content-driven coffee site where **products**, **About content**, and **mission/values/team** come from **Notion**.  
+A modern, content-driven coffee site where **products**, **About content**, and **mission/values/team** come from **Notion**.
 Built with **Next.js App Router**, **Tailwind CSS**, **React**, and **pnpm**.
+
+**Production**: https://www.thinker.cafe
 
 ---
 
