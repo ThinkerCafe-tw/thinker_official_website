@@ -8,7 +8,19 @@ let completedPrompts = 0;
 
 // ===== 初始化 =====
 async function initGiftPage() {
-    const password = localStorage.getItem('gift_password');
+    // 先檢查 URL 參數是否有 password
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPassword = urlParams.get('password');
+
+    let password = localStorage.getItem('gift_password');
+
+    // 如果 URL 有密碼，優先使用並存入 localStorage
+    if (urlPassword) {
+        password = urlPassword.toUpperCase();
+        localStorage.setItem('gift_password', password);
+    }
+
+    // 如果還是沒有密碼，導回驗證頁
     if (!password) {
         window.location.href = '/ai/gift';
         return;
