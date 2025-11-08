@@ -68,18 +68,48 @@ thinker-cafe/
 ├── knowledge-base/           # 共用知識庫
 │   ├── CLAUDE_ROOT.md       # 本檔案（Monorepo 憲法）
 │   └── reports/             # 各類報告和分析
-├── projects/                # 所有子專案
+├── projects/                # ThinkerCafe 品牌專案
 │   ├── website/            # 主網站（Next.js + Supabase）
-│   ├── website-fresh/      # 不太確定，應該是website的失敗版本
-│   ├── resume/             # Cruz個人履歷
-│   └── news/               # Thinker News 自動化新聞
+│   ├── resume/             # Cruz 個人履歷（Fresh + Deno）
+│   ├── news/               # Thinker News 自動化新聞（Python + Vercel）
+│   └── paomateng/          # 台鐵公告監控系統（Python + GitHub Actions）
 ├── .kiro/                  # 自動化與 AI 人格系統
-│   ├── personas/           # AI 人格定義
+│   ├── personas/           # AI 人格定義（Curator, News AI, Monitor AI）
 │   ├── scripts/            # 自動化腳本
 │   └── api/                # API 接口
 ├── CLAUDE.md               # 當前工作索引（會動態更新）
 └── [各類文件].md           # 專案文件和指南
 \`\`\`
+
+### 專案概覽
+
+#### 核心業務專案
+1. **website** - ThinkerCafe 主網站
+   - 技術：Next.js 15 + React 19 + Supabase
+   - 用途：AI 課程銷售與報名系統
+   - 部署：Vercel (https://thinker-cafe.com)
+   - 狀態：Production
+
+2. **resume** - Cruz Tang 個人履歷
+   - 技術：Fresh (Deno)
+   - 用途：專業履歷展示
+   - 部署：Deno Deploy (https://resume.thinker.cafe)
+   - 狀態：Production
+
+#### 自動化研究專案
+3. **news** - Thinker News 自動化新聞
+   - 技術：Python + AI (Gemini + GPT-4)
+   - 用途：每日台灣科技新聞摘要與 LINE 推播
+   - 部署：GitHub Actions + Vercel (LINE Bot webhook)
+   - 執行：每天 UTC 22:00 (台灣時間 06:00)
+   - 狀態：Production
+
+4. **paomateng** - 台鐵公告監控系統
+   - 技術：Python + BeautifulSoup + GitHub Pages
+   - 用途：台鐵即時公告追蹤（林教授危機溝通研究）
+   - 部署：GitHub Actions + GitHub Pages
+   - 執行：每 3-4 小時（GitHub 免費版限流）
+   - 狀態：Production
 
 ### 子專案規範
 每個子專案應該有：
@@ -295,6 +325,12 @@ version: 1.0
 ---
 
 ## 🔄 版本歷史
+
+### v1.1 (2025-11-08)
+- 更新專案目錄結構（移除 website-fresh，新增 paomateng）
+- 新增專案概覽區塊（核心業務 vs 自動化研究）
+- 完成 Thinker News 整合進 monorepo
+- 更新 AI 人格系統列表（Curator, News AI, Monitor AI）
 
 ### v1.0 (2025-11-08)
 - 初版建立

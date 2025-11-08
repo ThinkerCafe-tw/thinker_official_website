@@ -194,17 +194,20 @@ def main():
         
         notion_content = narrator_json.get('notion_daily_report_text', '')
         line_content = editor_json.get('line_message_text', '')
+        learning_focus = editor_json.get('learning_focus_text', '')  # 🎯 新增：學習焦點
         website_url = f"https://thinkercafe-tw.github.io/thinker-news/{today_date}.html"
-        
+
         final_output = {
             'final_date': today_date,
             'notion_content': notion_content,
             'line_content': line_content,
+            'learning_focus': learning_focus,  # 🎯 新增
             'website_url': website_url,
             'news_json': {
                 'date': today_date,
                 'line_content': line_content,
                 'notion_content': notion_content,
+                'learning_focus': learning_focus,  # 🎯 新增
                 'website_url': website_url,
                 'generated_at': datetime.now().isoformat()
             }

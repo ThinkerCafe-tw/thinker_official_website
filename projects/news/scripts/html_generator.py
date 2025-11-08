@@ -94,7 +94,55 @@ DAILY_NEWS_TEMPLATE = """<!DOCTYPE html>
             color: #666;
             font-weight: 400;
         }
-        
+
+        /* 🎯 學習焦點區塊 */
+        .learning-focus {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .learning-focus h3 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .learning-focus p {
+            font-size: 1.05em;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .learning-focus strong {
+            color: #FFE66D;
+            font-weight: 600;
+        }
+
+        .focus-cta {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .focus-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            color: #764ba2;
+        }
+
         .content-section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -231,7 +279,10 @@ DAILY_NEWS_TEMPLATE = """<!DOCTYPE html>
             <h1 class="article-title">🤖 AI 科技日報精選</h1>
             <p class="article-subtitle">今日AI科技重點新聞</p>
         </header>
-        
+
+        <!-- 🎯 學習焦點區塊 -->
+{{ learning_focus_block }}
+
         <div class="content-section">
 {{ notion_content }}
         </div>
@@ -299,12 +350,24 @@ def generate_daily_html(final_output: dict, html_full_content: str = None) -> st
         logger.warning("⚠️  未提供 HTML body 內容，使用降級方案")
         notion_content = final_output['notion_content']
         line_content = final_output['line_content']
+        learning_focus_text = final_output.get('learning_focus', '')
+
+        # 生成學習焦點區塊 HTML
+        if learning_focus_text:
+            # 將 learning_focus_text 轉換為 HTML（markdown 格式）
+            learning_focus_html = learning_focus_text.replace('\n\n', '</p><p>').replace('**', '<strong>').replace('**', '</strong>')
+            learning_focus_block = f'''        <div class="learning-focus">
+            <div>{learning_focus_html}</div>
+        </div>'''
+        else:
+            learning_focus_block = ''
 
         template = Template(DAILY_NEWS_TEMPLATE)
         html_content = template.render(
             date=date,
             notion_content=notion_content,
-            line_content=line_content
+            line_content=line_content,
+            learning_focus_block=learning_focus_block
         )
 
     # 寫入文件
