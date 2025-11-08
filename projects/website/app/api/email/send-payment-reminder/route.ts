@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
             courseName: formattedCourseName,
             amount: order.total,
             expiresAt: expiresAt,
-            paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+            paymentURL: `${(process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe').trim()}/order/${orderId}`,
           }),
         });
 
@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
           courseName: formattedCourseName,
           amount: order.total,
           expiresAt: expiresAt,
-          paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+          paymentURL: `${(process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe').trim()}/order/${orderId}`,
         });
         console.log('✅ Payment reminder LINE notification sent');
         lineNotificationSent = true;
@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
               courseName: formattedCourseName,
               amount: order.total,
               expiresAt: expiresAt,
-              paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+              paymentURL: `${(process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe').trim()}/order/${orderId}`,
             }, { checkFriendStatus: false });
             console.log('✅ Payment reminder LINE notification sent (retry without friend check)');
             lineNotificationSent = true;
@@ -225,7 +225,7 @@ export async function POST(request: NextRequest) {
         courseName: formattedCourseName,
         amount: order.total,
         courseVariant: order.course_variant,
-        orderURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+        orderURL: `${(process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe').trim()}/order/${orderId}`,
       });
       console.log('✅ Admin notification sent for new order');
     } catch (adminError) {
