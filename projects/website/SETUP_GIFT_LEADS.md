@@ -4,13 +4,37 @@
 
 ### 1. 在 Supabase 執行 Migration
 
-前往 Supabase Dashboard → SQL Editor，執行以下 SQL：
+**IMPORTANT**: 如果之前執行過舊的 migration，請使用最新的修復版本：
+
+#### 選項 A: 全新安裝（推薦）
+
+前往 Supabase Dashboard → SQL Editor，複製並執行：
+```
+supabase/migrations/20251108120002_final_gift_leads_rls_fix.sql
+```
+
+這個 migration 會：
+- 完全重置所有 RLS policies
+- 建立正確的 anon role INSERT policy
+- 自動驗證設定是否成功
+
+#### 選項 B: 原始安裝（僅限未執行過任何 migration）
 
 ```sql
 -- 複製 supabase/migrations/20251108120000_create_gift_leads_table.sql 的內容
 ```
 
-或者直接在 Supabase Dashboard 手動建立資料表。
+執行後，你應該會在 **Messages** 看到：
+
+```
+===== VERIFICATION RESULTS =====
+Total policies created: 3
+Anon INSERT policies: 1
+✅ RLS policies successfully configured!
+================================
+```
+
+**如果沒看到這個訊息，請聯繫技術支援！**
 
 ### 2. 驗證資料表建立成功
 

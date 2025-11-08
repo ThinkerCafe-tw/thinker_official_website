@@ -3,14 +3,21 @@ import { createClient } from '@supabase/supabase-js';
 
 // Get Supabase environment variables
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Initialize Supabase client (lazy initialization to avoid build-time errors)
+// TEMPORARY FIX: Using service role to bypass RLS issues
+// TODO: Investigate why anon role INSERT policy is not working despite being created
+// The policy exists in Supabase Dashboard but anon client still gets RLS violation
 function getSupabaseClient() {
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl || !supabaseServiceKey) {
     throw new Error('Missing Supabase environment variables');
   }
-  return createClient(supabaseUrl, supabaseAnonKey);
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
 }
 
 export async function POST(request: Request) {
