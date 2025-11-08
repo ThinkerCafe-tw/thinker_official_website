@@ -1,0 +1,153 @@
+import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client with anon key (for public access)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase environment variables');
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    // Validate required fields
+    const { email, gift_type, completed_prompts, password, source } = body;
+
+    if (!email || !gift_type) {
+      return NextResponse.json(
+        { error: 'Missing required fields: email and gift_type' },
+        { status: 400 }
+      );
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
+
+    // Check if email already exists for this gift type
+    const { data: existingLead, error: checkError } = await supabase
+      .from('gift_leads')
+      .select('id, email')
+      .eq('email', email)
+      .eq('gift_type', gift_type)
+      .single();
+
+    if (existingLead) {
+      // Email already registered for this gift type
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Email already registered',
+          already_exists: true
+        },
+        { status: 200 }
+      );
+    }
+
+    // Insert new lead
+    const { data, error } = await supabase
+      .from('gift_leads')
+      .insert([
+        {
+          email: email.toLowerCase().trim(),
+          gift_type,
+          completed_prompts: completed_prompts || 0,
+          password: password || null,
+          source: source || 'unknown',
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return NextResponse.json(
+        { error: 'Failed to save email', details: error.message },
+        { status: 500 }
+      );
+    }
+
+    // Log success
+    console.log('✅ Gift lead saved:', {
+      email: email.toLowerCase().trim(),
+      gift_type,
+      password,
+      source,
+    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Email saved successfully',
+        data: {
+          id: data.id,
+          email: data.email,
+        }
+      },
+      { status: 201 }
+    );
+
+  } catch (error) {
+    console.error('API error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+// GET endpoint to retrieve leads (requires authentication)
+export async function GET(request: Request) {
+  try {
+    // This endpoint should be protected - only for admin use
+    const { searchParams } = new URL(request.url);
+    const password = searchParams.get('password');
+    const limit = parseInt(searchParams.get('limit') || '100');
+
+    let query = supabase
+      .from('gift_leads')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (password) {
+      query = query.eq('password', password);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Supabase query error:', error);
+      return NextResponse.json(
+        { error: 'Failed to fetch leads' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        count: data.length,
+        data
+      },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('API error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

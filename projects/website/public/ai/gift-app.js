@@ -428,35 +428,38 @@ async function submitToBackend(email) {
         email: email,
         gift_type: currentGift,
         completed_prompts: completedPrompts,
-        timestamp: new Date().toISOString(),
         password: localStorage.getItem('gift_password'),
         source: currentGiftConfig ? currentGiftConfig.meta.source : 'unknown'
     };
 
-    console.log('提交數據:', data);
+    console.log('📤 提交數據:', data);
 
-    // TODO: 實際實作時取消註解並填入你的 Supabase 資訊
-    /*
     try {
-        const response = await fetch('YOUR_SUPABASE_URL/rest/v1/gift_leads', {
+        const response = await fetch('/api/gift-leads', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'apikey': 'YOUR_API_KEY',
-                'Authorization': 'Bearer YOUR_API_KEY'
             },
             body: JSON.stringify(data)
         });
 
+        const result = await response.json();
+
         if (response.ok) {
-            console.log('Email 提交成功');
+            console.log('✅ Email 提交成功:', result);
+
+            // Show success message (optional)
+            if (result.already_exists) {
+                console.log('ℹ️ 此 Email 已經登記過此禮包');
+            }
         } else {
-            console.error('Email 提交失敗');
+            console.error('❌ Email 提交失敗:', result);
+            // Don't block user experience even if backend fails
         }
     } catch (error) {
-        console.error('提交錯誤:', error);
+        console.error('❌ 提交錯誤:', error);
+        // Don't block user experience even if backend fails
     }
-    */
 }
 
 // ===== 事件追蹤 =====
