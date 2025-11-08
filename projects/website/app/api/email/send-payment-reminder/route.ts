@@ -3,6 +3,7 @@ import { resend, FROM } from '@/lib/email/resend';
 import PaymentReminderEmail from '@/lib/email/templates/PaymentReminder';
 import { createClient } from '@/utils/supabase/server';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { notifyAdminNewOrder } from '@/lib/line/admin-notify';
 
 export async function POST(request: NextRequest) {
   try {
@@ -160,6 +161,22 @@ export async function POST(request: NextRequest) {
         };
         // 不影響 email 發送的成功，只記錄錯誤
       }
+    }
+
+    // 7. 發送管理員通知（新訂單）
+    try {
+      await notifyAdminNewOrder({
+        studentName: profile.full_name || profile.name || '學員',
+        orderID: String(orderId),
+        courseName: formattedCourseName,
+        amount: order.total,
+        courseVariant: order.course_variant,
+        orderURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+      });
+      console.log('✅ Admin notification sent for new order');
+    } catch (adminError) {
+      console.error('⚠️  Failed to send admin notification:', adminError);
+      // 不影響主要流程，只記錄錯誤
     }
 
     return NextResponse.json({
