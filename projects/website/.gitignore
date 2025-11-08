@@ -41,3 +41,4 @@ Icon?
 !package-lock.json
 !tsconfig.json
 !next.json
+!public/ai/*.json
