@@ -94,6 +94,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           data: [eventData],
           access_token: accessToken,
+          test_event_code: 'TEST73555', // Meta 測試事件代碼
         }),
       }
     );
