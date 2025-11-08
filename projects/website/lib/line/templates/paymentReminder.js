@@ -17,8 +17,19 @@ export function createPaymentReminderMessage({
   expiresAt,
   paymentURL,
 }) {
+  console.log('🔍 [createPaymentReminderMessage] Input params:', {
+    studentName, orderID, courseName, amount, expiresAt, paymentURL,
+    expiresAtType: typeof expiresAt
+  });
+
   // 格式化繳費期限
   const expiryDate = new Date(expiresAt);
+  console.log('🔍 [createPaymentReminderMessage] Date conversion:', {
+    expiresAt,
+    expiryDate: expiryDate.toString(),
+    isValidDate: !isNaN(expiryDate.getTime())
+  });
+
   const dateStr = expiryDate.toLocaleDateString('zh-TW', {
     year: 'numeric',
     month: '2-digit',
@@ -27,7 +38,9 @@ export function createPaymentReminderMessage({
     minute: '2-digit',
   });
 
-  return {
+  console.log('🔍 [createPaymentReminderMessage] Formatted date:', dateStr);
+
+  const message = {
     type: 'flex',
     altText: `【思考者咖啡】繳費提醒 #${orderID}`,
     contents: {
@@ -218,4 +231,13 @@ export function createPaymentReminderMessage({
       },
     },
   };
-}
+
+  console.log('✅ [createPaymentReminderMessage] Message created successfully:', {
+    messageType: message.type,
+    altText: message.altText,
+    hasContents: !!message.contents,
+    bodyContentsLength: message.contents?.body?.contents?.length || 0,
+    footerContentsLength: message.contents?.footer?.contents?.length || 0
+  });
+
+  return message;
