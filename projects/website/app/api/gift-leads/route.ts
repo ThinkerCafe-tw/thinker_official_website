@@ -1,15 +1,17 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client with anon key (for public access)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Get Supabase environment variables
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables');
+// Initialize Supabase client (lazy initialization to avoid build-time errors)
+function getSupabaseClient() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables');
+  }
+  return createClient(supabaseUrl, supabaseAnonKey);
 }
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function POST(request: Request) {
   try {
@@ -33,6 +35,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const supabase = getSupabaseClient();
 
     // Check if email already exists for this gift type
     const { data: existingLead, error: checkError } = await supabase
@@ -109,6 +113,8 @@ export async function POST(request: Request) {
 // GET endpoint to retrieve leads (requires authentication)
 export async function GET(request: Request) {
   try {
+    const supabase = getSupabaseClient();
+
     // This endpoint should be protected - only for admin use
     const { searchParams } = new URL(request.url);
     const password = searchParams.get('password');
