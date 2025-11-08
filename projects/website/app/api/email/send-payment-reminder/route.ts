@@ -74,11 +74,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. 取得用戶 Email（從 auth.users，使用 admin client）
-    const supabaseAdmin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    // 3. 取得用戶 Email（從 auth.users，使用已創建的 admin client）
+    // 重用上面創建的 supabaseAdmin
 
     const { data: { user }, error: userError } = await supabaseAdmin.auth.admin.getUserById(order.user_id);
 
