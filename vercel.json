@@ -1,7 +1,0 @@
-{
-  "buildCommand": "pnpm --filter website build",
-  "outputDirectory": "projects/website/.next",
-  "installCommand": "pnpm install",
-  "framework": "nextjs",
-  "rootDirectory": "projects/website"
-}
