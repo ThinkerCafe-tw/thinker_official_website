@@ -17,7 +17,7 @@ export function createPaymentReminderMessage({
   expiresAt,
   paymentURL,
 }) {
-  // 格式化繳費期限
+  // 格式化繳費期限（台灣時間）
   const expiryDate = new Date(expiresAt);
   const dateStr = expiryDate.toLocaleDateString('zh-TW', {
     year: 'numeric',
@@ -25,6 +25,7 @@ export function createPaymentReminderMessage({
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: 'Asia/Taipei'
   });
 
   const message = {
