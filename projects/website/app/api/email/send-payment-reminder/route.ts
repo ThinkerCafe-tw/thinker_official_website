@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
           to: user.email,
           subject: `【思考者咖啡】您的報名序號 #${orderId}，請完成繳費`,
           react: PaymentReminderEmail({
-            studentName: profile.name || '學員',
+            studentName: profile.full_name || '學員',
             orderID: String(orderId),
             courseName: formattedCourseName,
             amount: order.total,
@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
     // 7. 發送管理員通知（新訂單）
     try {
       await notifyAdminNewOrder({
-        studentName: profile.full_name || profile.name || '學員',
+        studentName: profile.full_name || '學員',
         orderID: String(orderId),
         courseName: formattedCourseName,
         amount: order.total,
