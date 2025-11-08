@@ -3,16 +3,18 @@
 import { useRouter } from 'next/navigation';
 import FormButton from '@/components/core/FormButton.js';
 import { trackAddToCart } from '@/lib/analytics';
+import { useMetaTracking } from '@/hooks/useMetaTracking';
 
 export default function BuyCourseButton({ courseId, courseName, courseCategory, coursePrice, className, children }) {
   const router = useRouter();
+  const { trackInitiateCheckout } = useMetaTracking();
 
   // 目前只有第六課開放報名
   const isAvailable = courseId === 6;
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (isAvailable) {
-      // 追蹤點擊報名按鈕
+      // GA4 追蹤
       trackAddToCart({
         id: courseId.toString(),
         name: courseName || '課程名稱',
@@ -20,6 +22,13 @@ export default function BuyCourseButton({ courseId, courseName, courseCategory, 
         variant: 'group', // 預設團班，在表單頁會再追蹤實際選擇
         price: coursePrice || 0
       });
+
+      // Meta Pixel 雙層追蹤 - InitiateCheckout
+      await trackInitiateCheckout(
+        coursePrice || 0,
+        'TWD',
+        [{ id: courseId.toString(), quantity: 1 }]
+      );
 
       router.push(`/buy-course/${courseId}`);
     }

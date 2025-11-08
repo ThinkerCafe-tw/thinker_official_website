@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
 
 interface FormData {
   name: string;
@@ -36,6 +37,7 @@ export function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { trackLead } = useMetaTracking();
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -58,6 +60,15 @@ export function ContactForm() {
       });
 
       if (response.ok) {
+        // Meta Pixel 雙層追蹤 - Lead
+        await trackLead(
+          undefined,
+          'TWD',
+          {
+            email: formData.email,
+          }
+        );
+
         toast({
           title: "Message Sent Successfully",
           description:

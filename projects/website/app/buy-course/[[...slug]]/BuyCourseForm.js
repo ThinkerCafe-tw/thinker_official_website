@@ -34,6 +34,7 @@ import { parseCourseName, parseCourseVariantName } from '@/utils/course.js';
 import parsePriceString from '@/utils/parsePriceString.js';
 import { useToast } from '@/hooks/use-toast';
 import { trackBeginCheckout, trackPurchase } from '@/lib/analytics';
+import { useMetaTracking } from '@/hooks/useMetaTracking';
 
 const REWARD_STORAGE_KEY = 'explorer_discount';
 
@@ -44,6 +45,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
   const [explorerDiscount, setExplorerDiscount] = useState(0);
   const router = useRouter();
   const { toast } = useToast();
+  const { trackPurchase: trackMetaPurchase } = useMetaTracking();
 
   // 只顯示已開放的課程（目前只有第六課）
   const availableCourses = courses.filter(course => course.course_id === 6);
@@ -131,6 +133,7 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
     const orderId = data[0].order_id;
 
     // 追蹤訂單建立成功（等同於購買完成）
+    // GA4 追蹤
     trackPurchase({
       orderId,
       courseId: courseId.toString(),
@@ -139,6 +142,17 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
       variant: courseVariant,
       total: finalTotal
     });
+
+    // Meta Pixel 雙層追蹤 - Purchase
+    await trackMetaPurchase(
+      finalTotal,
+      'TWD',
+      [{
+        id: courseId.toString(),
+        quantity: 1,
+        item_price: finalTotal,
+      }]
+    );
 
     // 2. 發送繳費提醒 Email（非同步，不等待結果）
     fetch('/api/email/send-payment-reminder', {

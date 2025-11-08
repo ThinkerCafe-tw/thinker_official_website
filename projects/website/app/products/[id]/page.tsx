@@ -18,6 +18,7 @@ import PreparationChecklist from '@/components/course/PreparationChecklist';
 import { parseCourseName } from '@/utils/course.js';
 import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 import { universalFAQ, course6FAQ } from '@/data/faq';
+import MetaTracking from './MetaTracking';
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -143,6 +144,12 @@ export default async function ProductContentPage({
 
   return (
     <Page>
+      {/* Meta Pixel ViewContent 追蹤 */}
+      <MetaTracking
+        courseId={courseId}
+        courseName={title}
+        courseCategory={product.zh_category}
+      />
       {/* Course Schema */}
       <script
         type="application/ld+json"
