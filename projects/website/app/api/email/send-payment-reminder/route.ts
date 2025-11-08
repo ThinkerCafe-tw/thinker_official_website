@@ -16,14 +16,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 查詢訂單資料
-    const supabase = await createClient();
+    // 安全性檢查：驗證 API 調用來源
+    const referer = request.headers.get('referer');
+    const origin = request.headers.get('origin');
+    const isValidOrigin =
+      referer?.includes('thinker.cafe') ||
+      origin?.includes('thinker.cafe') ||
+      referer?.includes('localhost') ||
+      origin?.includes('localhost');
 
-    // 1. 查詢訂單
-    const { data: order, error: orderError } = await supabase
+    if (!isValidOrigin) {
+      console.error('🚫 Unauthorized API call from:', { referer, origin });
+      return NextResponse.json(
+        { success: false, message: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // 查詢訂單資料（使用 admin 權限確保能找到訂單）
+    const supabaseAdmin = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    // 1. 查詢訂單（僅查詢最近 24 小時的訂單）
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .select('*')
       .eq('order_id', orderId)
+      .gte('created_at', twentyFourHoursAgo)
       .single();
 
     if (orderError || !order) {
@@ -34,8 +56,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 2. 查詢用戶資料（從 profiles 和 auth）
-    const { data: profile, error: profileError } = await supabase
+    // 2. 查詢用戶資料（從 profiles，使用 admin 權限）
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('*, line_user_id, full_name')
       .eq('user_id', order.user_id)
