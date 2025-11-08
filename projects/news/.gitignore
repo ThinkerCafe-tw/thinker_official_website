@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+env/
+.env
+.env.local
+
+# Generated files
+*.html
+latest.json
+news_generation.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Icon
+Icon?
+
+# Temporary files
+*.tmp
+*.bak
