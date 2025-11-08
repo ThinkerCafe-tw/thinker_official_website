@@ -16,25 +16,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 安全性檢查：驗證 API 調用來源（暫時註釋掉以進行測試）
+    // 安全性檢查：驗證 API 調用來源
     const referer = request.headers.get('referer');
     const origin = request.headers.get('origin');
-    console.log('🔍 API call from:', { referer, origin, orderId });
+    const isValidOrigin =
+      referer?.includes('thinker.cafe') ||
+      origin?.includes('thinker.cafe') ||
+      referer?.includes('localhost') ||
+      origin?.includes('localhost');
 
-    // TODO: 重新啟用來源驗證
-    // const isValidOrigin =
-    //   referer?.includes('thinker.cafe') ||
-    //   origin?.includes('thinker.cafe') ||
-    //   referer?.includes('localhost') ||
-    //   origin?.includes('localhost');
-
-    // if (!isValidOrigin) {
-    //   console.error('🚫 Unauthorized API call from:', { referer, origin });
-    //   return NextResponse.json(
-    //     { success: false, message: 'Unauthorized' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!isValidOrigin) {
+      console.error('🚫 Unauthorized API call from:', { referer, origin });
+      return NextResponse.json(
+        { success: false, message: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
     // 查詢訂單資料（使用 admin 權限確保能找到訂單）
     const supabaseAdmin = createAdminClient(
