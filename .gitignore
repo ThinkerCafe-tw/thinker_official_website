@@ -25,6 +25,7 @@ yarn-error.log*
 # env files
 .env*
 **/.env*
+!**/.env.example
 
 # vercel
 .vercel
@@ -50,6 +51,8 @@ Icon?
 !tsconfig.json
 !next.json
 !.kiro/**/*.json
+!projects/news/vercel.json
+!projects/news/latest.json
 
 # Ignore backup directories
 *.backup*/
