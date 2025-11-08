@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
           amount: order.total,
           expiresAt: expiresAt,
           paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
-        }, { checkFriendStatus: false }); // 跳過好友狀態檢查
+        });
         console.log('✅ Payment reminder LINE notification sent');
         lineNotificationSent = true;
       } catch (lineError) {
@@ -153,12 +153,44 @@ export async function POST(request: NextRequest) {
           originalError: lineError.originalError,
           lineUserId: profile.line_user_id,
           env: process.env.NODE_ENV,
+          // 增加額外的調試信息
+          errorName: lineError.name,
+          errorCode: lineError.code,
+          response: lineError.response?.data || null,
         });
-        lineNotificationError = {
-          message: lineError.message,
-          statusCode: lineError.statusCode,
-          statusMessage: lineError.statusMessage,
-        };
+
+        // 如果是好友檢查失敗，試著跳過檢查
+        if (lineError.statusCode === 404 || lineError.message?.includes('not friend')) {
+          console.log('🔄 Retrying LINE notification without friend check...');
+          try {
+            const { sendPaymentReminder } = await import('@/lib/line/notify');
+            await sendPaymentReminder(profile.line_user_id, {
+              studentName: profile.full_name || '學員',
+              orderID: String(orderId),
+              courseName: formattedCourseName,
+              amount: order.total,
+              expiresAt: expiresAt,
+              paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
+            }, { checkFriendStatus: false });
+            console.log('✅ Payment reminder LINE notification sent (retry without friend check)');
+            lineNotificationSent = true;
+            lineNotificationError = null; // 清除錯誤
+          } catch (retryError) {
+            console.error('❌ Retry also failed:', retryError);
+            lineNotificationError = {
+              message: retryError.message,
+              statusCode: retryError.statusCode,
+              statusMessage: retryError.statusMessage,
+              retryFailed: true,
+            };
+          }
+        } else {
+          lineNotificationError = {
+            message: lineError.message,
+            statusCode: lineError.statusCode,
+            statusMessage: lineError.statusMessage,
+          };
+        }
         // 不影響 email 發送的成功，只記錄錯誤
       }
     }
