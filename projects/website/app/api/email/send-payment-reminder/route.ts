@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
           amount: order.total,
           expiresAt: expiresAt,
           paymentURL: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thinker.cafe'}/order/${orderId}`,
-        });
+        }, { checkFriendStatus: false }); // 跳過好友狀態檢查
         console.log('✅ Payment reminder LINE notification sent');
         lineNotificationSent = true;
       } catch (lineError) {
