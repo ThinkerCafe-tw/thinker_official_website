@@ -1,7 +1,7 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export default function MetaPixel() {
+function MetaPixelTracker() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -22,6 +22,12 @@ export default function MetaPixel() {
     // 追蹤頁面瀏覽
     window.fbq('track', 'PageView');
   }, [pathname, searchParams, pixelId]);
+
+  return null;
+}
+
+export default function MetaPixel() {
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
   if (!pixelId) {
     console.warn('⚠️ Meta Pixel ID not configured. Set NEXT_PUBLIC_META_PIXEL_ID in your environment.');
@@ -56,6 +62,9 @@ export default function MetaPixel() {
           alt=""
         />
       </noscript>
+      <Suspense fallback={null}>
+        <MetaPixelTracker />
+      </Suspense>
     </>
   );
 }
