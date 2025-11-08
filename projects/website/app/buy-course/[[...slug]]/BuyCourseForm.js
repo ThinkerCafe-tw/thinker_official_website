@@ -154,19 +154,37 @@ export default function BuyCourseForm({ courses, defaultCourseId }) {
       }]
     );
 
-    // 2. 發送繳費提醒 Email（非同步，不等待結果）
+    // 2. 發送繳費提醒通知（非同步處理）
     fetch('/api/email/send-payment-reminder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orderId }),
-    }).catch(err => {
-      console.error('Failed to send payment reminder email:', err);
-    });
-
-    // 顯示成功訊息
-    toast({
-      title: "報名成功！",
-      description: "繳費資訊已寄送至您的信箱",
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        console.log('✅ Payment reminder sent:', data);
+        // 根據發送方式調整提示訊息
+        const notificationMethod = data.emailSent ? 'EMAIL和LINE' : 'LINE';
+        toast({
+          title: "報名成功！",
+          description: `繳費提醒已透過 ${notificationMethod} 通知您`,
+        });
+      } else {
+        console.error('Failed to send payment reminder:', data);
+        toast({
+          title: "報名成功！",
+          description: "請至訂單頁面查看繳費資訊",
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Failed to send payment reminder:', err);
+      // 即使通知失敗，報名仍然成功
+      toast({
+        title: "報名成功！",
+        description: "請至訂單頁面查看繳費資訊",
+      });
     });
 
     // 3. 導向繳費頁面
