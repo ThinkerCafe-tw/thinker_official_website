@@ -11,27 +11,54 @@ import { createOrderConfirmationMessage } from './templates/orderConfirmation';
  */
 export async function sendPaymentReminder(lineUserId, params, options = {}) {
   try {
+    console.log('🔍 [sendPaymentReminder] Starting with params:', {
+      lineUserId,
+      params,
+      options,
+      paramsType: typeof params,
+      paramsKeys: params ? Object.keys(params) : null
+    });
+
     const client = createLineClient();
+    console.log('✅ [sendPaymentReminder] LINE client created');
 
     // 檢查好友狀態（可選）
     if (options.checkFriendStatus !== false) {
+      console.log('🔍 [sendPaymentReminder] Checking friend status...');
       try {
         await client.getProfile(lineUserId);
+        console.log('✅ [sendPaymentReminder] Friend status check passed');
       } catch (profileError) {
+        console.log('❌ [sendPaymentReminder] Friend status check failed:', profileError);
         if (profileError.statusCode === 404) {
           console.log(`⚠️  User ${lineUserId} hasn't added bot as friend`);
           return { success: false, reason: 'not_friend' };
         }
         throw profileError;
       }
+    } else {
+      console.log('⏭️ [sendPaymentReminder] Skipping friend status check');
     }
 
+    console.log('🔍 [sendPaymentReminder] Creating payment reminder message...');
     const message = createPaymentReminderMessage(params);
+    console.log('✅ [sendPaymentReminder] Message created:', {
+      messageType: message.type,
+      altText: message.altText,
+      hasContents: !!message.contents
+    });
+
+    console.log('🔍 [sendPaymentReminder] Sending message via pushMessage...');
     await client.pushMessage(lineUserId, message);
     console.log(`✅ Payment reminder sent to ${lineUserId}`);
     return { success: true };
   } catch (error) {
-    console.error('❌ Failed to send payment reminder:', error);
+    console.error('❌ [sendPaymentReminder] Failed:', {
+      message: error.message,
+      statusCode: error.statusCode,
+      statusMessage: error.statusMessage,
+      stack: error.stack
+    });
     throw error;
   }
 }
