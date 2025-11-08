@@ -29,10 +29,18 @@ function MetaPixelTracker() {
 export default function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
+  console.log('🔍 MetaPixel Debug:', {
+    pixelId,
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV
+  });
+
   if (!pixelId) {
     console.warn('⚠️ Meta Pixel ID not configured. Set NEXT_PUBLIC_META_PIXEL_ID in your environment.');
     return null;
   }
+
+  console.log('✅ Meta Pixel loading with ID:', pixelId);
 
   return (
     <>
