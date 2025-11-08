@@ -16,7 +16,7 @@ export async function POST(request) {
     const supabase = await createClient();
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('line_user_id, full_name, name')
+      .select('line_user_id, full_name')
       .eq('user_id', userId)
       .single();
 
@@ -30,8 +30,7 @@ export async function POST(request) {
     const results = {
       profile: {
         line_user_id: profile.line_user_id,
-        full_name: profile.full_name,
-        name: profile.name
+        full_name: profile.full_name
       },
       tests: {}
     };
