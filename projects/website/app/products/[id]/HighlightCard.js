@@ -126,7 +126,7 @@ export default function HighlightCard({ item, index, courseId }) {
       )}
     </div>
   );
-  const isSVG = finalImage && finalImage.trim().startsWith('<svg');
+  const isSVG = finalImage && typeof finalImage === 'string' && finalImage.trim().startsWith('<svg');
   const cardImage = (
     <div className="grow aspect-video rounded-lg overflow-hidden relative">
       {finalImage && (
@@ -134,6 +134,7 @@ export default function HighlightCard({ item, index, courseId }) {
           <div
             dangerouslySetInnerHTML={{ __html: finalImage }}
             className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
+            suppressHydrationWarning
           />
         ) : (
           <Image
