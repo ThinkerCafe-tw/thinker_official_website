@@ -50,6 +50,7 @@ Icon?
 !package-lock.json
 !tsconfig.json
 !next.json
+!vercel.json
 !.kiro/**/*.json
 !projects/news/vercel.json
 !projects/news/latest.json
