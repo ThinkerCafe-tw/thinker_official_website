@@ -1,3 +1,26 @@
 {
-  "version": 2
+  "version": 2,
+  "functions": {
+    "api/line-webhook.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/webhook/line",
+      "dest": "/api/line-webhook.py"
+    },
+    {
+      "src": "/webhook/line",
+      "dest": "/api/line-webhook.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/line-webhook.py"
+    }
+  ],
+  "env": {
+    "LINE_CHANNEL_SECRET": "@line-channel-secret",
+    "LINE_CHANNEL_ACCESS_TOKEN": "@line-channel-access-token"
+  }
 }

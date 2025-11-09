@@ -149,7 +149,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # 配置
-REPO_PATH = Path('/Users/thinkercafe/Documents/thinker-news')
+REPO_PATH = Path('/Users/thinkercafe/Documents/thinker-cafe/projects/news')
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'default-dev-token')
 LINE_CHANNEL_SECRET = os.getenv('LINE_CHANNEL_SECRET', '')
 SERVICE_VERSION = "1.0.0"

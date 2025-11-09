@@ -17,7 +17,7 @@ jobs:
       - name: Checkout 代碼
         uses: actions/checkout@v4
         with:
-          repository: ThinkerCafe-tw/thinker-news
+          repository: ThinkerCafe-tw/thinker_official_website
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: 設置 Python 環境
@@ -27,10 +27,12 @@ jobs:
           cache: 'pip'
       
       - name: 安裝依賴
+        working-directory: projects/news
         run: |
           pip install -r requirements.txt
-      
+
       - name: 執行新聞生成腳本
+        working-directory: projects/news
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -48,5 +50,6 @@ jobs:
       
       - name: 發送 Slack 通知
         if: success()
+        working-directory: projects/news
         run: |
           python scripts/notify_slack.py
