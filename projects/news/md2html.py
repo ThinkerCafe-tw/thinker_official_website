@@ -50,7 +50,7 @@ def md2html(markdown_path, output_date=None, gemini_api_key=None):
         
     # 初始化 Gemini
     genai.configure(api_key=gemini_api_key)
-    model = genai.GenerativeModel('gemini-2.0-flash-exp')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     
     # 讀取 n8n 生成的 markdown 內容
     try:
