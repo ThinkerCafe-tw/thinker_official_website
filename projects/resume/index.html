@@ -689,7 +689,7 @@
                             <h3>${course.title}</h3>
                             <div class="meta">
                                 ${course.organization || ''} ${course.organization ? '·' : ''} ${course.date}<br>
-                                ${course.duration} | ${course.students ? course.students + studentsLabel : ''}
+                                ${course.duration || ''} ${course.duration ? '|' : ''} ${course.students ? course.students + studentsLabel : ''}
                                 ${course.satisfaction ? ' | ' + course.satisfaction + satisfactionLabel : ''}
                             </div>
                             ${course.feedback && course.feedback.length > 0 ? `
