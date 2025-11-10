@@ -1,9 +1,4 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/webhook/line",
-      "dest": "/api/line-webhook.py"
-    }
-  ]
+  "outputDirectory": "."
 }
