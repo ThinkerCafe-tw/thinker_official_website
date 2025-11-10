@@ -2,7 +2,7 @@
 inherits_from: ../../knowledge-base/CLAUDE_ROOT.md
 project: resume
 project_type: personal_website
-last_updated: 2025-11-08
+last_updated: 2025-11-10
 ---
 
 # Cruz Tang Resume - 個人履歷網站
@@ -88,8 +88,11 @@ vercel link --yes
 # 本地預覽
 vercel dev
 
-# 部署到 production
-vercel --prod
+# 自動部署（preview）
+git add . && git commit -m "message" && git push
+
+# 手動推廣到 production
+vercel promote <preview-url> --yes
 ```
 
 ---
@@ -99,14 +102,27 @@ vercel --prod
 ### 專案階段
 - [x] 已上線
 
-### 最近更新 (2025-11-08)
-- ✅ 整合進 ThinkerCafe monorepo
-- ✅ 建立 CLAUDE.md 配置
+### 最近更新 (2025-11-10)
+- ✅ 修復教學部分 undefined 顯示問題
+- ✅ 配置 Vercel monorepo Git 自動部署
+- ✅ 建立手動 promote 工作流程
 
 ### 已知問題（已修復）
 - ~~企業版頁面空白問題~~ (已修復，詳見 `docs/ANALYSIS_REPORT.md`)
   - 原因：版本切換邏輯和 CSS 問題
   - 修復：添加 version-personal class + 調整 padding
+
+- ~~教學部分 undefined 顯示問題~~ (已修復，2025-11-10)
+  - **問題**：教學經歷中的課程顯示 "undefined | 30位學員"
+  - **原因**：`course.duration` 欄位缺失但 JavaScript 直接輸出 `${course.duration}`
+  - **修復**：改為 `${course.duration || ''} ${course.duration ? '|' : ''}` 條件渲染
+  - **位置**：`index.html:692` 行
+
+- ~~Vercel 自動部署配置問題~~ (已修復，2025-11-10)
+  - **問題**：Git push 觸發 preview deployment (`target: null`) 而非 production
+  - **原因**：Vercel 專案狀態 `"live": false`，Git 集成不完整
+  - **工作流程**：Push → 自動創建 preview → 手動 `vercel promote <url> --yes` → production
+  - **配置**：Root Directory 設為 `projects/resume`，關閉 Deployment Protection
 
 ---
 
@@ -142,10 +158,30 @@ vercel --prod
 
 ### 3. 部署規範
 
-- ✅ 使用 Vercel 自動部署
-- ✅ 連結到 Git repository
-- ✅ 每次 push 自動觸發部署
+- ✅ 使用 Vercel Git 集成
+- ✅ 連結到 ThinkerCafe-tw/thinker_official_website
+- ✅ 每次 push 自動觸發 preview 部署
+- ✅ 手動 promote 到 production（目前工作流程）
 - ❌ 不手動上傳檔案到 Vercel
+
+### 4. Monorepo 部署工作流程
+
+**當前配置**：
+- Root Directory: `projects/resume`
+- 自動部署: Preview only (`target: null`)
+- Production 更新: 手動 promote
+
+**標準操作**：
+```bash
+# 1. 開發與測試
+git add . && git commit -m "更新內容" && git push
+
+# 2. 檢查 preview 部署
+vercel ls  # 找到最新的 preview URL
+
+# 3. 推廣到 production
+vercel promote <preview-url> --yes
+```
 
 ---
 
@@ -167,7 +203,8 @@ vercel --prod
 1. 修改 `data.json` 中的對應欄位
 2. 本地測試（vercel dev）
 3. 提交並 push 到 Git
-4. Vercel 自動部署
+4. Git 自動觸發 preview 部署
+5. 測試 preview 版本無誤後，手動 promote 到 production
 
 **任務：修改版本切換邏輯**
 1. 檢查 JavaScript 的版本切換函式

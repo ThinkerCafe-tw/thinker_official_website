@@ -1,7 +1,7 @@
 # ThinkerCafe Monorepo - Root Configuration
 > **這是 ThinkerCafe 所有專案的根配置檔案**  
 > 所有子專案的 CLAUDE.md 都應該 inherit 這個檔案的原則  
-> 最後更新：2025-11-08
+> 最後更新：2025-11-10
 
 ---
 
@@ -302,6 +302,32 @@ version: 1.0
 - 原因：CLAUDE.md 太冗長或 MCP tools 過多
 - 解決：精簡 CLAUDE.md，移除不必要的 MCP
 
+#### 已知 Bug 案例（2025-11-10 @projects/resume）
+
+**Bug 1：JavaScript undefined 顯示問題**
+- **現象**：動態內容顯示 "undefined" 字樣（如 "undefined | 30位學員"）
+- **原因**：JavaScript 模板字面值直接輸出缺失的物件屬性
+- **解決模式**：
+  ```javascript
+  // ❌ 錯誤寫法
+  ${course.duration} | ${course.students}位學員
+
+  // ✅ 正確寫法
+  ${course.duration || ''} ${course.duration ? '|' : ''} ${course.students}位學員
+  ```
+- **預防**：所有動態內容都使用條件渲染或預設值
+
+**Bug 2：Vercel Monorepo Git 集成問題**
+- **現象**：Git push 觸發 preview deployment (`target: null`) 而非 production
+- **原因**：Vercel 專案狀態 `"live": false`，Git 集成不完整
+- **工作流程**：
+  1. Push → 自動創建 preview
+  2. `vercel promote <preview-url> --yes` → 手動推廣到 production
+- **配置要求**：
+  - Root Directory 設為 `projects/[project-name]`
+  - 關閉 Deployment Protection
+  - 開啟 Production Override
+
 ---
 
 ## 📚 參考資源
@@ -325,6 +351,12 @@ version: 1.0
 ---
 
 ## 🔄 版本歷史
+
+### v1.2 (2025-11-10)
+- 新增「已知 Bug 案例」section 在故障排除指引中
+- 記錄 JavaScript undefined 顯示問題的解決模式
+- 記錄 Vercel Monorepo Git 集成的 preview-only 問題
+- 建立 Bug 回報與預防的標準流程
 
 ### v1.1 (2025-11-08)
 - 更新專案目錄結構（移除 website-fresh，新增 paomateng）
