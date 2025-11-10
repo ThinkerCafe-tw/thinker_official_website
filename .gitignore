@@ -44,16 +44,15 @@ next-env.d.ts
 Icon
 Icon?
 
-# Google Cloud Service Account credentials
-*.json
-!package.json
-!package-lock.json
-!tsconfig.json
-!next.json
-!vercel.json
-!.kiro/**/*.json
-!projects/news/vercel.json
-!projects/news/latest.json
+# Credential-related JSON files
+*credential*.json
+*service-account*.json
+*private-key*.json
+*secret*.json
+google-service-account*.json
+
+# Allow specific JSON files
+# (All other JSON files are now tracked by default)
 
 # Ignore backup directories
 *.backup*/
