@@ -615,23 +615,27 @@
 
                 // Stats section
                 if (data.teaching.stats) {
+                    const statsLabels = currentLang === 'zh-TW' ?
+                        ['年經驗', '培訓學員', '教學時數', '合作機構'] :
+                        ['Years Experience', 'Students Trained', 'Teaching Hours', 'Partner Institutions'];
+
                     teachingHTML += `
                         <div class="stats" style="margin-bottom: 40px;">
                             <div class="stat-item">
                                 <span class="stat-number">${data.teaching.stats.years}</span>
-                                <span class="stat-label">Years Experience</span>
+                                <span class="stat-label">${statsLabels[0]}</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">${data.teaching.stats.students}</span>
-                                <span class="stat-label">Students Trained</span>
+                                <span class="stat-label">${statsLabels[1]}</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">${data.teaching.stats.hours}</span>
-                                <span class="stat-label">Teaching Hours</span>
+                                <span class="stat-label">${statsLabels[2]}</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">${data.teaching.stats.institutions}</span>
-                                <span class="stat-label">Partner Institutions</span>
+                                <span class="stat-label">${statsLabels[3]}</span>
                             </div>
                         </div>
                     `;
@@ -639,7 +643,8 @@
 
                 // Certifications
                 if (data.teaching.certifications && data.teaching.certifications.length > 0) {
-                    teachingHTML += '<h3 style="font-size: 24px; margin: 40px 0 20px 0;">Official Certifications</h3>';
+                    const certTitle = currentLang === 'zh-TW' ? '官方認證' : 'Official Certifications';
+                    teachingHTML += `<h3 style="font-size: 24px; margin: 40px 0 20px 0;">${certTitle}</h3>`;
                     teachingHTML += data.teaching.certifications.map(cert => `
                         <div class="info-card">
                             <h3>${cert.title}</h3>
@@ -651,8 +656,10 @@
 
                 // Featured course
                 if (data.teaching.featured) {
+                    const featuredTitle = currentLang === 'zh-TW' ? '🔥 目前招生中' : '🔥 Currently Enrolling';
+                    const deadlineLabel = currentLang === 'zh-TW' ? '報名截止' : 'Deadline';
                     teachingHTML += `
-                        <h3 style="font-size: 24px; margin: 40px 0 20px 0; color: #3b82f6;">🔥 Currently Enrolling</h3>
+                        <h3 style="font-size: 24px; margin: 40px 0 20px 0; color: #3b82f6;">${featuredTitle}</h3>
                         <div class="info-card" style="border: 2px solid #3b82f6;">
                             <h3>${data.teaching.featured.title}</h3>
                             <p style="font-size: 16px; color: #64748b;">${data.teaching.featured.subtitle}</p>
@@ -660,7 +667,7 @@
                                 📅 ${data.teaching.featured.dates}<br>
                                 📍 ${data.teaching.featured.location}<br>
                                 💰 ${data.teaching.featured.price} | 👥 ${data.teaching.featured.capacity}<br>
-                                ⏰ Deadline: ${data.teaching.featured.deadline}
+                                ⏰ ${deadlineLabel}: ${data.teaching.featured.deadline}
                             </div>
                             ${data.teaching.featured.highlights ? `
                                 <ul style="margin-top: 16px;">
@@ -673,14 +680,17 @@
 
                 // Recent courses
                 if (data.teaching.recent && data.teaching.recent.length > 0) {
-                    teachingHTML += '<h3 style="font-size: 24px; margin: 40px 0 20px 0;">Recent Courses</h3>';
+                    const recentTitle = currentLang === 'zh-TW' ? '近期課程' : 'Recent Courses';
+                    const studentsLabel = currentLang === 'zh-TW' ? '位學員' : ' students';
+                    const satisfactionLabel = currentLang === 'zh-TW' ? '滿意度' : ' satisfaction';
+                    teachingHTML += `<h3 style="font-size: 24px; margin: 40px 0 20px 0;">${recentTitle}</h3>`;
                     teachingHTML += data.teaching.recent.map(course => `
                         <div class="info-card">
                             <h3>${course.title}</h3>
                             <div class="meta">
                                 ${course.organization || ''} ${course.organization ? '·' : ''} ${course.date}<br>
-                                ${course.duration} | ${course.students ? course.students + ' students' : ''}
-                                ${course.satisfaction ? ' | ' + course.satisfaction + ' satisfaction' : ''}
+                                ${course.duration} | ${course.students ? course.students + studentsLabel : ''}
+                                ${course.satisfaction ? ' | ' + course.satisfaction + satisfactionLabel : ''}
                             </div>
                             ${course.feedback && course.feedback.length > 0 ? `
                                 <p style="margin-top: 12px; font-style: italic;">
@@ -693,7 +703,8 @@
 
                 // Testimonials
                 if (data.teaching.testimonials && data.teaching.testimonials.length > 0) {
-                    teachingHTML += '<h3 style="font-size: 24px; margin: 40px 0 20px 0;">Student Feedback</h3>';
+                    const feedbackTitle = currentLang === 'zh-TW' ? '學員反饋' : 'Student Feedback';
+                    teachingHTML += `<h3 style="font-size: 24px; margin: 40px 0 20px 0;">${feedbackTitle}</h3>`;
                     teachingHTML += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">';
                     teachingHTML += data.teaching.testimonials.map(test => `
                         <div class="info-card">
@@ -706,7 +717,8 @@
 
                 // Institutions
                 if (data.teaching.institutions && data.teaching.institutions.length > 0) {
-                    teachingHTML += '<h3 style="font-size: 24px; margin: 40px 0 20px 0;">Partner Institutions</h3>';
+                    const institutionsTitle = currentLang === 'zh-TW' ? '合作機構' : 'Partner Institutions';
+                    teachingHTML += `<h3 style="font-size: 24px; margin: 40px 0 20px 0;">${institutionsTitle}</h3>`;
                     teachingHTML += data.teaching.institutions.map(cat => `
                         <div class="info-card">
                             <h3>${cat.category}</h3>
