@@ -50,25 +50,44 @@ def retry_on_failure(max_retries: int = 2, delay: int = 3):
     return decorator
 
 # ============================================
+# 環境變數配置
+# ============================================
+
+# API Keys
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+# Model Names
+GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
+OPENAI_TECH_MODEL = os.getenv('OPENAI_TECH_MODEL', 'chatgpt-4o-latest')
+OPENAI_EDITOR_MODEL = os.getenv('OPENAI_EDITOR_MODEL', 'chatgpt-4o-latest')
+
+# Model Parameters
+OPENAI_TECH_TEMP = float(os.getenv('OPENAI_TECH_TEMP', '0.7'))
+OPENAI_EDITOR_TEMP = float(os.getenv('OPENAI_EDITOR_TEMP', '0.7'))
+GEMINI_HTML_TEMP = float(os.getenv('GEMINI_HTML_TEMP', '0.3'))
+
+# Retry Parameters
+AI_MAX_RETRIES = int(os.getenv('AI_MAX_RETRIES', '2'))
+AI_RETRY_DELAY = int(os.getenv('AI_RETRY_DELAY', '3'))
+
+# ============================================
 # API 配置
 # ============================================
 
 def setup_apis():
     """設置 API keys"""
-    google_api_key = os.getenv('GOOGLE_API_KEY')
-    openai_api_key = os.getenv('OPENAI_API_KEY')
-    
-    if not google_api_key:
-        raise ValueError("❌ GOOGLE_API_KEY 環境變數未設置")
-    if not openai_api_key:
+    if not GEMINI_API_KEY:
+        raise ValueError("❌ GEMINI_API_KEY 環境變數未設置")
+    if not OPENAI_API_KEY:
         raise ValueError("❌ OPENAI_API_KEY 環境變數未設置")
-    
+
     # 配置 Gemini
-    genai.configure(api_key=google_api_key)
-    
+    genai.configure(api_key=GEMINI_API_KEY)
+
     # 配置 OpenAI
-    openai_client = OpenAI(api_key=openai_api_key)
-    
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+
     return openai_client
 
 
@@ -375,7 +394,7 @@ learning_focus_text: "🎯 今日學習焦點\\n\\n今天的新聞涵蓋了 **{�
 # AI 處理函數
 # ============================================
 
-@retry_on_failure(max_retries=2, delay=5)
+@retry_on_failure(max_retries=AI_MAX_RETRIES, delay=AI_RETRY_DELAY)
 def process_with_data_alchemist(filtered_news: List[Dict], today_date: str) -> str:
     """
     數據煉金術師 - 使用 Gemini
@@ -415,7 +434,7 @@ def process_with_data_alchemist(filtered_news: List[Dict], today_date: str) -> s
     try:
         # 調用 Gemini API
         model = genai.GenerativeModel(
-            model_name='gemini-2.5-flash',
+            model_name=GEMINI_MODEL,
             system_instruction=DATA_ALCHEMIST_SYSTEM_PROMPT
         )
         
@@ -430,7 +449,7 @@ def process_with_data_alchemist(filtered_news: List[Dict], today_date: str) -> s
         raise
 
 
-@retry_on_failure(max_retries=2, delay=3)
+@retry_on_failure(max_retries=AI_MAX_RETRIES, delay=AI_RETRY_DELAY)
 def process_with_tech_narrator(alchemist_json: Dict, today_date: str) -> str:
     """
     科技導讀人 - 使用 OpenAI
@@ -455,12 +474,12 @@ def process_with_tech_narrator(alchemist_json: Dict, today_date: str) -> str:
 
     try:
         response = openai_client.chat.completions.create(
-            model="chatgpt-4o-latest",
+            model=OPENAI_TECH_MODEL,
             messages=[
                 {"role": "system", "content": TECH_NARRATOR_SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.7
+            temperature=OPENAI_TECH_TEMP
         )
 
         output = response.choices[0].message.content
@@ -473,7 +492,7 @@ def process_with_tech_narrator(alchemist_json: Dict, today_date: str) -> str:
         raise
 
 
-@retry_on_failure(max_retries=2, delay=3)
+@retry_on_failure(max_retries=AI_MAX_RETRIES, delay=AI_RETRY_DELAY)
 def process_with_editor_in_chief(narrator_json: Dict, today_date: str) -> str:
     """
     總編輯 - 使用 OpenAI
@@ -500,12 +519,12 @@ def process_with_editor_in_chief(narrator_json: Dict, today_date: str) -> str:
 
     try:
         response = openai_client.chat.completions.create(
-            model="chatgpt-4o-latest",
+            model=OPENAI_EDITOR_MODEL,
             messages=[
                 {"role": "system", "content": EDITOR_IN_CHIEF_SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.7
+            temperature=OPENAI_EDITOR_TEMP
         )
 
         output = response.choices[0].message.content
@@ -518,7 +537,7 @@ def process_with_editor_in_chief(narrator_json: Dict, today_date: str) -> str:
         raise
 
 
-@retry_on_failure(max_retries=2, delay=3)
+@retry_on_failure(max_retries=AI_MAX_RETRIES, delay=AI_RETRY_DELAY)
 def process_with_html_generator(notion_content: str, line_content: str, today_date: str) -> str:
     """
     HTML 生成器 - 使用 Gemini
@@ -535,8 +554,8 @@ def process_with_html_generator(notion_content: str, line_content: str, today_da
     logger.info("🎨 HTML 生成器處理中...")
 
     # 設置 Gemini
-    genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-    model = genai.GenerativeModel('gemini-2.0-flash-exp')
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel(GEMINI_MODEL)
 
     # System prompt - 對齊 n8n 的設定
     system_prompt = """你是專業的版面管理 Agent，專門負責確保網頁格式完全一致。
@@ -863,7 +882,7 @@ LINE消息版：
         response = model.generate_content(
             f"{system_prompt}\n\n{user_prompt}",
             generation_config=genai.types.GenerationConfig(
-                temperature=0.3,
+                temperature=GEMINI_HTML_TEMP,
             )
         )
 
