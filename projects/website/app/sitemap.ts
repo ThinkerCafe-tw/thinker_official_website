@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.log(`[Sitemap] Found ${publishedProducts.length} published products`)
 
     const productPages: MetadataRoute.Sitemap = publishedProducts.map((product: any) => ({
-      url: `https://www.thinker.cafe/products/${product.course_id}`,
+      url: `https://www.thinker.cafe/products/${product.id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
