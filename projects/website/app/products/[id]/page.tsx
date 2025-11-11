@@ -50,6 +50,9 @@ export async function generateMetadata({ params }) {
       "Thinker Cafe",
       ...(product.content_tags || [])
     ],
+    alternates: {
+      canonical: `https://www.thinker.cafe/products/${id}`,
+    },
     openGraph: {
       title: title,
       description: description,

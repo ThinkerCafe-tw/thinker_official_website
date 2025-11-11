@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！提供 ChatGPT、Midjourney 等 AI 工具實戰課程，適合行銷人員、產品經理、創業者。",
   keywords: ["AI 課程", "ChatGPT 教學", "AI 實戰", "台灣 AI 課程", "人工智慧課程", "AI 工具", "Midjourney"],
   authors: [{ name: "Thinker Cafe" }],
+  alternates: {
+    canonical: "https://www.thinker.cafe",
+  },
   openGraph: {
     title: "Thinker Cafe | AI 時代的實戰課程",
     description: "AI 時代來臨，讓 Thinker Cafe 的課程帶您贏在起跑點！",

@@ -18,6 +18,18 @@ import Image from "next/image";
 
 export const metadata = {
   title: parseMetadataTitle('團隊簡介'),
+  description: '認識 Thinker Cafe 團隊，了解我們的願景、使命與價值觀。我們致力於讓 AI 教育更普及，幫助每個人在 AI 時代找到自己的定位。',
+  alternates: {
+    canonical: 'https://www.thinker.cafe/about',
+  },
+  openGraph: {
+    title: '團隊簡介 | Thinker Cafe',
+    description: '認識 Thinker Cafe 團隊，了解我們的願景、使命與價值觀',
+    url: 'https://www.thinker.cafe/about',
+    siteName: 'Thinker Cafe',
+    locale: 'zh_TW',
+    type: 'website',
+  },
 };
 
 export default async function AboutPage() {
@@ -28,8 +40,28 @@ export default async function AboutPage() {
     getOurMissionVisionContent(),
   ]);
 
+  // AboutPage Schema for SEO
+  const aboutPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "關於 Thinker Cafe",
+    "description": "認識 Thinker Cafe 團隊，了解我們的願景、使命與價值觀",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Thinker Cafe",
+      "alternateName": "思考者咖啡",
+      "url": "https://www.thinker.cafe",
+      "description": "AI 時代的實戰課程平台",
+      "foundingDate": "2024",
+    }
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+      />
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center">

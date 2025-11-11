@@ -3,9 +3,40 @@ import parseMetadataTitle from '@/utils/parseMetadataTitle.js';
 
 export const metadata = {
   title: parseMetadataTitle('聯絡我們'),
+  description: '有任何課程問題或合作提案？歡迎透過聯絡表單與 Thinker Cafe 團隊聯繫，我們將儘快回覆您。',
+  alternates: {
+    canonical: 'https://www.thinker.cafe/contact',
+  },
+  openGraph: {
+    title: '聯絡我們 | Thinker Cafe',
+    description: '有任何課程問題或合作提案？歡迎透過聯絡表單與 Thinker Cafe 團隊聯繫',
+    url: 'https://www.thinker.cafe/contact',
+    siteName: 'Thinker Cafe',
+    locale: 'zh_TW',
+    type: 'website',
+  },
 };
 
 export default function ContactPage() {
+  // ContactPage Schema for SEO
+  const contactPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "聯絡 Thinker Cafe",
+    "description": "有任何課程問題或合作提案？歡迎透過聯絡表單與 Thinker Cafe 團隊聯繫",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Thinker Cafe",
+      "url": "https://www.thinker.cafe",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "contact@thinkcafe.tw",
+        "availableLanguage": ["zh-TW"]
+      }
+    }
+  };
+
   const faqs = [
     {
       question: '課程適合誰？我沒有技術背景可以參加嗎？',
@@ -55,6 +86,10 @@ export default function ContactPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
+      />
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
