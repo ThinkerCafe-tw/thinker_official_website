@@ -1,6 +1,5 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Space_Grotesk, DM_Sans } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Navigation } from "@/components/navigation"
@@ -8,18 +7,6 @@ import Footer from './Footer.js';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import MetaPixel from '@/components/analytics/MetaPixel';
 import { Toaster } from "@/components/ui/toaster"
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-space-grotesk",
-})
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-dm-sans",
-})
 
 export const metadata: Metadata = {
   title: "Thinker Cafe | 思考者咖啡 - AI 時代的實戰課程",
@@ -97,7 +84,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="zh-TW" className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`} suppressHydrationWarning>
+    <html lang="zh-TW" className="antialiased" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
