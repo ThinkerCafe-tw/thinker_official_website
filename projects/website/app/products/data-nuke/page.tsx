@@ -20,31 +20,43 @@ export default function DataNukePage() {
     { role: 'ai', content: '你好！我是數據核武器 — 專為博弈公司打造的 AI 數據分析師。\n\n試試問我：\n• 「查 VIP3 以上 7 天沒登入的用戶」\n• 「這週存款比上週少多少？」\n• 「多少錢？」' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
+  const [apiHistory, setApiHistory] = useState<{role: string, content: string}[]>([]);
 
-  const demoResponses: Record<string, string> = {
-    'vip': '查詢中... ⏳\n\n找到 2,847 位用戶：\n• VIP3: 1,892 人（66.5%）\n• VIP4: 624 人（21.9%）\n• VIP5+: 331 人（11.6%）\n\n平均歷史存款 ₹42,500，建議優先召回。\n\n要導出 Excel 嗎？',
-    '存款': '分析中... ⏳\n\n本週存款：₹28,450,000\n上週存款：₹34,200,000\n環比下降：16.8%\n\n主要原因：\n1. VIP4+ 玩家存款下降 32%\n2. 新註冊首充率下降 8%\n\n要看詳細的每日數據嗎？',
-    '錢': '標準版：¥38,000/月\n• 1 個數據源\n• 無限查詢\n• Telegram/微信接入\n\n專業版：¥58,000/月\n• 多數據源 + 自動報表 + 異常預警\n\n現在有首發優惠，標準版 ¥30,000/月。\n\n方便留個微信嗎？我讓商務跟你對接。',
-    'default': '收到！這個查詢我可以做。\n\n接入你的數據庫後，10 分鐘內給你結果。\n\n要了解更多，可以問我「多少錢」或留下微信聯繫商務。'
-  };
-
-  const handleSend = () => {
-    if (!chatInput.trim()) return;
+  const handleSend = async () => {
+    if (!chatInput.trim() || isTyping) return;
     
     const userMessage = chatInput;
     setChatMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setChatInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      let response = demoResponses.default;
-      if (userMessage.toLowerCase().includes('vip')) response = demoResponses.vip;
-      else if (userMessage.includes('存款') || userMessage.includes('週')) response = demoResponses['存款'];
-      else if (userMessage.includes('錢') || userMessage.includes('價') || userMessage.includes('多少')) response = demoResponses['錢'];
+    try {
+      const response = await fetch('/api/data-nuke/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: userMessage,
+          history: apiHistory 
+        }),
+      });
+
+      const data = await response.json();
       
-      setChatMessages(prev => [...prev, { role: 'ai', content: response }]);
+      if (data.reply) {
+        setChatMessages(prev => [...prev, { role: 'ai', content: data.reply }]);
+        if (data.history) {
+          setApiHistory(data.history);
+        }
+      }
+    } catch (error) {
+      // Fallback response if API fails
+      setChatMessages(prev => [...prev, { 
+        role: 'ai', 
+        content: '抱歉，系統暫時繁忙。請稍後再試，或直接聯繫我們的商務團隊。' 
+      }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
