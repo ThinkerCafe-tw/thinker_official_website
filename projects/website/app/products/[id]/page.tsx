@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getProductById } from "@/lib/notion";
 import { Badge } from "@/components/ui/badge";
 import Page from '@/components/core/Page.js';
